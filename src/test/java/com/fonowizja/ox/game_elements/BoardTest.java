@@ -1,7 +1,6 @@
-package com.fonowizja.ox;
+package com.fonowizja.ox.game_elements;
 
-import java.util.Arrays;
-
+import com.fonowizja.ox.game_elements.Board;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
