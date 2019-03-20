@@ -5,7 +5,7 @@
 
    <groupId>com.fonowizja.</groupId>
    <artifactId>ox</artifactId>
-   <version>0.0.1-SNAPSHOT</version>
+   <version>1.0.0-SNAPSHOT</version>
    <name>OX game</name>
    <description>Projekt jest grą w OX</description>
    <url>nieznany</url>
@@ -60,9 +60,9 @@
    <build>
       <plugins>
          <plugin>
-            <groupId>com.fonowizja.</groupId>
-            <artifactId>ox</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>${version.plugin.maven.enforcer}</version>
             <executions>
                <execution>
                   <id>enforce-maven</id>
@@ -73,7 +73,7 @@
                      <rules>
                         <requireMavenVersion>
                            <!-- helps with plugin versions, so you are more up-to-date -->
-                           <version>1.0.0-SNAPSHOT</version>
+                           <version>${version.maven}</version>
                         </requireMavenVersion>
                      </rules>
                   </configuration>
@@ -81,9 +81,9 @@
             </executions>
          </plugin>
          <plugin>
-            <groupId>com.fonowizja.</groupId>
-            <artifactId>ox</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>${version.plugin.maven.jar}</version>
             <configuration>
                <archive>
                   <index>true</index>
@@ -100,15 +100,15 @@
             </configuration>
          </plugin>
          <plugin>
-            <groupId>com.fonowizja.</groupId>
-            <artifactId>ox</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${version.plugin.maven.compiler}</version>
          </plugin>
          <plugin>
-            <groupId>com.fonowizja.</groupId>
-            <artifactId>ox</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
             <!-- if diff enconding than UTF8 is needed: https://maven.apache.org/plugins/maven-resources-plugin/examples/encoding.html -->
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${version.plugin.maven.resources}</version>
          </plugin>
       </plugins>
    </build>
