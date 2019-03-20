@@ -1,7 +1,5 @@
 package com.fonowizja.ox.game_elements;
 
-import com.fonowizja.ox.game_elements.Board;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 /**
@@ -9,20 +7,14 @@ import org.testng.annotations.Test;
  */
 public class BoardTest
 {
-   Board board;
-
-   @BeforeTest
-   public void setUp()
-   {
-      board = new Board();
-   }
+   Board board = Board.builder().xxx(5).yyy(5).build();
 
    @Test
-   public void testBoardCells()
+   public void testSetSize()
    {
+      int expectedSize = 25;
 
-      board.setSize(5, 5);
+      // assertThat()  n//TODO nie ma co testować, bo Board hermetyzuje dostep do tablicy
    }
-
 
 }

@@ -6,4 +6,5 @@ package com.fonowizja.ox.game_elements;
 public interface GameElementsService
 {
    String getBoardAsString();
+
 }
