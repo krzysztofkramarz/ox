@@ -7,4 +7,8 @@ public interface GameElementsService
 {
    String getBoardAsString();
 
+   boolean putSignIntoBoard(Sign sign, Integer positionInRow, Integer howManyFullRows);
+
+   void setEmptyBoard();
+
 }

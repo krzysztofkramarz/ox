@@ -19,8 +19,9 @@ class Board
    private Integer boardSize;
    private Integer x;
    private Integer y;
+   private Integer numberOfWiningSigns;
 
-   private void setSize(Integer x, Integer y) throws IllegalArgumentException
+   private Board(Integer x, Integer y, Integer numberOfWiningSigns) throws IllegalArgumentException
    {
       if (x == 0 || y == 0)
       {
@@ -29,11 +30,12 @@ class Board
       this.x = x;
       this.y = y;
       boardSize = x * y;
+      this.numberOfWiningSigns = numberOfWiningSigns;
       board = new ArrayList<>(boardSize);
       setEmptyBoard();
    }
 
-   private void setEmptyBoard()
+    void setEmptyBoard()
    {
       for (int i = 0; i < boardSize; i++)
       {
@@ -73,10 +75,23 @@ class Board
       return boardAsString.toString();
    }
 
+   boolean putSignIntoBoard(Sign sign, Integer positionInRow, Integer howManyFullRows)
+   {
+      int positionInBoard = howManyFullRows * x + positionInRow;
+
+      if (board.get(positionInBoard) == Sign.EMPTY)
+      {
+         board.add(positionInBoard, sign);
+         return true;
+      }
+      return false;
+   }
+
    static final class BoardBuilder // implements XXX, YYY, CanBeBuild
    {
       private Integer x;
       private Integer y;
+      private Integer numberOfWiningSigns;
 
       BoardBuilder xxx(Integer x)
       {
@@ -90,10 +105,15 @@ class Board
          return this;
       }
 
+      BoardBuilder numberOfWiningSigns(Integer numberOfWiningSigns)
+      {
+         this.numberOfWiningSigns = numberOfWiningSigns;
+         return this;
+      }
+
       Board build()
       {
-         Board board = new Board();
-         board.setSize(x, y);
+         Board board = new Board(x, y, numberOfWiningSigns);
          return board;
       }
 

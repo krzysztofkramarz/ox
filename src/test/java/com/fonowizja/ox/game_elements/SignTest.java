@@ -1,10 +1,7 @@
 package com.fonowizja.ox.game_elements;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fonowizja.ox.game_elements.Sign;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -15,20 +12,22 @@ public class SignTest
 {
 
    @DataProvider
-   public  Object[][] getSigns(){
-      return new Object[][]{
-            { Sign.O, "O"},
-            {Sign.X, "X"},
-            {Sign.EMPTY, "EMPTY"}
+   public Object[][] getSigns()
+   {
+      return new Object[][] {
+            { Sign.O, "O" },
+            { Sign.X, "X" },
+            { Sign.EMPTY, "EMPTY" }
       };
    }
 
    @DataProvider
-   public  Object[][] getSignsNegative(){
-      return new Object[][]{
-            {Sign.O, "X"},
-            {Sign.X, "O"},
-            {Sign.EMPTY, "O"}
+   public Object[][] getSignsNegative()
+   {
+      return new Object[][] {
+            { Sign.O, "X" },
+            { Sign.X, "O" },
+            { Sign.EMPTY, "O" }
       };
    }
 
