@@ -1,5 +1,7 @@
 package com.fonowizja.ox.game_elements;
 
+import com.fonowizja.ox.game_elements.game.BoardObservator;
+
 /**
  * @author krzysztof.kramarz
  */
@@ -10,7 +12,7 @@ public class GameElementsServiceImpl implements GameElementsService
 
    public GameElementsServiceImpl(Integer x, Integer y, Integer numberOfWiningSigns)
    {
-      board = Board.builder().xxx(x).yyy(y).numberOfWiningSigns(numberOfWiningSigns).build();
+      board = Board.builder().xxx(x).ooo(y).winningSize(numberOfWiningSigns).build();
    }
 
    @Override
@@ -30,6 +32,13 @@ public class GameElementsServiceImpl implements GameElementsService
    public void setEmptyBoard()
    {
       board.setEmptyBoard();
+   }
+
+   @Override
+   public void setBoardObservator(BoardObservator boardObservator)
+   {
+      board.setBoardObservator(boardObservator);
+
    }
 
 }
