@@ -18,7 +18,8 @@ public class SignTest
    public  Object[][] getSigns(){
       return new Object[][]{
             { Sign.O, "O"},
-            {Sign.X, "X"}
+            {Sign.X, "X"},
+            {Sign.EMPTY, "EMPTY"}
       };
    }
 
@@ -26,7 +27,8 @@ public class SignTest
    public  Object[][] getSignsNegative(){
       return new Object[][]{
             {Sign.O, "X"},
-            {Sign.X, "O"}
+            {Sign.X, "O"},
+            {Sign.EMPTY, "O"}
       };
    }
 

@@ -83,4 +83,6 @@ public class GameElementsServiceTest
             .hasMessage(Board.EXCEPTION_MESSAGE);
 
    }
+
+
 }
