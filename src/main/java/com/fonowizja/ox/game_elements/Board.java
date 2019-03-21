@@ -43,13 +43,27 @@ class Board
 
    String getBoardAsString()
    {
-      // StringJoiner stringJoiner = new StringJoiner();
       StringBuilder boardAsString = new StringBuilder();
+
+      boardAsString.append(" ");
+
+      for (int i = 0; i < x; i++)
+      {
+         boardAsString.append(i + "|");
+      }
+      boardAsString.append("\n");
+
+      int rowNumber = 0;
+      boardAsString.append(rowNumber);
+
       for (int i = 0; i < boardSize; i++)
       {
+
          if (i % x == 0 && i != 0)
          {
             boardAsString.append("\n");
+            rowNumber++;
+            boardAsString.append(rowNumber);
          }
 
          boardAsString.append(board.get(i).getSign());

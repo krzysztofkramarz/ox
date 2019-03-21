@@ -11,7 +11,7 @@ class Main
    public static void main(String[] args)
    {
 
-      GameElementsService gameElementsService = new GameElementsServiceImpl(5, 5);
+      GameElementsService gameElementsService = new GameElementsServiceImpl(1, 3);
 
       System.out.println(gameElementsService.getBoardAsString());
    }
