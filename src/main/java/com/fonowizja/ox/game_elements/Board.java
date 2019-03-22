@@ -105,69 +105,85 @@ class Board
       return false;
    }
 
-   private void setFieldsToCheck(Sign sign, Integer howManyFullRows)
+   private void setFieldsToCheck(Sign sign, Integer whichRow)
    {
-      createHorizontalWinnerFields(sign);
+      createHorizontalWinnerFields(sign, whichRow);
       createVerticalWinnerFields(sign);
-      createSlashWinnerFields(sign, howManyFullRows);
+      createSlashWinnerFields(sign);
       createBackSlashWinnerFields(sign);
 
       // boardObservator.notifyAboutWinner(sign);
    }
 
-   void createBackSlashWinnerFields(Sign sign)
-   {
-      int scope = winningSize - 1;
-      int j = scope;
-      int start = howManyFullRows * x + (x - 1);
-      for (int i = positionInBoard - (scope * x + j); i  >= howManyFullRows * x - scope*x  && i < boardSize; i += x + 1)
-      {
-         if (i >= start - x * scope)
-         {
-            continue;
-         }
-         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + x - 1, winningSize);
-         String key = horizontalFields.toString();
-         fillMap(sign, key, horizontalFields);
-         j--;
-      }
-   }
+   //////////////////////////////////////////  CREATE SHAPES @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-   void createSlashWinnerFields(Sign sign, Integer howManyFullRows)
+   void createHorizontalWinnerFields(Sign sign, Integer positionInRow)
    {
       int scope = winningSize - 1;
-      int j = scope;
-      int start = howManyFullRows * x + (x - 1);
-      for (int i = positionInBoard - (scope * x - j); i + scope * ( x - 1) >= howManyFullRows * x + scope && i > 0; i += x - 1)
+      // końcowy zakres nie wyjedzie na kolejny rząd - inne rozwiazanie:    i + scope < ((whichRow + 1) * x) + x
+      for (int i = positionInBoard - scope; i + scope < (positionInBoard-positionInRow) + x && i <= positionInBoard; i++)
       {
-         if (i <= (start) - x * scope)
+         if (i < positionInBoard - positionInRow)
          {
             continue;
          }
-         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + x - 1, winningSize);
+
+         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + 1, winningSize);
          String key = horizontalFields.toString();
          fillMap(sign, key, horizontalFields);
-         j++;
       }
    }
 
    void createVerticalWinnerFields(Sign sign)
    {
-      for (int i = positionInBoard - ((boardSize - 1) * x); i + ((boardSize - 1) * x) < boardSize - x && i > 0; i += x)
+      int scope = winningSize - 1;
+      for (int i = positionInBoard - scope * x; i + (positionInBoard + scope * x) > boardSize && i <= positionInBoard; i += x)
       {
+         if (i < 0)
+         {
+            continue;
+         }
          List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + x, winningSize);
          String key = horizontalFields.toString();
          fillMap(sign, key, horizontalFields);
       }
    }
 
-   void createHorizontalWinnerFields(Sign sign)
+   void createSlashWinnerFields(Sign sign)
    {
       int scope = winningSize - 1;
-
-      for (int i = positionInBoard - scope; i % x != 0 && i < positionInBoard + scope; i++)
+      for (int i = positionInBoard - scope * (x - 1); i + scope * (x - 1) < boardSize && i <= positionInBoard; i += (x - 1))
       {
-         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + 1, winningSize);
+         if (i < 0)
+         {
+            continue;
+         }
+
+         if (i + scope * (x - 1) <= i - (i % x) + scope * x)
+         {
+            continue;
+         }
+
+         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + x - 1, winningSize);
+         String key = horizontalFields.toString();
+         fillMap(sign, key, horizontalFields);
+      }
+   }
+
+   void createBackSlashWinnerFields(Sign sign)
+   {
+      int scope = winningSize - 1;
+      for (int i = positionInBoard - scope * (x + 1); i + scope * (x + 1) < boardSize && i <= positionInBoard; i += x + 1)
+      {
+         if (i < 0)
+         {
+            continue;
+         }
+         if (i + scope * (x + 1) < i - (i % x) + (scope + 1) * x)
+         {
+            continue;
+         }
+         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + x + 1, winningSize);
          String key = horizontalFields.toString();
          fillMap(sign, key, horizontalFields);
       }
