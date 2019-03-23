@@ -51,7 +51,7 @@ public class GameElementsServiceTest
    public void testGetBoardAsEmptyString(String expectedBoardAsString, Integer x, Integer y)
    {
 
-      Board board = Board.builder().xxx(x).ooo(y).build();
+      Board board = Board.builder().x(x).y(y).winningSize(3).build();
       assertThat(board.getBoardAsString()).isEqualTo(expectedBoardAsString);
 
    }
@@ -78,7 +78,7 @@ public class GameElementsServiceTest
    public void testGetBoardThrowsException(Integer x, Integer y)
    {
 
-      assertThatThrownBy(() -> Board.builder().xxx(x).ooo(y).build())
+      assertThatThrownBy(() -> Board.builder().x(x).y(y).winningSize(3).build())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(Board.EXCEPTION_MESSAGE);
 

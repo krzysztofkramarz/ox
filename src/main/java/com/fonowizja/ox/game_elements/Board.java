@@ -6,26 +6,24 @@ import java.util.List;
 import java.util.Map;
 
 import com.fonowizja.ox.game_elements.game.BoardObservator;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 /**
  * Place for acting single play
  *
  * @author krzysztof.kramarz
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@SuppressWarnings("FieldNamingConvention")
 class Board
 {
    static final String EXCEPTION_MESSAGE = "Jakikolwiek rozmiar tablicy nie może być = 0";
-   private List<Sign> board;
-   private Integer boardSize;
-   private Integer x;
-   private Integer y;
-   private Integer winningSize;
+   private final List<Sign> board = new ArrayList<>();
+   private final Integer boardSize;
+   private final Integer x;
+   private final Integer y;
+   private final Integer winningSize;
    private BoardObservator boardObservator;
-   private Map<String, List<Integer>> hypotheticalWinningFieldsXXX = new HashMap<>();
-   private Map<String, List<Integer>> hypotheticalWinningFieldsOOO = new HashMap<>();
+   private final Map<String, List<Integer>> hypotheticalWinningFieldsXXX = new HashMap<>();
+   private final Map<String, List<Integer>> hypotheticalWinningFieldsOOO = new HashMap<>();
    private Integer positionInBoard;
    private HypotheticalWinningFieldsCreator createHorizontalWinnerFields;
 
@@ -39,13 +37,13 @@ class Board
       this.y = y;
       boardSize = x * y;
       this.winningSize = winningSize;
-      board = new ArrayList<>(boardSize);
       cleanBoard();
 
    }
 
    void cleanBoard()
    {
+      board.clear();
       for (int i = 0; i < boardSize; i++)
       {
          board.add(Sign.EMPTY);
@@ -83,7 +81,7 @@ class Board
             boardAsString.append(rowNumber);
          }
 
-         boardAsString.append(board.get(i));
+         boardAsString.append(board.get(i).getSign());
          boardAsString.append("|");
 
       }
@@ -116,7 +114,7 @@ class Board
                   .boardSize(boardSize)
                   .build();
 
-      List<List<Integer>> horizontalWinnerFields = hypotheticalWinningFieldsCreator.createHorizontalWinnerFields( );
+      List<List<Integer>> horizontalWinnerFields = hypotheticalWinningFieldsCreator.createHorizontalWinnerFields();
 
       for (List<Integer> hypotheticalFields : horizontalWinnerFields)
       {
@@ -144,7 +142,6 @@ class Board
          String key = hypotheticalFields.toString();
          fillMap(sign, key, hypotheticalFields);
       }
-
 
       // boardObservator.notifyAboutWinner(sign);
    }
@@ -174,31 +171,36 @@ class Board
 
    ///////////////////   BUILDER  //////////////////////////
 
-   static final class BoardBuilder // implements XXX, YYY, CanBeBuild
+   @SuppressWarnings("NewMethodNamingConvention")
+   static final class BoardBuilder implements NeedX, NeedY, NeedWinningSize, CanBeBuild
    {
       private Integer x;
       private Integer y;
       private Integer winningSize;
 
-      BoardBuilder xxx(Integer x)
+      @Override
+      public BoardBuilder x(Integer x)
       {
          this.x = x;
          return this;
       }
 
-      BoardBuilder ooo(Integer y)
+      @Override
+      public BoardBuilder y(Integer y)
       {
          this.y = y;
          return this;
       }
 
-      BoardBuilder winningSize(Integer winningSize)
+      @Override
+      public BoardBuilder winningSize(Integer winningSize)
       {
          this.winningSize = winningSize;
          return this;
       }
 
-      Board build()
+      @Override
+      public Board build()
       {
          Board board = new Board(x, y, winningSize);
          return board;
@@ -206,22 +208,29 @@ class Board
 
    }
 
-   // private interface XXX
-   // {
-   //    YYY x(Integer x);
-   // }
-   //
-   // private interface YYY
-   // {
-   //    CanBeBuild y(Integer y);
-   // }
-   //
-   // private interface CanBeBuild
-   // {
-   //    Board build();
-   // }
-   //
-   static BoardBuilder builder()
+   @SuppressWarnings("NewMethodNamingConvention")
+   interface NeedX
+   {
+      NeedY x(Integer x);
+   }
+
+   @SuppressWarnings("NewMethodNamingConvention")
+   interface NeedY
+   {
+      NeedWinningSize y(Integer y);
+   }
+
+   interface NeedWinningSize
+   {
+      CanBeBuild winningSize(Integer winningSize);
+   }
+
+   interface CanBeBuild
+   {
+      Board build();
+   }
+
+   static NeedX builder()
    {
       return new BoardBuilder();
    }

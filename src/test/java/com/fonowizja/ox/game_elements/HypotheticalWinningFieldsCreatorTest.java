@@ -69,7 +69,10 @@ public class HypotheticalWinningFieldsCreatorTest
             { Sign.O, 3, 6, 6, 24, Arrays.asList() },
             { Sign.O, 3, 6, 16, 24, Arrays.asList(Arrays.asList(11, 16, 21)) },
             { Sign.O, 3, 6, 14, 24, Arrays.asList(Arrays.asList(4, 9, 14), Arrays.asList(9, 14, 19)) },
-            { Sign.O, 3, 6, 23, 24, Arrays.asList() }
+            { Sign.O, 3, 6, 23, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 1, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 22, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 17, 24, Arrays.asList() },
 
       };
    }

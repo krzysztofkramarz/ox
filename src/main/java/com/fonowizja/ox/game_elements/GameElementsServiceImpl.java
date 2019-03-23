@@ -12,7 +12,7 @@ public class GameElementsServiceImpl implements GameElementsService
 
    public GameElementsServiceImpl(Integer x, Integer y, Integer numberOfWiningSigns)
    {
-      board = Board.builder().xxx(x).ooo(y).winningSize(numberOfWiningSigns).build();
+      board = Board.builder().x(x).y(y).winningSize(numberOfWiningSigns).build();
    }
 
    @Override

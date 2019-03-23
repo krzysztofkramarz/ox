@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 @SuppressWarnings("LocalVariableHidesMemberVariable")
 public class BoardTest
 {
-   Board board = Board.builder().xxx(5).ooo(5).build();
+   Board board = Board.builder().x(5).y(5).winningSize(3).build();
 
    @Test
    public void testSetSize()
