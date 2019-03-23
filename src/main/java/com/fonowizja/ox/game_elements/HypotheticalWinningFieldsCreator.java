@@ -99,7 +99,7 @@ class HypotheticalWinningFieldsCreator
          {
             continue;
          }
-         if (i + scope * (x + 1) < i - (i % x) + (scope + 1) * x)
+         if (i + scope * (x + 1) >= i - (i % x) + (scope + 1) * x)
          {
             continue;
          }

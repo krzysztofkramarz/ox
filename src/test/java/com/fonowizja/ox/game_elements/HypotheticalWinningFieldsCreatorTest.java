@@ -61,35 +61,15 @@ public class HypotheticalWinningFieldsCreatorTest
       assertThat(expect).isEqualTo(result);
    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    @DataProvider(name = "slashFields")
    public Object[][] slashFields()
    {
       return new Object[][] {
             { Sign.O, 3, 6, 7, 24, Arrays.asList(Arrays.asList(2, 7, 12)) },
-            { Sign.O, 3, 6, 6, 24, Arrays.asList()},
-            { Sign.O, 3, 6, 16, 24, Arrays.asList(Arrays.asList(11,16,21))},
-            { Sign.O, 3, 6, 14, 24, Arrays.asList(Arrays.asList(4,9,14), Arrays.asList(9,14,19)) },
-            { Sign.O, 3, 6, 23, 24, Arrays.asList()}
+            { Sign.O, 3, 6, 6, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 16, 24, Arrays.asList(Arrays.asList(11, 16, 21)) },
+            { Sign.O, 3, 6, 14, 24, Arrays.asList(Arrays.asList(4, 9, 14), Arrays.asList(9, 14, 19)) },
+            { Sign.O, 3, 6, 23, 24, Arrays.asList() }
 
       };
    }
@@ -103,6 +83,37 @@ public class HypotheticalWinningFieldsCreatorTest
             HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionInBoard(positionInBoarrd)
                   .boardSize(boardSize).build();
       List<List<Integer>> result = hypotheticalWinningFieldsCreator.createSlashWinnerFields();
+
+      assertThat(expect).isEqualTo(result);
+   }
+
+   @DataProvider(name = "backSlashFields")
+   public Object[][] backSlashFields()
+   {
+      return new Object[][] {
+            { Sign.O, 3, 6, 7, 24, Arrays.asList(Arrays.asList(0, 7, 14), Arrays.asList(7, 14, 21)) },
+            { Sign.O, 3, 6, 16, 24, Arrays.asList(Arrays.asList(2, 9, 16), Arrays.asList(9, 16, 23)) },
+            { Sign.O, 3, 6, 11, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 5, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 18, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 12, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 19, 24, Arrays.asList() },
+            { Sign.O, 3, 6, 20, 24, Arrays.asList(Arrays.asList(6, 13, 20)) },
+            { Sign.O, 3, 6, 6, 24, Arrays.asList(Arrays.asList(6, 13, 20)) },
+            { Sign.O, 3, 6, 13, 24, Arrays.asList(Arrays.asList(6, 13, 20)) },
+            { Sign.O, 3, 6, 14, 24, Arrays.asList(Arrays.asList(0, 7, 14), Arrays.asList(7,14,21)) }
+      };
+   }
+
+   @Test(dataProvider = "backSlashFields")
+   public void testBackSlashFields(Sign sign, Integer winningSize, Integer widthBoad, Integer positionInBoarrd, Integer boardSize,
+         List<List<Integer>> expect)
+
+   {
+      HypotheticalWinningFieldsCreator hypotheticalWinningFieldsCreator =
+            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionInBoard(positionInBoarrd)
+                  .boardSize(boardSize).build();
+      List<List<Integer>> result = hypotheticalWinningFieldsCreator.createBackSlashWinnerFields();
 
       assertThat(expect).isEqualTo(result);
    }
