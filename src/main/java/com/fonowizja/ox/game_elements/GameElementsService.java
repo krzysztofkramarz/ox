@@ -9,7 +9,7 @@ public interface GameElementsService
 {
    String getBoardAsString();
 
-   boolean putSignIntoBoard(Sign sign, Integer positionX, Integer positionY);
+   boolean makeMove(Sign sign, Integer positionX, Integer positionY) throws Exception;
 
    void cleanBoard();
 

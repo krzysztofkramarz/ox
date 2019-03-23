@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.fonowizja.ox.game_elements.game.BoardObservator;
 
@@ -15,6 +16,8 @@ import com.fonowizja.ox.game_elements.game.BoardObservator;
 @SuppressWarnings("FieldNamingConvention")
 class Board
 {
+   //TODO uproscic pola, kilka niepotrzebnych lub redundantnych
+
    static final String EXCEPTION_MESSAGE = "Jakikolwiek rozmiar tablicy nie może być = 0";
    private final List<Sign> board = new ArrayList<>();
    private final Integer boardSize;
@@ -88,6 +91,63 @@ class Board
       return boardAsString.toString();
    }
 
+   boolean makeMove(Sign sign, Integer positionX, Integer positionY) throws Exception
+   {
+
+      if (!putSignIntoBoard(sign, positionX, positionY))
+      {
+         //TODO zrobic wyjątek ze nie da się wstawic znaku na niepuste pole
+         throw new Exception();
+      }
+
+      createHypotheticalWinningFields(sign);
+
+      // boardObservator.notifyAboutWinner(sign);
+
+      return checkWinnerAtThisMove(sign);
+
+   }
+
+   private boolean checkWinnerAtThisMove(Sign sign) throws Exception
+   {
+      AtomicBoolean gameIsWin = new AtomicBoolean(true);
+      if (sign == Sign.O)
+      {
+         for (String keysOfFieldsToCheck : hypotheticalWinningFieldsOOO.keySet())
+         {
+            List<Integer> fieldsToCheck = hypotheticalWinningFieldsOOO.get(keysOfFieldsToCheck);
+            fieldsToCheck.forEach(index -> {
+               if (board.get(index) != sign)
+               {
+                  gameIsWin.set(false);
+               }
+            });
+         }
+      }
+      else if (sign == Sign.X)
+      {
+         {
+            for (String keysOfFieldsToCheck : hypotheticalWinningFieldsXXX.keySet())
+            {
+               List<Integer> fieldsToCheck = hypotheticalWinningFieldsXXX.get(keysOfFieldsToCheck);
+               fieldsToCheck.forEach(index -> {
+                  if (board.get(index) != sign)
+                  {
+                     gameIsWin.set(false);
+                  }
+               });
+            }
+         }
+
+      }
+      else
+      {
+         //TODO zrobic wyjatek
+         throw new Exception();
+      }
+      return gameIsWin.get();
+   }
+
    boolean putSignIntoBoard(Sign sign, Integer positionX, Integer positionY)
    {
       positionInBoard = positionY * x + positionX;
@@ -95,7 +155,6 @@ class Board
       if (board.get(positionInBoard) == Sign.EMPTY)
       {
          board.add(positionInBoard, sign);
-         createHypotheticalWinningFields(sign, positionY);
 
          return true;
       }
@@ -103,7 +162,7 @@ class Board
       return false;
    }
 
-   private void createHypotheticalWinningFields(Sign sign, Integer positionY)
+   private void createHypotheticalWinningFields(Sign sign)
    {
       HypotheticalWinningFieldsCreator hypotheticalWinningFieldsCreator =
             HypotheticalWinningFieldsCreator.builder()
@@ -115,7 +174,6 @@ class Board
                   .build();
 
       List<List<Integer>> horizontalWinnerFields = hypotheticalWinningFieldsCreator.createHorizontalWinnerFields();
-
       for (List<Integer> hypotheticalFields : horizontalWinnerFields)
       {
          String key = hypotheticalFields.toString();
@@ -143,14 +201,17 @@ class Board
          fillMap(sign, key, hypotheticalFields);
       }
 
-      // boardObservator.notifyAboutWinner(sign);
    }
 
-   private void fillMap(Sign sign, String key, List<Integer> value)
+    void fillMap(Sign sign, String key, List<Integer> value)
    {
       if (sign == Sign.O)
       {
-         hypotheticalWinningFieldsXXX.remove(key);
+         if (hypotheticalWinningFieldsXXX.containsKey(key))
+         {
+            hypotheticalWinningFieldsXXX.remove(key);
+            return;
+         }
          if (!hypotheticalWinningFieldsOOO.containsKey(key))
          {
             hypotheticalWinningFieldsOOO.put(key, value);
@@ -160,7 +221,12 @@ class Board
 
       if (sign == Sign.X)
       {
-         hypotheticalWinningFieldsOOO.remove(key);
+         if (hypotheticalWinningFieldsOOO.containsKey(key))
+         {
+            hypotheticalWinningFieldsOOO.remove(key);
+            return;
+         }
+
          if (!hypotheticalWinningFieldsXXX.containsKey(key))
          {
             hypotheticalWinningFieldsXXX.put(key, value);

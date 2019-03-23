@@ -22,10 +22,10 @@ public class GameElementsServiceImpl implements GameElementsService
    }
 
    @Override
-   public boolean putSignIntoBoard(Sign sign, Integer positionX, Integer positionY)
+   public boolean makeMove(Sign sign, Integer positionX, Integer positionY) throws Exception
    {
 
-      return board.putSignIntoBoard(sign, positionX, positionY);
+      return board.makeMove(sign, positionX, positionY);
    }
 
    @Override
