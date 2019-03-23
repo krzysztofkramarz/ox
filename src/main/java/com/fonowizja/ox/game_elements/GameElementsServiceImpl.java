@@ -22,16 +22,16 @@ public class GameElementsServiceImpl implements GameElementsService
    }
 
    @Override
-   public boolean putSignIntoBoard(Sign sign, Integer positionInRow, Integer howManyFullRows)
+   public boolean putSignIntoBoard(Sign sign, Integer positionX, Integer positionY)
    {
 
-      return board.putSignIntoBoard(sign, positionInRow, howManyFullRows);
+      return board.putSignIntoBoard(sign, positionX, positionY);
    }
 
    @Override
-   public void setEmptyBoard()
+   public void cleanBoard()
    {
-      board.setEmptyBoard();
+      board.cleanBoard();
    }
 
    @Override

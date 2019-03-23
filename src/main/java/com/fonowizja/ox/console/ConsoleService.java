@@ -6,4 +6,5 @@ package com.fonowizja.ox.console;
 public interface ConsoleService
 {
    void printBoard(String board);
+
 }

@@ -9,9 +9,9 @@ public interface GameElementsService
 {
    String getBoardAsString();
 
-   boolean putSignIntoBoard(Sign sign, Integer positionInRow, Integer howManyFullRows);
+   boolean putSignIntoBoard(Sign sign, Integer positionX, Integer positionY);
 
-   void setEmptyBoard();
+   void cleanBoard();
 
    void setBoardObservator(BoardObservator boardObservator);
 

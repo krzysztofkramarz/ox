@@ -3,9 +3,7 @@ package com.fonowizja.ox.game_elements;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.IntUnaryOperator;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Map;
 
 import com.fonowizja.ox.game_elements.game.BoardObservator;
 import lombok.AccessLevel;
@@ -26,9 +24,10 @@ class Board
    private Integer y;
    private Integer winningSize;
    private BoardObservator boardObservator;
-   private HashMap<String, List<Integer>> xxxWinnerFields = new HashMap<>();
-   private HashMap<String, List<Integer>> oooWinnerFields = new HashMap<>();
+   private Map<String, List<Integer>> hypotheticalWinningFieldsXXX = new HashMap<>();
+   private Map<String, List<Integer>> hypotheticalWinningFieldsOOO = new HashMap<>();
    private Integer positionInBoard;
+   private HypotheticalWinningFieldsCreator createHorizontalWinnerFields;
 
    private Board(Integer x, Integer y, Integer winningSize) throws IllegalArgumentException
    {
@@ -41,10 +40,11 @@ class Board
       boardSize = x * y;
       this.winningSize = winningSize;
       board = new ArrayList<>(boardSize);
-      setEmptyBoard();
+      cleanBoard();
+
    }
 
-   void setEmptyBoard()
+   void cleanBoard()
    {
       for (int i = 0; i < boardSize; i++)
       {
@@ -83,21 +83,21 @@ class Board
             boardAsString.append(rowNumber);
          }
 
-         boardAsString.append(board.get(i).getSign());
+         boardAsString.append(board.get(i));
          boardAsString.append("|");
 
       }
       return boardAsString.toString();
    }
 
-   boolean putSignIntoBoard(Sign sign, Integer positionInRow, Integer howManyFullRows)
+   boolean putSignIntoBoard(Sign sign, Integer positionX, Integer positionY)
    {
-      positionInBoard = howManyFullRows * x + positionInRow;
+      positionInBoard = positionY * x + positionX;
 
       if (board.get(positionInBoard) == Sign.EMPTY)
       {
          board.add(positionInBoard, sign);
-         setFieldsToCheck(sign, howManyFullRows);
+         createHypotheticalWinningFields(sign, positionY);
 
          return true;
       }
@@ -105,122 +105,73 @@ class Board
       return false;
    }
 
-   private void setFieldsToCheck(Sign sign, Integer whichRow)
+   private void createHypotheticalWinningFields(Sign sign, Integer positionY)
    {
-      createHorizontalWinnerFields(sign, whichRow);
-      createVerticalWinnerFields(sign);
-      createSlashWinnerFields(sign);
-      createBackSlashWinnerFields(sign);
+      HypotheticalWinningFieldsCreator hypotheticalWinningFieldsCreator =
+            HypotheticalWinningFieldsCreator.builder()
+                  .sign(sign)
+                  .winningSize(winningSize)
+                  .x(x)
+                  .positionInBoard(positionInBoard)
+                  .boardSize(boardSize)
+                  .build();
+
+      List<List<Integer>> horizontalWinnerFields = hypotheticalWinningFieldsCreator.createHorizontalWinnerFields( positionY);
+
+      for (List<Integer> hypotheticalFields : horizontalWinnerFields)
+      {
+         String key = hypotheticalFields.toString();
+         fillMap(sign, key, hypotheticalFields);
+      }
+
+      List<List<Integer>> verticalWinnerFields = hypotheticalWinningFieldsCreator.createVerticalWinnerFields();
+      for (List<Integer> hypotheticalFields : verticalWinnerFields)
+      {
+         String key = hypotheticalFields.toString();
+         fillMap(sign, key, hypotheticalFields);
+      }
+
+      List<List<Integer>> slashWinnerFields = hypotheticalWinningFieldsCreator.createSlashWinnerFields();
+      for (List<Integer> hypotheticalFields : slashWinnerFields)
+      {
+         String key = hypotheticalFields.toString();
+         fillMap(sign, key, hypotheticalFields);
+      }
+
+      List<List<Integer>> backSlashWinnerFields = hypotheticalWinningFieldsCreator.createBackSlashWinnerFields();
+      for (List<Integer> hypotheticalFields : backSlashWinnerFields)
+      {
+         String key = hypotheticalFields.toString();
+         fillMap(sign, key, hypotheticalFields);
+      }
+
 
       // boardObservator.notifyAboutWinner(sign);
    }
 
-   //////////////////////////////////////////  CREATE SHAPES @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-   void createHorizontalWinnerFields(Sign sign, Integer positionInRow)
-   {
-      int scope = winningSize - 1;
-      // końcowy zakres nie wyjedzie na kolejny rząd - inne rozwiazanie:    i + scope < ((whichRow + 1) * x) + x
-      for (int i = positionInBoard - scope; i + scope < (positionInBoard-positionInRow) + x && i <= positionInBoard; i++)
-      {
-         if (i < positionInBoard - positionInRow)
-         {
-            continue;
-         }
-
-         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + 1, winningSize);
-         String key = horizontalFields.toString();
-         fillMap(sign, key, horizontalFields);
-      }
-   }
-
-   void createVerticalWinnerFields(Sign sign)
-   {
-      int scope = winningSize - 1;
-      for (int i = positionInBoard - scope * x; i + (positionInBoard + scope * x) > boardSize && i <= positionInBoard; i += x)
-      {
-         if (i < 0)
-         {
-            continue;
-         }
-         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + x, winningSize);
-         String key = horizontalFields.toString();
-         fillMap(sign, key, horizontalFields);
-      }
-   }
-
-   void createSlashWinnerFields(Sign sign)
-   {
-      int scope = winningSize - 1;
-      for (int i = positionInBoard - scope * (x - 1); i + scope * (x - 1) < boardSize && i <= positionInBoard; i += (x - 1))
-      {
-         if (i < 0)
-         {
-            continue;
-         }
-
-         if (i + scope * (x - 1) <= i - (i % x) + scope * x)
-         {
-            continue;
-         }
-
-         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + x - 1, winningSize);
-         String key = horizontalFields.toString();
-         fillMap(sign, key, horizontalFields);
-      }
-   }
-
-   void createBackSlashWinnerFields(Sign sign)
-   {
-      int scope = winningSize - 1;
-      for (int i = positionInBoard - scope * (x + 1); i + scope * (x + 1) < boardSize && i <= positionInBoard; i += x + 1)
-      {
-         if (i < 0)
-         {
-            continue;
-         }
-         if (i + scope * (x + 1) < i - (i % x) + (scope + 1) * x)
-         {
-            continue;
-         }
-         List<Integer> horizontalFields = generateRangeOfSearching(i, n -> n + x + 1, winningSize);
-         String key = horizontalFields.toString();
-         fillMap(sign, key, horizontalFields);
-      }
-   }
-
-   boolean fillMap(Sign sign, String key, List<Integer> value)
+   private void fillMap(Sign sign, String key, List<Integer> value)
    {
       if (sign == Sign.O)
       {
-         xxxWinnerFields.remove(key);
-         if (!oooWinnerFields.containsKey(key))
+         hypotheticalWinningFieldsXXX.remove(key);
+         if (!hypotheticalWinningFieldsOOO.containsKey(key))
          {
-            oooWinnerFields.put(key, value);
+            hypotheticalWinningFieldsOOO.put(key, value);
          }
-         return true;
+         return;
       }
 
       if (sign == Sign.X)
       {
-         oooWinnerFields.remove(key);
-         if (!xxxWinnerFields.containsKey(key))
+         hypotheticalWinningFieldsOOO.remove(key);
+         if (!hypotheticalWinningFieldsXXX.containsKey(key))
          {
-            xxxWinnerFields.put(key, value);
+            hypotheticalWinningFieldsXXX.put(key, value);
          }
-         return true;
       }
 
-      return false;
    }
 
-   List<Integer> generateRangeOfSearching(Integer startingPosition, IntUnaryOperator intUnaryOperator, Integer limit)
-   {
-      return IntStream.iterate(startingPosition, intUnaryOperator)
-            .limit(limit)
-            .boxed()
-            .collect(Collectors.toList());
-   }
    ///////////////////   BUILDER  //////////////////////////
 
    static final class BoardBuilder // implements XXX, YYY, CanBeBuild
