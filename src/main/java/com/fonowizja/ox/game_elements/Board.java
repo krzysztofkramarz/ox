@@ -116,7 +116,7 @@ class Board
                   .boardSize(boardSize)
                   .build();
 
-      List<List<Integer>> horizontalWinnerFields = hypotheticalWinningFieldsCreator.createHorizontalWinnerFields( positionY);
+      List<List<Integer>> horizontalWinnerFields = hypotheticalWinningFieldsCreator.createHorizontalWinnerFields( );
 
       for (List<Integer> hypotheticalFields : horizontalWinnerFields)
       {

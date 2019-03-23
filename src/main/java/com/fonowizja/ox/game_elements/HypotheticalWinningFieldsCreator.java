@@ -9,7 +9,6 @@ import java.util.stream.IntStream;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -37,14 +36,15 @@ class HypotheticalWinningFieldsCreator
    @NotNull
    private Integer boardSize;
 
-   List<List<Integer>> createHorizontalWinnerFields(Integer positionInRow)
+   List<List<Integer>> createHorizontalWinnerFields()
    {
       List<List<Integer>> hypotheticalFields = new ArrayList<>();
       int scope = winningSize - 1;
+      int statOfCurrentRow = positionInBoard - positionInBoard % x;
       // końcowy zakres nie wyjedzie na kolejny rząd - inne rozwiazanie:    i + scope < ((whichRow + 1) * x) + x
-      for (int i = positionInBoard - scope; i + scope < (positionInBoard - positionInRow) + x && i <= positionInBoard; i++)
+      for (int i = positionInBoard - scope; i + scope < (statOfCurrentRow) + x && i <= positionInBoard; i++)
       {
-         if (i < positionInBoard - positionInRow)
+         if (i < statOfCurrentRow)
          {
             continue;
          }
@@ -58,7 +58,7 @@ class HypotheticalWinningFieldsCreator
    {
       List<List<Integer>> hypotheticalFields = new ArrayList<>();
       int scope = winningSize - 1;
-      for (int i = positionInBoard - scope * x; i + scope * x<= boardSize && i <= positionInBoard; i += x)
+      for (int i = positionInBoard - scope * x; i + scope * x <= boardSize && i <= positionInBoard; i += x)
       {
          if (i < 0)
          {
@@ -80,7 +80,7 @@ class HypotheticalWinningFieldsCreator
             continue;
          }
 
-         if (i + scope * (x - 1) <= i - (i % x) + scope * x)
+         if (i + scope * (x - 1) < i - (i % x) + scope * x)
          {
             continue;
          }
