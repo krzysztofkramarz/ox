@@ -75,18 +75,36 @@ public class BoardTest
 
 
 
-   @DataProvider(name = "horizontalWinnerFields")
-   public Object[][] horizontalWinnerFields()
+   @Test
+   public void testFillMapContainsAddedValues() throws Exception
    {
-      return new Object[][] {
-            { 5, 5, 3, 1, Arrays.asList(1, 2, 3) },
-            { 5, 5, 5, 1, Arrays.asList(1, 2, 3, 4, 5) },
-            { 20, 20, 4, 21, Arrays.asList(21, 22, 23, 24) },
-            { 9, 9, 4, 6, Arrays.asList(6, 7, 8, 9) },
-      };
+      board.fillMap(Sign.O, "[13,18,23]", Arrays.asList(13, 18, 23));
+      board.fillMap(Sign.O, "[22,25,27]", Arrays.asList(22, 25, 27));
+      board.fillMap(Sign.O, "[34,55,66]", Arrays.asList(34, 55, 66));
+      board.fillMap(Sign.X, "[73,18,23]", Arrays.asList(73, 18, 23));
+      board.fillMap(Sign.X, "[72,25,27]", Arrays.asList(72, 25, 27));
+      board.fillMap(Sign.X, "[74,55,66]", Arrays.asList(74, 55, 66));
 
+      assertThat(board.getHypotheticalWinningFieldsOOO()).containsOnlyKeys("[13,18,23]", "[22,25,27]", "[34,55,66]");
+      assertThat(board.getHypotheticalWinningFieldsXXX()).containsOnlyKeys("[73,18,23]", "[72,25,27]", "[74,55,66]");
    }
 
 
+   @Test
+   public void testFillMapIsFilledThenEmpty() throws Exception
+   {
+      board.getHypotheticalWinningFieldsOOO().clear();
+      board.getHypotheticalWinningFieldsXXX().clear();
 
+      board.cleanBoard();
+      board.fillMap(Sign.O, "[13,18,23]", Arrays.asList(13, 18, 23));
+      board.fillMap(Sign.O, "[22,25,27]", Arrays.asList(22, 25, 27));
+      board.fillMap(Sign.O, "[34,55,66]", Arrays.asList(34, 55, 66));
+      board.fillMap(Sign.X, "[13,18,23]", Arrays.asList(13, 18, 23));
+      board.fillMap(Sign.X, "[22,25,27]", Arrays.asList(22, 25, 27));
+      board.fillMap(Sign.X, "[34,55,66]", Arrays.asList(34, 55, 66));
+
+      assertThat(board.getHypotheticalWinningFieldsOOO()).isEmpty();
+      assertThat(board.getHypotheticalWinningFieldsXXX()).isEmpty();
+   }
 }

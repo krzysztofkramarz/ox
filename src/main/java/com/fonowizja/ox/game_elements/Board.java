@@ -7,14 +7,16 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.fonowizja.ox.game_elements.game.BoardObservator;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 /**
  * Place for acting single play
  *
  * @author krzysztof.kramarz
  */
-@SuppressWarnings("FieldNamingConvention")
-class Board
+@SuppressWarnings({ "FieldNamingConvention", "NewClassNamingConvention" })
+final class Board
 {
    //TODO uproscic pola, kilka niepotrzebnych lub redundantnych
 
@@ -25,7 +27,9 @@ class Board
    private final Integer y;
    private final Integer winningSize;
    private BoardObservator boardObservator;
+   @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsXXX = new HashMap<>();
+   @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsOOO = new HashMap<>();
    private Integer positionInBoard;
    private HypotheticalWinningFieldsCreator createHorizontalWinnerFields;
@@ -38,8 +42,8 @@ class Board
       }
       this.x = x;
       this.y = y;
-      boardSize = x * y;
       this.winningSize = winningSize;
+      boardSize = x * y;
       cleanBoard();
 
    }
@@ -203,7 +207,7 @@ class Board
 
    }
 
-    void fillMap(Sign sign, String key, List<Integer> value)
+   void fillMap(Sign sign, String key, List<Integer> value)
    {
       if (sign == Sign.O)
       {
