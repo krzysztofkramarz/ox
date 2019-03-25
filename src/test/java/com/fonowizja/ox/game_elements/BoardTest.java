@@ -52,21 +52,49 @@ public class BoardTest
    @DataProvider(name = "putSighnInNotAllowedSpaces")
    public Object[][] putSighnInNotAllowedSpaces()
    {
-     List<Object[]> obj = Arrays.asList(new Object[]{ Sign.X, 0, 0, 0, 0 },
-            new Object[]{ Sign.X, 1, 1, 1, 1 },
-            new Object[]{ Sign.X, 2, 2, 2, 2 },
-            new Object[]{ Sign.O, 2, 1, 2, 1 },
-            new Object[]{ Sign.O, 4, 0, 4, 0 },
-            new Object[]{ Sign.X, 3, 2, 3, 2 },
-            new Object[]{ Sign.X, 4, 4, 4, 4 });
-      return new Object[][] {{obj}
+      return new Object[][] {
+            { Sign.X, 0, 0, 0, 0 },
+            { Sign.X, 1, 1, 1, 1 },
+            { Sign.X, 2, 2, 2, 2 },
+            { Sign.O, 2, 1, 2, 1 },
+            { Sign.O, 4, 0, 4, 0 },
+            { Sign.X, 3, 2, 3, 2 },
+            { Sign.X, 4, 4, 4, 4 }
+
       };
    }
 
    @Test(dataProvider = "putSighnInNotAllowedSpaces")
-   public void testPutSighnInNotAllowedSpaces(Sign sign, Integer x, Integer y, Integer x1, Integer y2,List<Object[]> args)
+   public void testPutSighnInNotAllowedSpaces(Sign sign, Integer x, Integer y, Integer x1, Integer y2)
    {
-      for (Object[] objs:args)
+
+      board.putSignIntoBoard(sign, x, y);
+
+      board.cleanBoard();
+      board.putSignIntoBoard(sign, x, y);
+      boolean result = board.putSignIntoBoard(sign, x1, y2);
+      assertThat(result).isFalse();
+
+   }
+
+   @DataProvider(name = "putSighnInNotAllowedSpacesExperiment")
+   public Object[][] putSighnInNotAllowedSpacesExperiment()
+   {
+      List<Object[]> obj = Arrays.asList(new Object[] { Sign.X, 0, 0, 0, 0 },
+            new Object[] { Sign.X, 1, 1, 1, 1 },
+            new Object[] { Sign.X, 2, 2, 2, 2 },
+            new Object[] { Sign.O, 2, 1, 2, 1 },
+            new Object[] { Sign.O, 4, 0, 4, 0 },
+            new Object[] { Sign.X, 3, 2, 3, 2 },
+            new Object[] { Sign.X, 4, 4, 4, 4 });
+      return new Object[][] { { obj }
+      };
+   }
+
+   @Test(dataProvider = "putSighnInNotAllowedSpacesExperiment")
+   public void testPutSighnInNotAllowedSpacesExperiment(Sign sign, Integer x, Integer y, Integer x1, Integer y2, List<Object[]> args)
+   {
+      for (Object[] objs : args)
       {
          board.putSignIntoBoard((Sign) objs[0], (Integer) objs[1], (Integer) objs[2]);
 
