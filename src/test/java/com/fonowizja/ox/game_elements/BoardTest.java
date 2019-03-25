@@ -3,8 +3,6 @@ package com.fonowizja.ox.game_elements;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.IntUnaryOperator;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -73,8 +71,6 @@ public class BoardTest
       assertThat(result).isFalse();
    }
 
-
-
    @Test
    public void testFillMapContainsAddedValues() throws Exception
    {
@@ -89,9 +85,8 @@ public class BoardTest
       assertThat(board.getHypotheticalWinningFieldsXXX()).containsOnlyKeys("[73,18,23]", "[72,25,27]", "[74,55,66]");
    }
 
-
    @Test
-   public void testFillMapIsFilledThenEmpty() throws Exception
+   public void testFillMapIsFilledThenEmptyByOtherSign() throws Exception
    {
       board.getHypotheticalWinningFieldsOOO().clear();
       board.getHypotheticalWinningFieldsXXX().clear();
@@ -106,5 +101,41 @@ public class BoardTest
 
       assertThat(board.getHypotheticalWinningFieldsOOO()).isEmpty();
       assertThat(board.getHypotheticalWinningFieldsXXX()).isEmpty();
+   }
+
+   @Test
+   public void testFillMapIsFilledButSomeValuesAreRemovedByAnotherSign() throws Exception
+   {
+      board.getHypotheticalWinningFieldsOOO().clear();
+      board.getHypotheticalWinningFieldsXXX().clear();
+
+      board.cleanBoard();
+      //unique
+      board.fillMap(Sign.O, "[13,18,23]", Arrays.asList(13, 18, 23));
+      board.fillMap(Sign.O, "[22,25,27]", Arrays.asList(22, 25, 27));
+      board.fillMap(Sign.O, "[34,55,66]", Arrays.asList(34, 55, 66));
+
+      //duplicated
+      board.fillMap(Sign.O, "[15,18,23]", Arrays.asList(13, 18, 23));
+      board.fillMap(Sign.O, "[23,25,27]", Arrays.asList(22, 25, 27));
+
+      //unique
+      board.fillMap(Sign.X, "[73,18,23]", Arrays.asList(73, 18, 23));
+      board.fillMap(Sign.X, "[72,25,27]", Arrays.asList(72, 25, 27));
+      board.fillMap(Sign.X, "[74,55,66]", Arrays.asList(74, 55, 66));
+
+      //duplicated
+      board.fillMap(Sign.X, "[15,18,23]", Arrays.asList(13, 18, 23));
+      board.fillMap(Sign.X, "[23,25,27]", Arrays.asList(22, 25, 27));
+      //duplicated
+      board.fillMap(Sign.X, "[83,18,23]", Arrays.asList(73, 18, 23));
+      board.fillMap(Sign.X, "[82,25,27]", Arrays.asList(72, 25, 27));
+
+      //duplicated
+      board.fillMap(Sign.O, "[83,18,23]", Arrays.asList(73, 18, 23));
+      board.fillMap(Sign.O, "[82,25,27]", Arrays.asList(72, 25, 27));
+
+      assertThat(board.getHypotheticalWinningFieldsOOO()).containsOnlyKeys("[13,18,23]", "[22,25,27]", "[34,55,66]");
+      assertThat(board.getHypotheticalWinningFieldsXXX()).containsOnlyKeys("[73,18,23]", "[72,25,27]", "[74,55,66]");
    }
 }
