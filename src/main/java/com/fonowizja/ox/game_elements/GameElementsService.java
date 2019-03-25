@@ -1,6 +1,6 @@
 package com.fonowizja.ox.game_elements;
 
-import com.fonowizja.ox.game_elements.game.BoardObservator;
+import com.fonowizja.ox.game.BoardObservator;
 
 /**
  * @author krzysztof.kramarz

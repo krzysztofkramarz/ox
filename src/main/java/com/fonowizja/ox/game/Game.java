@@ -1,4 +1,4 @@
-package com.fonowizja.ox.game_elements.game;
+package com.fonowizja.ox.game;
 
 /**
  * @author krzysztof.kramarz
