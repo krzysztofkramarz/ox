@@ -1,1 +1,10 @@
-/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/Sign.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/game/BoardObservator.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/game/Game.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/console/ConsoleServiceImpl.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/game_elements/GameElementsServiceImpl.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/console/ConsoleService.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/game_elements/Board.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/Main.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/game_elements/HypotheticalWinningFieldsCreator.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/game_elements/Sign.java
+/home/krzysztof/Kod/repo/ox/src/main/java/com/fonowizja/ox/game_elements/GameElementsService.java
