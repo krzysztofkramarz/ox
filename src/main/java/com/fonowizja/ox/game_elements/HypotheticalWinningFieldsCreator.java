@@ -58,7 +58,7 @@ class HypotheticalWinningFieldsCreator
    {
       List<List<Integer>> hypotheticalFields = new ArrayList<>();
       int scope = winningSize - 1;
-      for (int i = positionInBoard - scope * x; i + scope * x <= boardSize && i <= positionInBoard; i += x)
+      for (int i = positionInBoard - scope * x; i + scope * x < boardSize && i <= positionInBoard; i += x)
       {
          if (i < 0)
          {
