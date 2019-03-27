@@ -1,4 +1,7 @@
-
+*.class
+target/
+.idea/
+*.iml
 # Created by https://www.gitignore.io/api/java,intellij
 # Edit at https://www.gitignore.io/?templates=java,intellij
 
@@ -17,6 +20,8 @@
 *.ipr
 *.iws
 .target/**
+target/**
+
 
 # Generated files
 .idea/**/contentModel.xml
