@@ -15,7 +15,6 @@ import lombok.Getter;
  *
  * @author krzysztof.kramarz
  */
-@SuppressWarnings({ "FieldNamingConvention", "NewClassNamingConvention" })
 final class Board
 {
    //TODO uproscic pola, kilka niepotrzebnych lub redundantnych
@@ -95,7 +94,7 @@ final class Board
       return boardAsString.toString();
    }
 
-   boolean makeMove(Sign sign, Integer positionX, Integer positionY) throws Exception
+   boolean isWinningMove(Sign sign, Integer positionX, Integer positionY) throws Exception
    {
 
       if (!putSignIntoBoard(sign, positionX, positionY))

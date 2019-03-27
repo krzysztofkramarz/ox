@@ -25,7 +25,7 @@ public class GameElementsServiceImpl implements GameElementsService
    public boolean makeMove(Sign sign, Integer positionX, Integer positionY) throws Exception
    {
 
-      return board.makeMove(sign, positionX, positionY);
+      return board.isWinningMove(sign, positionX, positionY);
    }
 
    @Override
