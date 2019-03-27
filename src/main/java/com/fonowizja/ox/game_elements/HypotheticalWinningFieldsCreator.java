@@ -1,5 +1,7 @@
 package com.fonowizja.ox.game_elements;
 
+import static com.fonowizja.ox.game_elements.IntegerRangeHelper.generateRangeOfSearching;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntUnaryOperator;
@@ -108,13 +110,7 @@ class HypotheticalWinningFieldsCreator
       return hypotheticalFields;
    }
 
-   private static List<Integer> generateRangeOfSearching(Integer startingPosition, IntUnaryOperator intUnaryOperator, Integer limit)
-   {
-      return IntStream.iterate(startingPosition, intUnaryOperator)
-            .limit(limit)
-            .boxed()
-            .collect(Collectors.toList());
-   }
+
 
    //      ###########   BUILDER   ###########
    static final class Builder implements NeedSign, NeedWinningSize, NeedX, NeedPositionInBoard, CanBeBuild, NeedBoardSize

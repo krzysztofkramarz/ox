@@ -80,7 +80,8 @@ public class BoardTest
    @DataProvider(name = "putSighnInNotAllowedSpacesExperiment")
    public Object[][] putSighnInNotAllowedSpacesExperiment()
    {
-      List<Object[]> obj = Arrays.asList(new Object[] { Sign.X, 0, 0, 0, 0 },
+      List<Object[]> obj = Arrays.asList(
+            new Object[] { Sign.X, 0, 0, 0, 0 },
             new Object[] { Sign.X, 1, 1, 1, 1 },
             new Object[] { Sign.X, 2, 2, 2, 2 },
             new Object[] { Sign.O, 2, 1, 2, 1 },
