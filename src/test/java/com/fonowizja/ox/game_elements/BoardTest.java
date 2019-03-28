@@ -3,7 +3,6 @@ package com.fonowizja.ox.game_elements;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -14,7 +13,7 @@ import org.testng.annotations.Test;
 @SuppressWarnings("LocalVariableHidesMemberVariable")
 public class BoardTest
 {
-   Board board = Board.builder().x(5).y(5).winningSize(3).build();
+   Board board = Board.builder().boardSize(25).boardLenght(5).winningSize(3).build();
 
    @Test
    public void testSetSize()
@@ -28,24 +27,24 @@ public class BoardTest
    public Object[][] putSighnInEmptySpaces()
    {
       return new Object[][] {
-            { Sign.X, 0, 0 },
-            { Sign.X, 1, 0 },
-            { Sign.X, 2, 0 },
-            { Sign.O, 3, 0 },
-            { Sign.O, 4, 0 },
-            { Sign.X, 0, 1 },
-            { Sign.X, 1, 3 },
-            { Sign.X, 2, 4 },
-            { Sign.O, 4, 2 },
-            { Sign.O, 4, 4 }
+            { Sign.X, 0 },
+            { Sign.X, 1 },
+            { Sign.X, 2 },
+            { Sign.O, 3 },
+            { Sign.O, 4 },
+            { Sign.X, 5 },
+            { Sign.X, 15 },
+            { Sign.X, 14 },
+            { Sign.O, 9 },
+            { Sign.O, 24 }
       };
    }
 
    @Test(dataProvider = "putSighnInEmptySpaces")
-   public void testPutSignIntoBoard(Sign sign, Integer x, Integer y)
+   public void testPutSignIntoBoard(Sign sign, Integer boardPosition)
    {
       board.cleanBoard();
-      boolean result = board.putSignIntoBoard(sign, x, y);
+      boolean result = board.putSignIntoBoard(sign, boardPosition);
       assertThat(result).isTrue();
    }
 
@@ -53,58 +52,55 @@ public class BoardTest
    public Object[][] putSighnInNotAllowedSpaces()
    {
       return new Object[][] {
-            { Sign.X, 0, 0, 0, 0 },
-            { Sign.X, 1, 1, 1, 1 },
-            { Sign.X, 2, 2, 2, 2 },
-            { Sign.O, 2, 1, 2, 1 },
-            { Sign.O, 4, 0, 4, 0 },
-            { Sign.X, 3, 2, 3, 2 },
-            { Sign.X, 4, 4, 4, 4 }
+            { Sign.X, 0, 0 },
+            { Sign.X, 1, 1 },
+            { Sign.X, 2, 2 },
+            { Sign.O, 7, 7 },
+            { Sign.O, 4, 4 },
+            { Sign.X, 13, 13 },
+            { Sign.X, 24, 24 }
 
       };
    }
 
    @Test(dataProvider = "putSighnInNotAllowedSpaces")
-   public void testPutSighnInNotAllowedSpaces(Sign sign, Integer x, Integer y, Integer x1, Integer y2)
+   public void testPutSighnInNotAllowedSpaces(Sign sign, Integer boardPosition1, Integer boardPosition2)
    {
 
-      board.putSignIntoBoard(sign, x, y);
-
       board.cleanBoard();
-      board.putSignIntoBoard(sign, x, y);
-      boolean result = board.putSignIntoBoard(sign, x1, y2);
+      board.putSignIntoBoard(sign, boardPosition1);
+      boolean result = board.putSignIntoBoard(sign, boardPosition2);
       assertThat(result).isFalse();
 
    }
 
-   @DataProvider(name = "putSighnInNotAllowedSpacesExperiment")
-   public Object[][] putSighnInNotAllowedSpacesExperiment()
-   {
-      List<Object[]> obj = Arrays.asList(
-            new Object[] { Sign.X, 0, 0, 0, 0 },
-            new Object[] { Sign.X, 1, 1, 1, 1 },
-            new Object[] { Sign.X, 2, 2, 2, 2 },
-            new Object[] { Sign.O, 2, 1, 2, 1 },
-            new Object[] { Sign.O, 4, 0, 4, 0 },
-            new Object[] { Sign.X, 3, 2, 3, 2 },
-            new Object[] { Sign.X, 4, 4, 4, 4 });
-      return new Object[][] { { obj }
-      };
-   }
-
-   @Test(dataProvider = "putSighnInNotAllowedSpacesExperiment")
-   public void testPutSighnInNotAllowedSpacesExperiment(Sign sign, Integer x, Integer y, Integer x1, Integer y2, List<Object[]> args)
-   {
-      for (Object[] objs : args)
-      {
-         board.putSignIntoBoard((Sign) objs[0], (Integer) objs[1], (Integer) objs[2]);
-
-         board.cleanBoard();
-         board.putSignIntoBoard(sign, x, y);
-         boolean result = board.putSignIntoBoard(sign, x1, y2);
-         assertThat(result).isFalse();
-      }
-   }
+   // @DataProvider(name = "putSighnInNotAllowedSpacesExperiment")
+   // public Object[][] putSighnInNotAllowedSpacesExperiment()
+   // {
+   //    List<Object[]> obj = Arrays.asList(
+   //          new Object[] { Sign.X, 0, 0, 0, 0 },
+   //          new Object[] { Sign.X, 1, 1, 1, 1 },
+   //          new Object[] { Sign.X, 2, 2, 2, 2 },
+   //          new Object[] { Sign.O, 2, 1, 2, 1 },
+   //          new Object[] { Sign.O, 4, 0, 4, 0 },
+   //          new Object[] { Sign.X, 3, 2, 3, 2 },
+   //          new Object[] { Sign.X, 4, 4, 4, 4 });
+   //    return new Object[][] { { obj }
+   //    };
+   // }
+   //
+   // @Test(dataProvider = "putSighnInNotAllowedSpacesExperiment")
+   // public void testPutSighnInNotAllowedSpacesExperiment(List<Object[]> args)
+   // {
+   //    for (Object[] objs : args)
+   //    {
+   //       board.cleanBoard();
+   //       board.putSignIntoBoard((Sign) objs[0], (Integer) objs[1]);
+   //
+   //       boolean result = board.putSignIntoBoard((Sign) objs[2], (Integer) objs[3]);
+   //       assertThat(result).isFalse();
+   //    }
+   // }
 
    @Test
    public void testFillMapContainsAddedValues() throws Exception

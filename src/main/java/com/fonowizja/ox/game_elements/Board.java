@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.constraints.Min;
 
 import com.fonowizja.ox.game.BoardObservator;
 import lombok.AccessLevel;
@@ -19,30 +25,32 @@ final class Board
 {
    //TODO uproscic pola, kilka niepotrzebnych lub redundantnych
 
-   static final String EXCEPTION_MESSAGE = "Jakikolwiek rozmiar tablicy nie może być = 0";
+   static final String EXCEPTION_MESSAGE = "boardSize to small";
+   static final String EXCEPTION_WINNING_SIZE_MESSAGE = "winning size to small";
    private final List<Sign> board = new ArrayList<>();
+   @Min(value = 9, message = EXCEPTION_MESSAGE)
    private final Integer boardSize;
-   private final Integer x;
-   private final Integer y;
+   @Min(value = 3, message = EXCEPTION_MESSAGE)
+   private final Integer boardLenght;
+   @Min(value = 3, message = EXCEPTION_WINNING_SIZE_MESSAGE)
    private final Integer winningSize;
+
+   //todo
    private BoardObservator boardObservator;
+
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsXXX = new HashMap<>();
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsOOO = new HashMap<>();
-   private Integer positionInBoard;
+
+   //todo
    private HypotheticalWinningFieldsCreator createHorizontalWinnerFields;
 
-   private Board(Integer x, Integer y, Integer winningSize) throws IllegalArgumentException
+   private Board(Integer boardSize, Integer boardLenght, Integer winningSize)
    {
-      if (x == 0 || y == 0)
-      {
-         throw new IllegalArgumentException(EXCEPTION_MESSAGE);
-      }
-      this.x = x;
-      this.y = y;
+      this.boardSize = boardSize;
+      this.boardLenght = boardLenght;
       this.winningSize = winningSize;
-      boardSize = x * y;
       cleanBoard();
 
    }
@@ -68,7 +76,7 @@ final class Board
 
       boardAsString.append(" ");
 
-      for (int i = 0; i < x; i++)
+      for (int i = 0; i < boardLenght; i++)
       {
          boardAsString.append(i + "|");
       }
@@ -80,7 +88,7 @@ final class Board
       for (int i = 0; i < boardSize; i++)
       {
 
-         if (i % x == 0 && i != 0)
+         if (i % boardLenght == 0 && i != 0)
          {
             boardAsString.append("\n");
             rowNumber++;
@@ -94,16 +102,16 @@ final class Board
       return boardAsString.toString();
    }
 
-   boolean isWinningMove(Sign sign, Integer positionX, Integer positionY) throws Exception
+   boolean isWinningMove(Sign sign, Integer boardPosition) throws Exception
    {
 
-      if (!putSignIntoBoard(sign, positionX, positionY))
+      if (!putSignIntoBoard(sign, boardPosition))
       {
          //TODO zrobic wyjątek ze nie da się wstawic znaku na niepuste pole
          throw new Exception();
       }
 
-      createHypotheticalWinningFields(sign);
+      createHypotheticalWinningFields(sign, boardPosition);
 
       // boardObservator.notifyAboutWinner(sign);
 
@@ -151,13 +159,12 @@ final class Board
       return gameIsWin.get();
    }
 
-   boolean putSignIntoBoard(Sign sign, Integer positionX, Integer positionY)
+   boolean putSignIntoBoard(Sign sign, Integer boardPosition)
    {
-      positionInBoard = positionY * x + positionX;
 
-      if (board.get(positionInBoard) == Sign.EMPTY)
+      if (board.get(boardPosition) == Sign.EMPTY)
       {
-         board.add(positionInBoard, sign);
+         board.add(boardPosition, sign);
 
          return true;
       }
@@ -165,14 +172,14 @@ final class Board
       return false;
    }
 
-   private void createHypotheticalWinningFields(Sign sign)
+   private void createHypotheticalWinningFields(Sign sign, Integer boardPosition)
    {
       HypotheticalWinningFieldsCreator hypotheticalWinningFieldsCreator =
             HypotheticalWinningFieldsCreator.builder()
                   .sign(sign)
                   .winningSize(winningSize)
-                  .x(x)
-                  .positionInBoard(positionInBoard)
+                  .x(boardLenght)
+                  .positionInBoard(boardPosition)
                   .boardSize(boardSize)
                   .build();
 
@@ -241,52 +248,58 @@ final class Board
    ///////////////////   BUILDER  //////////////////////////
 
    @SuppressWarnings("NewMethodNamingConvention")
-   static final class BoardBuilder implements NeedX, NeedY, NeedWinningSize, CanBeBuild
+   static final class BoardBuilder implements NeedBoardSize, NeedBoardLenght, NeedWinningSize, CanBeBuild
    {
-      private Integer x;
-      private Integer y;
-      private Integer winningSize;
+      @Min(value = 9, message = EXCEPTION_MESSAGE)
+      private  Integer boardSize;
+      @Min(value = 3, message = EXCEPTION_MESSAGE)
+      private  Integer boardLenght;
+      @Min(value = 3, message = EXCEPTION_WINNING_SIZE_MESSAGE)
+      private  Integer winningSize;
 
       @Override
-      public BoardBuilder x(Integer x)
+      public NeedBoardLenght boardSize(Integer boardSize)
       {
-         this.x = x;
+         this.boardSize = boardSize;
          return this;
       }
 
       @Override
-      public BoardBuilder y(Integer y)
+      public NeedWinningSize boardLenght(Integer boardLenght)
       {
-         this.y = y;
+         this.boardLenght = boardLenght;
          return this;
       }
 
       @Override
-      public BoardBuilder winningSize(Integer winningSize)
+      public CanBeBuild winningSize(Integer winningSize)
       {
          this.winningSize = winningSize;
          return this;
       }
 
       @Override
-      public Board build()
+      public Board build() throws IllegalArgumentException
       {
-         Board board = new Board(x, y, winningSize);
-         return board;
+         Board toBuild = new Board(boardSize, boardLenght, winningSize);
+
+         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+         Set<ConstraintViolation<BoardBuilder>> validate = validator.validate(this);
+         return toBuild;
       }
 
    }
 
    @SuppressWarnings("NewMethodNamingConvention")
-   interface NeedX
+   interface NeedBoardSize
    {
-      NeedY x(Integer x);
+      NeedBoardLenght boardSize(Integer boardSize);
    }
 
    @SuppressWarnings("NewMethodNamingConvention")
-   interface NeedY
+   interface NeedBoardLenght
    {
-      NeedWinningSize y(Integer y);
+      NeedWinningSize boardLenght(Integer boardLenght);
    }
 
    interface NeedWinningSize
@@ -296,10 +309,10 @@ final class Board
 
    interface CanBeBuild
    {
-      Board build();
+      Board build()  throws IllegalArgumentException;
    }
 
-   static NeedX builder()
+   static NeedBoardSize builder() throws IllegalArgumentException
    {
       return new BoardBuilder();
    }

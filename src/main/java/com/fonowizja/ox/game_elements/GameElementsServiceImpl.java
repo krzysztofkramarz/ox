@@ -10,9 +10,9 @@ public class GameElementsServiceImpl implements GameElementsService
 
    Board board;
 
-   public GameElementsServiceImpl(Integer x, Integer y, Integer numberOfWiningSigns)
+   public GameElementsServiceImpl(Integer boardSize, Integer boardLenght, Integer winningSize)
    {
-      board = Board.builder().x(x).y(y).winningSize(numberOfWiningSigns).build();
+      board = Board.builder().boardSize(boardSize).boardLenght(boardLenght).winningSize(winningSize).build();
    }
 
    @Override
@@ -22,10 +22,10 @@ public class GameElementsServiceImpl implements GameElementsService
    }
 
    @Override
-   public boolean makeMove(Sign sign, Integer positionX, Integer positionY) throws Exception
+   public boolean isWinningMove(Sign sign, Integer boardPosition) throws Exception
    {
 
-      return board.isWinningMove(sign, positionX, positionY);
+      return board.isWinningMove(sign, boardPosition);
    }
 
    @Override

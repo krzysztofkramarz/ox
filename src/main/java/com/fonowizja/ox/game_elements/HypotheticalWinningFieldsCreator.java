@@ -160,13 +160,14 @@ class HypotheticalWinningFieldsCreator
       public HypotheticalWinningFieldsCreator build()
       {
          HypotheticalWinningFieldsCreator toBuild = new HypotheticalWinningFieldsCreator();
-         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-         validator.validate(toBuild);
          toBuild.sign = this.sign;
          toBuild.winningSize = this.winningSize;
          toBuild.x = this.x;
          toBuild.positionInBoard = this.positionInBoard;
          toBuild.boardSize = this.boardSize;
+
+         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+         validator.validate(toBuild);
          return toBuild;
       }
 
