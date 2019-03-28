@@ -72,7 +72,7 @@ class AllWinningFieldsCreator
       Integer howManySteps = x - winningSize - 1;
       for (Integer begining : beginingOfRows)
       {
-         for (int i = begining; i + winningSize -1 < begining + x; i++)
+         for (int i = begining; i + winningSize - 1 < begining + x; i++)
          {
             horizontalWinningFields.add(generateRangeOfSearching(i, n -> n + 1, winningSize));
          }
@@ -99,10 +99,10 @@ class AllWinningFieldsCreator
    List<List<Integer>> createSlashWinnerFields()
    {
       List<List<Integer>> slashWinningFields = new ArrayList<>();
-      for (int i = 0; i + ((x - 1) * (winningSize - 1)) <= boardSize; i++)
+      for (int i = 0; i + ((x - 1) * (winningSize - 1)) < boardSize; i++)
       {
 
-         if (i + (winningSize -1) * (x - 1) >i - (i % x) + (winningSize -1) * x)
+         if (i + (winningSize - 1) * (x - 1) < i - (i % x) + (winningSize - 1) * x)
          {
             continue;
          }
@@ -114,9 +114,9 @@ class AllWinningFieldsCreator
    private List<List<Integer>> createBackSlashWinnerFields()
    {
       List<List<Integer>> backSlashWinningFields = new ArrayList<>();
-      for (int i = 0; i + ((x + 1) * (winningSize - 1)) <= boardSize; i++)
+      for (int i = 0; i + ((x + 1) * (winningSize - 1)) < boardSize; i++)
       {
-         if (i + winningSize * (x + 1) >= i - (i % x) + (winningSize + 1) * x)
+         if (i + (winningSize - 1) * (x + 1) >= i - (i % x) + (winningSize) * x)
          {
             continue;
          }
