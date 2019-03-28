@@ -14,13 +14,13 @@ class AllWinningFieldsCreator
 {
    private final Integer x;
    private final Integer boardSize;
-   private final Integer scope;
+   private final Integer winningSize;
 
-   public AllWinningFieldsCreator(Integer x, Integer boardSize, Integer scope)
+   public AllWinningFieldsCreator(Integer x, Integer boardSize, Integer winningSize)
    {
       this.x = x;
       this.boardSize = boardSize;
-      this.scope = scope;
+      this.winningSize = winningSize;
    }
 
    Map<String, List<Integer>> createAllWinningFields()
@@ -69,12 +69,12 @@ class AllWinningFieldsCreator
       }
 
       List<List<Integer>> horizontalWinningFields = new ArrayList<>();
-      Integer howManySteps = x - scope - 1;
+      Integer howManySteps = x - winningSize - 1;
       for (Integer begining : beginingOfRows)
       {
-         for (int i = begining; i + scope-1 < begining + x; i++)
+         for (int i = begining; i + winningSize -1 < begining + x; i++)
          {
-            horizontalWinningFields.add(generateRangeOfSearching(i, n -> n + 1, scope));
+            horizontalWinningFields.add(generateRangeOfSearching(i, n -> n + 1, winningSize));
          }
       }
 
@@ -88,9 +88,9 @@ class AllWinningFieldsCreator
       for (int a = 0; a < x; a++)
       {
 
-         for (int i = a; i + (scope - 1) * x < boardSize; i += x)
+         for (int i = a; i + (winningSize - 1) * x < boardSize; i += x)
          {
-            verticalWinningFields.add(generateRangeOfSearching(i, n -> n + x, scope ));
+            verticalWinningFields.add(generateRangeOfSearching(i, n -> n + x, winningSize));
          }
       }
       return verticalWinningFields;
@@ -99,14 +99,14 @@ class AllWinningFieldsCreator
    List<List<Integer>> createSlashWinnerFields()
    {
       List<List<Integer>> slashWinningFields = new ArrayList<>();
-      for (int i = 0; i + ((x - 1) * (scope - 1)) <= boardSize; i++)
+      for (int i = 0; i + ((x - 1) * (winningSize - 1)) <= boardSize; i++)
       {
 
-         if (i + (scope-1) * (x - 1) >i - (i % x) + (scope -1) * x)
+         if (i + (winningSize -1) * (x - 1) >i - (i % x) + (winningSize -1) * x)
          {
             continue;
          }
-         slashWinningFields.add(generateRangeOfSearching(i, n -> n + x - 1, scope ));
+         slashWinningFields.add(generateRangeOfSearching(i, n -> n + x - 1, winningSize));
       }
       return slashWinningFields;
    }
@@ -114,13 +114,13 @@ class AllWinningFieldsCreator
    private List<List<Integer>> createBackSlashWinnerFields()
    {
       List<List<Integer>> backSlashWinningFields = new ArrayList<>();
-      for (int i = 0; i + ((x + 1) * (scope - 1)) <= boardSize; i++)
+      for (int i = 0; i + ((x + 1) * (winningSize - 1)) <= boardSize; i++)
       {
-         if (i + scope * (x + 1) >= i - (i % x) + (scope + 1) * x)
+         if (i + winningSize * (x + 1) >= i - (i % x) + (winningSize + 1) * x)
          {
             continue;
          }
-         backSlashWinningFields.add(generateRangeOfSearching(i, n -> n + x + 1, scope));
+         backSlashWinningFields.add(generateRangeOfSearching(i, n -> n + x + 1, winningSize));
       }
       return backSlashWinningFields;
    }
