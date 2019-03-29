@@ -27,6 +27,7 @@ final class Board
 
    static final String EXCEPTION_MESSAGE = "boardSize to small";
    static final String EXCEPTION_WINNING_SIZE_MESSAGE = "winning size to small";
+   private static final String FIELD_IS_NOT_EMPTY_EXCEPTION = "Field is not empty!";
    private final List<Sign> board = new ArrayList<>();
    @Min(value = 9, message = EXCEPTION_MESSAGE)
    private final Integer boardSize;
@@ -108,12 +109,13 @@ final class Board
       if (!putSignIntoBoard(sign, boardPosition))
       {
          //TODO zrobic wyjątek ze nie da się wstawic znaku na niepuste pole
-         throw new Exception();
+         throw new FieldIsNotEmptyException(FIELD_IS_NOT_EMPTY_EXCEPTION);
       }
 
       createHypotheticalWinningFields(sign, boardPosition);
 
       // boardObservator.notifyAboutWinner(sign);
+
 
       return checkWinnerAtThisMove(sign);
 

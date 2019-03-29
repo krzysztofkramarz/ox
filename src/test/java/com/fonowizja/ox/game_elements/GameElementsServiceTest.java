@@ -87,4 +87,24 @@ public class GameElementsServiceTest
 
    }
 
+   @Test
+         public void testCleanBoard() throws Exception
+   {
+
+      Board toTest = Board.builder().boardSize(16).boardLenght(4).winningSize(3).build();
+      toTest.isWinningMove(Sign.X,0);
+      toTest.cleanBoard();
+      toTest.isWinningMove(Sign.X, 0);
+   }
+
+   @Test
+   public void testExceptionWhenSignAddedOnBusyField() throws Exception
+   {
+
+      Board toTest = Board.builder().boardSize(16).boardLenght(4).winningSize(3).build();
+      toTest.isWinningMove(Sign.X,0);
+
+      assertThatThrownBy(()->toTest.isWinningMove(Sign.X, 0)).isInstanceOf(Exception.class);
+   }
+
 }
