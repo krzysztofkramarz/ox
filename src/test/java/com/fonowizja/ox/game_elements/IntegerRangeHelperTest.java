@@ -29,7 +29,7 @@ public class IntegerRangeHelperTest
             { 80, (IntUnaryOperator) n -> n / 2, 5, Arrays.asList(80, 40, 20, 10, 5) },
             { 1, (IntUnaryOperator) n -> n, 5, Arrays.asList(1, 1, 1, 1, 1) },
             { 1, (IntUnaryOperator) n -> n * 2, 5, Arrays.asList(1, 2, 4, 8, 16) },
-            { 2, (IntUnaryOperator) n -> n * 2, 10, Arrays.asList(2, 4, 8, 16, 32, 64, 128, 512, 1024, 2048) }
+            { 2, (IntUnaryOperator) n -> n * 2, 11, Arrays.asList(2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048) }
 
       };
    }
