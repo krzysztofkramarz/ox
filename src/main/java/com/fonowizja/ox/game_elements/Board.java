@@ -43,6 +43,8 @@ final class Board
    private final Map<String, List<Integer>> hypotheticalWinningFieldsXXX = new HashMap<>();
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsOOO = new HashMap<>();
+   @Getter(AccessLevel.PACKAGE)
+   private final Map<String, List<Integer>> allWinningFields;
 
    //todo
    private HypotheticalWinningFieldsCreator createHorizontalWinnerFields;
@@ -52,7 +54,8 @@ final class Board
       this.boardSize = boardSize;
       this.boardLenght = boardLenght;
       this.winningSize = winningSize;
-      cleanBoard();
+      AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(boardSize, boardLenght, winningSize);
+      allWinningFields = allWinningFieldsCreator.createAllWinningFields();
 
    }
 
@@ -115,7 +118,6 @@ final class Board
       createHypotheticalWinningFields(sign, boardPosition);
 
       // boardObservator.notifyAboutWinner(sign);
-
 
       return checkWinnerAtThisMove(sign);
 
@@ -224,9 +226,10 @@ final class Board
             hypotheticalWinningFieldsXXX.remove(key);
             return;
          }
-         if (!hypotheticalWinningFieldsOOO.containsKey(key))
+         if (allWinningFields.containsKey(key))
          {
             hypotheticalWinningFieldsOOO.put(key, value);
+            allWinningFields.remove(key);
          }
          return;
       }
@@ -239,9 +242,10 @@ final class Board
             return;
          }
 
-         if (!hypotheticalWinningFieldsXXX.containsKey(key))
+         if (allWinningFields.containsKey(key))
          {
             hypotheticalWinningFieldsXXX.put(key, value);
+            allWinningFields.remove(key);
          }
       }
 
@@ -253,11 +257,11 @@ final class Board
    static final class BoardBuilder implements NeedBoardSize, NeedBoardLenght, NeedWinningSize, CanBeBuild
    {
       @Min(value = 9, message = EXCEPTION_MESSAGE)
-      private  Integer boardSize;
+      private Integer boardSize;
       @Min(value = 3, message = EXCEPTION_MESSAGE)
-      private  Integer boardLenght;
+      private Integer boardLenght;
       @Min(value = 3, message = EXCEPTION_WINNING_SIZE_MESSAGE)
-      private  Integer winningSize;
+      private Integer winningSize;
 
       @Override
       public NeedBoardLenght boardSize(Integer boardSize)
@@ -311,7 +315,7 @@ final class Board
 
    interface CanBeBuild
    {
-      Board build()  throws IllegalArgumentException;
+      Board build() throws IllegalArgumentException;
    }
 
    static NeedBoardSize builder() throws IllegalArgumentException

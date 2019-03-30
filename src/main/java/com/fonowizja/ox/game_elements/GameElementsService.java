@@ -15,4 +15,5 @@ public interface GameElementsService
 
    void setBoardObservator(BoardObservator boardObservator);
 
+
 }
