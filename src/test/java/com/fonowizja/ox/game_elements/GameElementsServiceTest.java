@@ -17,19 +17,6 @@ public class GameElementsServiceTest
    public Object[][] boardAsString()
    {
       return new Object[][] {
-            { " 0|\n0 |", 1, 1 },
-            { " 0|1|\n0 | |", 2, 2 },
-            { " 0|1|2|\n0 | | |", 3, 3 },
-            { " 0|1|2|3|\n0 | | | |", 4, 4 },
-            { " 0|1|2|3|4|\n0 | | | | |", 5, 5 },
-            { " 0|\n0 |\n1 |", 2,1 },
-            { " 0|\n0 |\n1 |\n2 |", 3,1 },
-            { " 0|\n0 |\n1 |\n2 |\n3 |", 4,1 },
-            { " 0|\n0 |\n1 |\n2 |\n3 |\n4 |", 5,1 },
-            { " 0|\n0 |\n1 |\n2 |\n3 |\n4 |\n5 |", 6,1 },
-            { " 0|1|\n0 | |\n1 | |", 4,2 },
-            { " 0|1|2|\n0 | | |\n1 | | |", 6,3 },
-            { " 0|1|2|3|\n0 | | | |\n1 | | | |", 8,4 },
             { " 0|1|2|3|4|\n0 | | | | |\n1 | | | | |", 10,5 },
             { " 0|1|2|3|4|5|\n0 | | | | | |\n1 | | | | | |", 12,6 },
             { " 0|1|2|3|4|5|6|7|8|9|10|\n0 | | | | | | | | | | |\n1 | | | | | | | | | | |\n2 | | | | | | | | | | |", 33,11 },
@@ -63,27 +50,42 @@ public class GameElementsServiceTest
    {
       return new Object[][] {
             { 0, 0 },
-            { 1, 0 },
-            { 5, 0 },
-            { 7, 0 },
-            { 91, 0 },
-            { 254, 0 },
-            { 0, 1 },
-            { 0, 5 },
-            { 0, 7 },
-            { 0, 91 },
-            { 0, 254 }
+            { 9, 2 },
+            { 8, 3 },
+            { 11,4 },
+            { 91, 3 },
+            { 3, 3 }
       };
    }
 
    @Test(dataProvider = "boardThrowsException")
-   public void testGetBoardThrowsException(Integer x, Integer y)
+   public void testGetBoardThrowsException(Integer boardSize, Integer boardLenght)
    {
 
-      Board build = Board.builder().boardSize(0).boardLenght(0).winningSize(3).build();
-      // assertThatThrownBy(() -> Board.builder().boardSize(x).boardLenght(y).winningSize(3).build())
-      //       .isInstanceOf(IllegalArgumentException.class)
-      //       .hasMessage(Board.EXCEPTION_MESSAGE);
+      assertThatThrownBy(() -> Board.builder().boardSize(boardSize).boardLenght(boardLenght).winningSize(3).build())
+            .isInstanceOf(IllegalArgumentException.class);
+
+
+   }
+
+
+   @DataProvider(name = "boardIsWellDone")
+   public Object[][] boardIsWellDone()
+   {
+      return new Object[][] {
+            { 12,4 },
+            { 9, 3 },
+            { 24,4 },
+            { 15,5},
+            { 27, 3 }
+      };
+   }
+
+   @Test(dataProvider = "boardIsWellDone")
+   public void testBoardIsWellDone(Integer boardSize, Integer boardLenght)
+   {
+      Board.builder().boardSize(boardSize).boardLenght(boardLenght).winningSize(3).build();
+
 
    }
 

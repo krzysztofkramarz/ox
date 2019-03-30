@@ -40,7 +40,7 @@ public class AllWinningFieldsCreatorTest
       {
          expectWinningFields.put(all.toString(), all);
       }
-      AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(7, 21, 3);
+      AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(21, 7, 3);
 
       Map<String, List<Integer>> resultWinningFields = allWinningFieldsCreator.createAllWinningFields();
 
@@ -67,7 +67,7 @@ public class AllWinningFieldsCreatorTest
       {
          expectWinningFields.put(all.toString(), all);
       }
-      AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(3, 9, 3);
+      AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(9, 3, 3);
 
       Map<String, List<Integer>> resultWinningFields = allWinningFieldsCreator.createAllWinningFields();
 

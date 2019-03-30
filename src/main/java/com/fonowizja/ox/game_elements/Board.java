@@ -56,6 +56,7 @@ final class Board
       this.winningSize = winningSize;
       AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(boardSize, boardLenght, winningSize);
       allWinningFields = allWinningFieldsCreator.createAllWinningFields();
+      cleanBoard();
 
    }
 
@@ -287,6 +288,19 @@ final class Board
       @Override
       public Board build() throws IllegalArgumentException
       {
+
+         if (boardSize < 9 || boardLenght < 3)
+         {
+
+            throw new IllegalArgumentException();
+         }
+
+         //todo sprecyzować wyjątek
+         if (boardSize % boardLenght != 0)
+         {
+            throw new IllegalArgumentException();
+         }
+
          Board toBuild = new Board(boardSize, boardLenght, winningSize);
 
          Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
