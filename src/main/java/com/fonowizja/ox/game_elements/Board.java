@@ -124,6 +124,19 @@ final class Board
 
    }
 
+   boolean putSignIntoBoard(Sign sign, Integer boardPosition)
+   {
+
+      if (board.get(boardPosition) == Sign.EMPTY)
+      {
+         board.add(boardPosition, sign);
+
+         return true;
+      }
+
+      return false;
+   }
+
    private boolean checkWinnerAtThisMove(Sign sign) throws Exception
    {
       AtomicBoolean gameIsWin = new AtomicBoolean(true);
@@ -162,19 +175,6 @@ final class Board
          throw new Exception();
       }
       return gameIsWin.get();
-   }
-
-   boolean putSignIntoBoard(Sign sign, Integer boardPosition)
-   {
-
-      if (board.get(boardPosition) == Sign.EMPTY)
-      {
-         board.add(boardPosition, sign);
-
-         return true;
-      }
-
-      return false;
    }
 
    private void createHypotheticalWinningFields(Sign sign, Integer boardPosition)
@@ -251,7 +251,15 @@ final class Board
       }
 
    }
-//remis
+
+   private isWinner()
+   {
+
+      Set<Map.Entry<String, List<Integer>>> entries = hypotheticalWinningFieldsOOO.entrySet();
+      iterate.entries ->odczytaj wartosci z kluczy wszystkich i w tych polach sprawdz czy są też X
+   }
+
+   //remis
    boolean isDraw()
    {
       if (hypotheticalWinningFieldsXXX.isEmpty() && hypotheticalWinningFieldsOOO.isEmpty() && allWinningFields.isEmpty())
