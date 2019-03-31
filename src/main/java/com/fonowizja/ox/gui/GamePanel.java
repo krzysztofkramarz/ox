@@ -34,8 +34,11 @@ final class GamePanel extends JPanel
    private Integer winningSize;
    @Getter(AccessLevel.PACKAGE)
    private Integer maxWinningSize;
-
-   private int alternate = 0;//if this number is a even, then put a X. If it's odd, then put an O
+   @Setter(AccessLevel.PACKAGE)
+   private boolean canPlayesPlay;
+   @Setter(AccessLevel.PACKAGE)
+   private Sign whoHasATurn;
+   // private int alternate = 0;//if this number is a even, then put a X. If it's odd, then put an O
 
    GamePanel()
    {
@@ -45,8 +48,9 @@ final class GamePanel extends JPanel
       boardHeight = 3;
       boardSize = boardLenght * boardHeight;
       maxWinningSize = Integer.max(boardHeight, boardLenght);
+      canPlayesPlay = false;
       setLayout(new GridLayout(boardHeight, boardLenght, 1, 1));
-      TitledBorder border = BorderFactory.createTitledBorder("GRA :)");
+      TitledBorder border = BorderFactory.createTitledBorder("TUTAJ SIĘ GRA!");
       border.setTitleColor(Color.BLUE);
       border.setBorder(new LineBorder(Color.BLUE, 1));
       setBorder(border);
@@ -126,30 +130,35 @@ final class GamePanel extends JPanel
       @Override
       public void actionPerformed(ActionEvent e)
       {
-
-         JButton buttonClicked = (JButton) e.getSource(); //get the particular button that was clicked
-         String text = buttonClicked.getText();
-         if ("X".equals(text) || "O".equals(text))
+         if (canPlayesPlay)
          {
-            return;
-         }
-         if (alternate % 2 == 0)
-         {
-            buttonClicked.setText("X");
-         }
-         else
-         {
-            buttonClicked.setText("O");
-         }
+            // System.out.println(whoHasATurn.getSign());
 
-         if (false)
-         {
-            JOptionPane.showConfirmDialog(null, "Game Over.");
-            resetButtons();
+            JButton buttonClicked = (JButton) e.getSource(); //get the particular button that was clicked
+            String text = buttonClicked.getText();
+
+            if (Sign.X.getSign().equals(text) || Sign.O.getSign().equals(text))
+            {
+               return;
+            }
+            if (whoHasATurn == Sign.X)
+            {
+               buttonClicked.setText(Sign.X.getSign());
+               whoHasATurn = whoHasATurn.getOppositePlayer();
+            }
+            else
+            {
+               buttonClicked.setText(Sign.O.getSign());
+               whoHasATurn = whoHasATurn.getOppositePlayer();
+            }
+
+            if (false)
+            {
+               JOptionPane.showConfirmDialog(null, "Game Over.");
+               resetButtons();
+            }
+
          }
-
-         alternate++;
-
       }
 
    }

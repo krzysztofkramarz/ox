@@ -9,6 +9,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.fonowizja.ox.game_elements.Sign;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 /**
  * @author krzysztof.kramarz
@@ -31,6 +33,7 @@ final class UpperSettingsPanel extends JPanel
    private JLabel boardLengthLabel;
    private JLabel winningSizeLabel;
 
+   @Getter(AccessLevel.PACKAGE)
    private Sign whoIsFirst;
 
    UpperSettingsPanel(GamePanel gamePanel)
@@ -40,14 +43,13 @@ final class UpperSettingsPanel extends JPanel
       setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
       setBorder(new LineBorder(new Color(40), 1));
       setPreferredSize(new Dimension(4000, 200));
-
+      whoIsFirst = Sign.X;
       setBoardLengthSliderAttibutes();
       setWinningSizeSliderAttibutes();
 
       setBoardLengthPanel();
       setWinningSizePanel();
-
-      setWhoIsFirst();
+      setWhoIsFirstPanel();
    }
 
    private void setWinningSizePanel()
@@ -55,9 +57,9 @@ final class UpperSettingsPanel extends JPanel
       winningSizePanel = new JPanel();
       winningSizeLabel = new JLabel("Ustaw ile znaczkow wygrywa");
       winningSizeResultTextField = new JTextField("3", 2);
-      winningSizePanel.add(winningSizeResultTextField);
       winningSizePanel.add(winningSizeLabel);
       winningSizePanel.add(winningSizeSlider);
+      winningSizePanel.add(winningSizeResultTextField);
 
       TitledBorder border = BorderFactory.createTitledBorder("Ustaw ile znaczkow wygrywa");
       border.setTitleColor(Color.blue);
@@ -73,9 +75,9 @@ final class UpperSettingsPanel extends JPanel
       boardLengthPanel = new JPanel();
       boardLengthLabel = new JLabel("Ustaw szerokość tablicy");
       boardLengthSliderResultTextField = new JTextField("3", 2);
-      boardLengthPanel.add(boardLengthSliderResultTextField);
       boardLengthPanel.add(boardLengthLabel);
       boardLengthPanel.add(boardLengthSlider);
+      boardLengthPanel.add(boardLengthSliderResultTextField);
 
       TitledBorder border = BorderFactory.createTitledBorder("Ustaw szerokość tablicy");
       border.setTitleColor(Color.blue);
@@ -86,7 +88,7 @@ final class UpperSettingsPanel extends JPanel
       add(boardLengthPanel);
    }
 
-   private void setWhoIsFirst()
+   private void setWhoIsFirstPanel()
    {
 
       whoIsFistPanel = new JPanel(new FlowLayout());
@@ -123,6 +125,17 @@ final class UpperSettingsPanel extends JPanel
       winningSizeSlider.setMaximum(maximumWinningSize);
    }
 
+   public void changeElementsEnable(boolean isEnable)
+   {
+      boardLengthSlider.setEnabled(isEnable);
+      winningSizeSlider.setEnabled(isEnable);
+      boardLengthSliderResultTextField.setEnabled(isEnable);
+      winningSizeResultTextField.setEnabled(isEnable);
+
+      XisFirsJRB.setEnabled(isEnable);
+      OisFirstJRB.setEnabled(isEnable);
+   }
+
    private class boardLengthSliderListener implements ChangeListener
    {
       @Override
@@ -147,7 +160,7 @@ final class UpperSettingsPanel extends JPanel
       winningSizeSlider.setMinimum(3);
       winningSizeSlider.setMaximum(gamePanel.getMaxWinningSize());
 
-      SliderHelper.setWinningSizeSliderAttibutes(winningSizeSlider);
+      SliderHelper.setSliderAttibutes(winningSizeSlider);
 
    }
 

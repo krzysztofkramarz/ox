@@ -9,9 +9,30 @@ import lombok.Getter;
 @Getter(AccessLevel.PUBLIC)
 public enum Sign
 {
-   O("o"),
-   X("x"),
-   EMPTY(" ");
+   O("o")
+         {
+            @Override
+            public Sign getOppositePlayer()
+            {
+               return X;
+            }
+         },
+   X("x")
+         {
+            @Override
+            public Sign getOppositePlayer()
+            {
+               return O;
+            }
+         },
+   EMPTY(" ")
+         {
+            @Override
+            public Sign getOppositePlayer()
+            {
+               return EMPTY;
+            }
+         };
 
    private final String sign;
 
@@ -19,5 +40,7 @@ public enum Sign
    {
       this.sign = sign;
    }
+
+   public abstract Sign getOppositePlayer();
 
 }

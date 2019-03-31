@@ -18,13 +18,5 @@ class SliderHelper
       jSlider.setPaintTrack(true);
    }
 
-   public static void setWinningSizeSliderAttibutes(JSlider winningSizeSlider)
-   {
-      winningSizeSlider.setMinorTickSpacing(1);
-      winningSizeSlider.setPaintTicks(true);
-      winningSizeSlider.setPaintLabels(true);
-      winningSizeSlider.setVisible(true);
-      winningSizeSlider.setSnapToTicks(true);
-      winningSizeSlider.setPaintTrack(true);
-   }
+
 }
