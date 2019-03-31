@@ -6,8 +6,8 @@ import lombok.Getter;
 /**
  * @author krzysztof.kramarz
  */
-@Getter(AccessLevel.PACKAGE)
-enum Sign
+@Getter(AccessLevel.PUBLIC)
+public enum Sign
 {
    O("o"),
    X("x"),

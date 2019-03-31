@@ -1,4 +1,4 @@
-package com.fonowizja.ox;
+package com.fonowizja.ox.gui;
 
 import com.fonowizja.ox.game_elements.GameElementsService;
 import com.fonowizja.ox.game_elements.GameElementsServiceImpl;
@@ -11,8 +11,9 @@ class Main
    public static void main(String[] args)
    {
 
-      GameElementsService gameElementsService = new GameElementsServiceImpl(1, 3,3);
+      new MainPanel();
 
-      System.out.println(gameElementsService.getBoardAsString());
+      // GameElementsService gameElementsService = new GameElementsServiceImpl(1, 3,3);
+
    }
 }
