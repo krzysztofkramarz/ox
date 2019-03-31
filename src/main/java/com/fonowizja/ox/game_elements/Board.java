@@ -251,6 +251,15 @@ final class Board
       }
 
    }
+//remis
+   boolean isDraw()
+   {
+      if (hypotheticalWinningFieldsXXX.isEmpty() && hypotheticalWinningFieldsOOO.isEmpty() && allWinningFields.isEmpty())
+      {
+         return true;
+      }
+      return false;
+   }
 
    ///////////////////   BUILDER  //////////////////////////
 

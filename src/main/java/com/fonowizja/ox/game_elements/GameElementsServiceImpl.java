@@ -41,4 +41,10 @@ public class GameElementsServiceImpl implements GameElementsService
 
    }
 
+   @Override
+   public boolean isDraw()
+   {
+      return board.isDraw();
+   }
+
 }

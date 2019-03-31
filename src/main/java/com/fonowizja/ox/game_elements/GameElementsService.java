@@ -15,5 +15,7 @@ public interface GameElementsService
 
    void setBoardObservator(BoardObservator boardObservator);
 
+   boolean isDraw();
+
 
 }
