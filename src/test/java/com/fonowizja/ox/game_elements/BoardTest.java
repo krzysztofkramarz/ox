@@ -162,19 +162,26 @@ public class BoardTest
       assertThat(board.getAllWinningFields()).doesNotContainKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
    }
 
-  /* @DataProvider(name = "testWinningGame")
+   @DataProvider(name = "testWinningGame")
    public Object[][] testWinningGame()
    {
       return new Object[][] {
-            { Arrays.asList(Arrays.asList(Sign.O, 3), Sign.O, 24 }
+            { Arrays.asList(
+                  Arrays.asList(Sign.O, 0),
+                  Arrays.asList(Sign.X, 2),
+                  Arrays.asList(Sign.O, 3),
+                  Arrays.asList(Sign.X, 6),
+                  Arrays.asList(Sign.O, 4),
+                  Arrays.asList(Sign.X, 7)
+            ), Sign.O, 8 }
 
       };
    }
-*/
+
    @Test(dataProvider = "testWinningGame")
    public void testWinningGame(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
    {
-      Board board = Board.builder().boardSize(25).boardLenght(5).winningSize(3).build();
+      Board board = Board.builder().boardSize(9).boardLenght(3).winningSize(3).build();
       board.cleanBoard();
 
       for (List<Object> move : movesForWin)
@@ -182,11 +189,95 @@ public class BoardTest
          board.isWinningMove((Sign) move.get(0), (Integer) move.get(1));
       }
 
-      boolean draw = board.isDraw();
       //final move
-      boolean result = board.putSignIntoBoard(sign, boardPosition);
-      assertThat(result).isFalse();
+      boolean result = board.isWinningMove(sign, boardPosition);
+      boolean draw = board.isDraw();
+      assertThat(result).isTrue();
       assertThat(draw).isFalse();
+
+   }
+
+   @DataProvider(name = "testWinningGame16")
+   public Object[][] testWinningGame16()
+   {
+      return new Object[][] {
+            { Arrays.asList(
+                  Arrays.asList(Sign.X, 10),
+                  Arrays.asList(Sign.O, 3),
+                  Arrays.asList(Sign.X, 14),
+                  Arrays.asList(Sign.O, 11),
+                  Arrays.asList(Sign.X, 0),
+                  Arrays.asList(Sign.O, 8),
+                  Arrays.asList(Sign.X, 5),
+                  Arrays.asList(Sign.O, 15),
+                  Arrays.asList(Sign.X, 12),
+                  Arrays.asList(Sign.O, 2),
+                  Arrays.asList(Sign.X, 4)
+            ), Sign.O, 7 }
+
+      };
+   }
+
+   @Test(dataProvider = "testWinningGame16")
+   public void testWinningGame16(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
+   {
+      Board board = Board.builder().boardSize(16).boardLenght(4).winningSize(4).build();
+      board.cleanBoard();
+
+      for (List<Object> move : movesForWin)
+      {
+         board.isWinningMove((Sign) move.get(0), (Integer) move.get(1));
+      }
+
+      //final move
+      boolean result = board.isWinningMove(sign, boardPosition);
+      boolean draw = board.isDraw();
+      assertThat(result).isTrue();
+      assertThat(draw).isFalse();
+
+   }
+
+
+
+   @DataProvider(name = "testDraw")
+   public Object[][] testDraw()
+   {
+      return new Object[][] {
+            { Arrays.asList(
+                  Arrays.asList(Sign.X, 10),
+                  Arrays.asList(Sign.O, 3),
+                  Arrays.asList(Sign.X, 14),
+                  Arrays.asList(Sign.O, 11),
+                  Arrays.asList(Sign.X, 0),
+                  Arrays.asList(Sign.O, 8),
+                  Arrays.asList(Sign.X, 5),
+                  Arrays.asList(Sign.O, 15),
+                  Arrays.asList(Sign.X, 12),
+                  Arrays.asList(Sign.O, 2),
+                  Arrays.asList(Sign.X, 4),
+                  Arrays.asList(Sign.O, 6),
+                  Arrays.asList(Sign.X, 7)
+            ), Sign.O, 1 }
+
+      };
+   }
+
+   @Test(dataProvider = "testDraw")
+   public void testDraw(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
+   {
+      Board board = Board.builder().boardSize(16).boardLenght(4).winningSize(4).build();
+      board.cleanBoard();
+
+      for (List<Object> move : movesForWin)
+      {
+         board.isWinningMove((Sign) move.get(0), (Integer) move.get(1));
+      }
+
+      //final move
+      boolean result = board.isWinningMove(sign, boardPosition);
+      boolean draw = board.isDraw();
+      assertThat(result).isFalse();
+      assertThat(draw).isTrue();
 
    }
 }

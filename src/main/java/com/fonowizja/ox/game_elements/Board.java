@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -122,7 +122,7 @@ final class Board
       //todo
       // boardObservator.notifyAboutWinner(sign);
 
-      return checkWinnerAtThisMove(sign);
+      return isWinnerAtThisMove(sign);
 
    }
 
@@ -131,6 +131,8 @@ final class Board
 
       if (board.get(boardPosition) == Sign.EMPTY)
       {
+         boolean dek = board.remove("DEK");
+         board.remove(boardPosition.intValue());
          board.add(boardPosition, sign);
 
          return true;
@@ -139,20 +141,26 @@ final class Board
       return false;
    }
 
-   private boolean checkWinnerAtThisMove(Sign sign) throws IllegalSignException
+   private boolean isWinnerAtThisMove(Sign sign) throws IllegalSignException
    {
-      AtomicBoolean gameIsWin = new AtomicBoolean(true);
+      AtomicInteger howManySucces = new AtomicInteger(0);
       if (sign == Sign.O)
       {
          for (String keysOfFieldsToCheck : hypotheticalWinningFieldsForO.keySet())
          {
             List<Integer> fieldsToCheck = hypotheticalWinningFieldsForO.get(keysOfFieldsToCheck);
             fieldsToCheck.forEach(index -> {
-               if (board.get(index) != sign)
+
+               if (board.get(index) == sign)
                {
-                  gameIsWin.set(false);
+                  howManySucces.getAndIncrement();
                }
             });
+            if (howManySucces.get() == winningSize)
+            {
+               return true;
+            }
+            howManySucces.set(0);
          }
       }
       else if (sign == Sign.X)
@@ -164,9 +172,14 @@ final class Board
                fieldsToCheck.forEach(index -> {
                   if (board.get(index) != sign)
                   {
-                     gameIsWin.set(false);
+                     howManySucces.getAndIncrement();
                   }
                });
+               if (howManySucces.get() == winningSize)
+               {
+                  return true;
+               }
+               howManySucces.set(0);
             }
          }
 
@@ -175,7 +188,7 @@ final class Board
       {
          throw new IllegalSignException(ILLEGAL_SIGN_EXCEPTION_MESSAGE);
       }
-      return gameIsWin.get();
+      return false;
    }
 
    private void createHypotheticalWinningFields(Sign sign, Integer boardPosition)
