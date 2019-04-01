@@ -28,6 +28,7 @@ final class Board
    static final String EXCEPTION_MESSAGE = "boardSize to small";
    static final String EXCEPTION_WINNING_SIZE_MESSAGE = "winning size to small";
    private static final String FIELD_IS_NOT_EMPTY_EXCEPTION = "Field is not empty!";
+   private static final String ILLEGAL_SIGN_EXCEPTION_MESSAGE = "This is neither X nor O";
    private final List<Sign> board = new ArrayList<>();
    @Min(value = 9, message = EXCEPTION_MESSAGE)
    private final Integer boardSize;
@@ -40,9 +41,9 @@ final class Board
    private BoardObservator boardObservator;
 
    @Getter(AccessLevel.PACKAGE)
-   private final Map<String, List<Integer>> hypotheticalWinningFieldsXXX = new HashMap<>();
+   private final Map<String, List<Integer>> hypotheticalWinningFieldsForX = new HashMap<>();
    @Getter(AccessLevel.PACKAGE)
-   private final Map<String, List<Integer>> hypotheticalWinningFieldsOOO = new HashMap<>();
+   private final Map<String, List<Integer>> hypotheticalWinningFieldsForO = new HashMap<>();
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> allWinningFields;
 
@@ -108,7 +109,7 @@ final class Board
       return boardAsString.toString();
    }
 
-   boolean isWinningMove(Sign sign, Integer boardPosition) throws Exception
+   boolean isWinningMove(Sign sign, Integer boardPosition) throws FieldIsNotEmptyException, IllegalSignException
    {
 
       if (!putSignIntoBoard(sign, boardPosition))
@@ -138,14 +139,14 @@ final class Board
       return false;
    }
 
-   private boolean checkWinnerAtThisMove(Sign sign) throws Exception
+   private boolean checkWinnerAtThisMove(Sign sign) throws IllegalSignException
    {
       AtomicBoolean gameIsWin = new AtomicBoolean(true);
       if (sign == Sign.O)
       {
-         for (String keysOfFieldsToCheck : hypotheticalWinningFieldsOOO.keySet())
+         for (String keysOfFieldsToCheck : hypotheticalWinningFieldsForO.keySet())
          {
-            List<Integer> fieldsToCheck = hypotheticalWinningFieldsOOO.get(keysOfFieldsToCheck);
+            List<Integer> fieldsToCheck = hypotheticalWinningFieldsForO.get(keysOfFieldsToCheck);
             fieldsToCheck.forEach(index -> {
                if (board.get(index) != sign)
                {
@@ -157,9 +158,9 @@ final class Board
       else if (sign == Sign.X)
       {
          {
-            for (String keysOfFieldsToCheck : hypotheticalWinningFieldsXXX.keySet())
+            for (String keysOfFieldsToCheck : hypotheticalWinningFieldsForX.keySet())
             {
-               List<Integer> fieldsToCheck = hypotheticalWinningFieldsXXX.get(keysOfFieldsToCheck);
+               List<Integer> fieldsToCheck = hypotheticalWinningFieldsForX.get(keysOfFieldsToCheck);
                fieldsToCheck.forEach(index -> {
                   if (board.get(index) != sign)
                   {
@@ -172,8 +173,7 @@ final class Board
       }
       else
       {
-         //TODO zrobic wyjatek
-         throw new Exception();
+         throw new IllegalSignException(ILLEGAL_SIGN_EXCEPTION_MESSAGE);
       }
       return gameIsWin.get();
    }
@@ -223,14 +223,14 @@ final class Board
    {
       if (sign == Sign.O)
       {
-         if (hypotheticalWinningFieldsXXX.containsKey(key))
+         if (hypotheticalWinningFieldsForX.containsKey(key))
          {
-            hypotheticalWinningFieldsXXX.remove(key);
+            hypotheticalWinningFieldsForX.remove(key);
             return;
          }
          if (allWinningFields.containsKey(key))
          {
-            hypotheticalWinningFieldsOOO.put(key, value);
+            hypotheticalWinningFieldsForO.put(key, value);
             allWinningFields.remove(key);
          }
          return;
@@ -238,15 +238,15 @@ final class Board
 
       if (sign == Sign.X)
       {
-         if (hypotheticalWinningFieldsOOO.containsKey(key))
+         if (hypotheticalWinningFieldsForO.containsKey(key))
          {
-            hypotheticalWinningFieldsOOO.remove(key);
+            hypotheticalWinningFieldsForO.remove(key);
             return;
          }
 
          if (allWinningFields.containsKey(key))
          {
-            hypotheticalWinningFieldsXXX.put(key, value);
+            hypotheticalWinningFieldsForX.put(key, value);
             allWinningFields.remove(key);
          }
       }
@@ -256,7 +256,7 @@ final class Board
    //remis
    boolean isDraw()
    {
-      if (hypotheticalWinningFieldsXXX.isEmpty() && hypotheticalWinningFieldsOOO.isEmpty() && allWinningFields.isEmpty())
+      if (hypotheticalWinningFieldsForX.isEmpty() && hypotheticalWinningFieldsForO.isEmpty() && allWinningFields.isEmpty())
       {
          return true;
       }

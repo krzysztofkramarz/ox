@@ -10,6 +10,7 @@ public class GameElementsServiceImpl implements GameElementsService
 
    Board board;
 
+   // todo javadoc i wyjasnic co jest co
    public GameElementsServiceImpl(Integer boardSize, Integer boardLenght, Integer winningSize)
    {
       board = Board.builder().boardSize(boardSize).boardLenght(boardLenght).winningSize(winningSize).build();

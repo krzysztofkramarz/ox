@@ -18,5 +18,4 @@ public interface GameElementsService
 
    boolean isDraw();
 
-
 }

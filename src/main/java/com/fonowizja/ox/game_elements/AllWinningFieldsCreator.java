@@ -7,20 +7,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.constraints.Min;
-
 /**
  * @author krzysztof.kramarz
  */
 class AllWinningFieldsCreator
 {
 
-
    private final Integer boardSize;
    private final Integer boardLenght;
    private final Integer winningSize;
 
-    AllWinningFieldsCreator(Integer boardSize, Integer boardLenght, Integer winningSize)
+   AllWinningFieldsCreator(Integer boardSize, Integer boardLenght, Integer winningSize)
    {
       this.boardSize = boardSize;
       this.boardLenght = boardLenght;

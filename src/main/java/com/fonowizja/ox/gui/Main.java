@@ -1,8 +1,5 @@
 package com.fonowizja.ox.gui;
 
-import com.fonowizja.ox.game_elements.GameElementsService;
-import com.fonowizja.ox.game_elements.GameElementsServiceImpl;
-
 /**
  * @author krzysztof.kramarz
  */

@@ -7,7 +7,8 @@ import javax.swing.*;
  */
 class SliderHelper
 {
-   static void setSliderAttibutes(JSlider jSlider){
+   static void setSliderAttibutes(JSlider jSlider)
+   {
 
       jSlider.setMajorTickSpacing(6);
       jSlider.setMinorTickSpacing(1);
@@ -17,6 +18,5 @@ class SliderHelper
       jSlider.setSnapToTicks(true);
       jSlider.setPaintTrack(true);
    }
-
 
 }

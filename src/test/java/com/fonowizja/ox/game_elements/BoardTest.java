@@ -115,8 +115,8 @@ public class BoardTest
       board.fillMap(Sign.X, "[6, 10, 14]", Arrays.asList(6, 10, 14));
       board.fillMap(Sign.X, "[13, 14, 15]", Arrays.asList(13, 14, 15));
 
-      assertThat(board.getHypotheticalWinningFieldsOOO()).containsOnlyKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
-      assertThat(board.getHypotheticalWinningFieldsXXX()).containsOnlyKeys("[7, 11, 15]", "[6, 10, 14]", "[13, 14, 15]");
+      assertThat(board.getHypotheticalWinningFieldsForO()).containsOnlyKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
+      assertThat(board.getHypotheticalWinningFieldsForX()).containsOnlyKeys("[7, 11, 15]", "[6, 10, 14]", "[13, 14, 15]");
    }
 
    @Test
@@ -131,8 +131,8 @@ public class BoardTest
       board.fillMap(Sign.X, "[4, 9, 14]", Arrays.asList(4, 9, 14));
       board.fillMap(Sign.X, "[0, 4, 8]", Arrays.asList(0, 4, 8));
 
-      assertThat(board.getHypotheticalWinningFieldsOOO()).isEmpty();
-      assertThat(board.getHypotheticalWinningFieldsXXX()).isEmpty();
+      assertThat(board.getHypotheticalWinningFieldsForO()).isEmpty();
+      assertThat(board.getHypotheticalWinningFieldsForX()).isEmpty();
       assertThat(board.getAllWinningFields()).doesNotContainKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
    }
 
@@ -155,10 +155,38 @@ public class BoardTest
       board.fillMap(Sign.X, "[12, 13, 14]", Arrays.asList(12, 13, 14));
       board.fillMap(Sign.X, "[12, 16, 20]", Arrays.asList(4, 5, 6));
 
-      Map<String, List<Integer>> hypotheticalWinningFieldsOOO = board.getHypotheticalWinningFieldsOOO();
-      Map<String, List<Integer>> hypotheticalWinningFieldsXXX = board.getHypotheticalWinningFieldsXXX();
+      Map<String, List<Integer>> hypotheticalWinningFieldsOOO = board.getHypotheticalWinningFieldsForO();
+      Map<String, List<Integer>> hypotheticalWinningFieldsXXX = board.getHypotheticalWinningFieldsForX();
       assertThat(hypotheticalWinningFieldsOOO).containsOnlyKeys("[3, 8, 13]", "[5, 6, 7]");
       assertThat(hypotheticalWinningFieldsXXX).containsOnlyKeys("[12, 13, 14]", "[12, 16, 20]");
       assertThat(board.getAllWinningFields()).doesNotContainKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
+   }
+
+  /* @DataProvider(name = "testWinningGame")
+   public Object[][] testWinningGame()
+   {
+      return new Object[][] {
+            { Arrays.asList(Arrays.asList(Sign.O, 3), Sign.O, 24 }
+
+      };
+   }
+*/
+   @Test(dataProvider = "testWinningGame")
+   public void testWinningGame(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
+   {
+      Board board = Board.builder().boardSize(25).boardLenght(5).winningSize(3).build();
+      board.cleanBoard();
+
+      for (List<Object> move : movesForWin)
+      {
+         board.isWinningMove((Sign) move.get(0), (Integer) move.get(1));
+      }
+
+      boolean draw = board.isDraw();
+      //final move
+      boolean result = board.putSignIntoBoard(sign, boardPosition);
+      assertThat(result).isFalse();
+      assertThat(draw).isFalse();
+
    }
 }

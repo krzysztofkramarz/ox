@@ -4,9 +4,6 @@ import static com.fonowizja.ox.game_elements.IntegerRangeHelper.generateRangeOfS
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.IntUnaryOperator;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -109,8 +106,6 @@ class HypotheticalWinningFieldsCreator
       }
       return hypotheticalFields;
    }
-
-
 
    //      ###########   BUILDER   ###########
    static final class Builder implements NeedSign, NeedWinningSize, NeedX, NeedPositionInBoard, CanBeBuild, NeedBoardSize
