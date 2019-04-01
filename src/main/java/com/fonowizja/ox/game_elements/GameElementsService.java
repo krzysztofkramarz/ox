@@ -7,6 +7,7 @@ import com.fonowizja.ox.game.BoardObservator;
  */
 public interface GameElementsService
 {
+   @Deprecated
    String getBoardAsString();
 
    boolean isWinningMove(Sign sign, Integer boardPosition) throws Exception;

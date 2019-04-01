@@ -16,6 +16,7 @@ public class GameElementsServiceImpl implements GameElementsService
    }
 
    @Override
+   @Deprecated
    public String getBoardAsString()
    {
       return board.getBoardAsString();

@@ -75,6 +75,7 @@ final class Board
 
    }
 
+   @Deprecated
    String getBoardAsString()
    {
       StringBuilder boardAsString = new StringBuilder();
@@ -112,12 +113,12 @@ final class Board
 
       if (!putSignIntoBoard(sign, boardPosition))
       {
-         //TODO zrobic wyjątek ze nie da się wstawic znaku na niepuste pole
          throw new FieldIsNotEmptyException(FIELD_IS_NOT_EMPTY_EXCEPTION);
       }
 
       createHypotheticalWinningFields(sign, boardPosition);
 
+      //todo
       // boardObservator.notifyAboutWinner(sign);
 
       return checkWinnerAtThisMove(sign);
@@ -250,13 +251,6 @@ final class Board
          }
       }
 
-   }
-
-   private isWinner()
-   {
-
-      Set<Map.Entry<String, List<Integer>>> entries = hypotheticalWinningFieldsOOO.entrySet();
-      iterate.entries ->odczytaj wartosci z kluczy wszystkich i w tych polach sprawdz czy są też X
    }
 
    //remis
