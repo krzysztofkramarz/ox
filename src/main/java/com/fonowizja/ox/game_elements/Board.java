@@ -36,8 +36,6 @@ final class Board
    @Min(value = 3, message = EXCEPTION_WINNING_SIZE_MESSAGE)
    private final Integer winningSize;
 
-
-
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsForX = new HashMap<>();
    @Getter(AccessLevel.PACKAGE)
@@ -45,16 +43,14 @@ final class Board
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
 
-   //todo
-   private HypotheticalWinningFieldsCreator createHorizontalWinnerFields;
-
    private Board(Integer boardSize, Integer boardLenght, Integer winningSize)
    {
       this.boardSize = boardSize;
       this.boardLenght = boardLenght;
       this.winningSize = winningSize;
-      AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(boardSize, boardLenght, winningSize);
-      allEmptyWinningCombinationsThatCanBeUsed = allWinningFieldsCreator.createAllWinningFields();
+      AllEmptyWinningCombinationsCreator
+            allEmptyWinningCombinationsCreator = new AllEmptyWinningCombinationsCreator(boardSize, boardLenght, winningSize);
+      allEmptyWinningCombinationsThatCanBeUsed = allEmptyWinningCombinationsCreator.createAllEmptyWinningCombinationsThatCanBeUsed();
       cleanBoard();
 
    }
@@ -66,9 +62,9 @@ final class Board
       {
          board.add(Sign.EMPTY);
       }
+      hypotheticalWinningFieldsForO.clear();
+      hypotheticalWinningFieldsForX.clear();
    }
-
-
 
    @Deprecated
    String getBoardAsString()
@@ -191,7 +187,7 @@ final class Board
                   .sign(sign)
                   .winningSize(winningSize)
                   .x(boardLenght)
-                  .positionInBoard(boardPosition)
+                  .positionOnBoard(boardPosition)
                   .boardSize(boardSize)
                   .build();
 

@@ -10,21 +10,21 @@ import java.util.Map;
 /**
  * @author krzysztof.kramarz
  */
-class AllWinningFieldsCreator
+class AllEmptyWinningCombinationsCreator
 {
 
    private final Integer boardSize;
    private final Integer boardLenght;
    private final Integer winningSize;
 
-   AllWinningFieldsCreator(Integer boardSize, Integer boardLenght, Integer winningSize)
+   AllEmptyWinningCombinationsCreator(Integer boardSize, Integer boardLenght, Integer winningSize)
    {
       this.boardSize = boardSize;
       this.boardLenght = boardLenght;
       this.winningSize = winningSize;
    }
 
-   Map<String, List<Integer>> createAllWinningFields()
+   Map<String, List<Integer>> createAllEmptyWinningCombinationsThatCanBeUsed()
    {
 
       Map<String, List<Integer>> allWinningFields = new HashMap<>();

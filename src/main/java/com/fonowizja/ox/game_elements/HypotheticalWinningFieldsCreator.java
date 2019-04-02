@@ -30,7 +30,7 @@ class HypotheticalWinningFieldsCreator
    private Integer x;
 
    @NotNull
-   private Integer positionInBoard;
+   private Integer positionOnBoard;
 
    @NotNull
    private Integer boardSize;
@@ -39,9 +39,9 @@ class HypotheticalWinningFieldsCreator
    {
       List<List<Integer>> hypotheticalFields = new ArrayList<>();
       int scope = winningSize - 1;
-      int statOfCurrentRow = positionInBoard - positionInBoard % x;
+      int statOfCurrentRow = positionOnBoard - positionOnBoard % x;
       // końcowy zakres nie wyjedzie na kolejny rząd - inne rozwiazanie:    i + scope < ((whichRow + 1) * x) + x
-      for (int i = positionInBoard - scope; i + scope < (statOfCurrentRow) + x && i <= positionInBoard; i++)
+      for (int i = positionOnBoard - scope; i + scope < (statOfCurrentRow) + x && i <= positionOnBoard; i++)
       {
          if (i < statOfCurrentRow)
          {
@@ -57,7 +57,7 @@ class HypotheticalWinningFieldsCreator
    {
       List<List<Integer>> hypotheticalFields = new ArrayList<>();
       int scope = winningSize - 1;
-      for (int i = positionInBoard - scope * x; i + scope * x < boardSize && i <= positionInBoard; i += x)
+      for (int i = positionOnBoard - scope * x; i + scope * x < boardSize && i <= positionOnBoard; i += x)
       {
          if (i < 0)
          {
@@ -72,7 +72,7 @@ class HypotheticalWinningFieldsCreator
    {
       List<List<Integer>> hypotheticalFields = new ArrayList<>();
       int scope = winningSize - 1;
-      for (int i = positionInBoard - scope * (x - 1); i + scope * (x - 1) < boardSize && i <= positionInBoard; i += (x - 1))
+      for (int i = positionOnBoard - scope * (x - 1); i + scope * (x - 1) < boardSize && i <= positionOnBoard; i += (x - 1))
       {
          if (i < 0)
          {
@@ -92,7 +92,7 @@ class HypotheticalWinningFieldsCreator
    {
       List<List<Integer>> hypotheticalFields = new ArrayList<>();
       int scope = winningSize - 1;
-      for (int i = positionInBoard - scope * (x + 1); i + scope * (x + 1) < boardSize && i <= positionInBoard; i += x + 1)
+      for (int i = positionOnBoard - scope * (x + 1); i + scope * (x + 1) < boardSize && i <= positionOnBoard; i += x + 1)
       {
          if (i < 0)
          {
@@ -108,12 +108,12 @@ class HypotheticalWinningFieldsCreator
    }
 
    //      ###########   BUILDER   ###########
-   static final class Builder implements NeedSign, NeedWinningSize, NeedX, NeedPositionInBoard, CanBeBuild, NeedBoardSize
+   static final class Builder implements NeedSign, NeedWinningSize, NeedX, NeedPositionOnBoard, CanBeBuild, NeedBoardSize
    {
       private Sign sign;
       private Integer winningSize;
       private Integer x;
-      private Integer positionInBoard;
+      private Integer positionOnBoard;
       private Integer boardSize;
 
       @Override
@@ -138,9 +138,9 @@ class HypotheticalWinningFieldsCreator
       }
 
       @Override
-      public Builder positionInBoard(Integer positionInBoard)
+      public Builder positionOnBoard(Integer positionOnBoard)
       {
-         this.positionInBoard = positionInBoard;
+         this.positionOnBoard = positionOnBoard;
          return this;
       }
 
@@ -158,7 +158,7 @@ class HypotheticalWinningFieldsCreator
          toBuild.sign = this.sign;
          toBuild.winningSize = this.winningSize;
          toBuild.x = this.x;
-         toBuild.positionInBoard = this.positionInBoard;
+         toBuild.positionOnBoard = this.positionOnBoard;
          toBuild.boardSize = this.boardSize;
 
          Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -180,12 +180,12 @@ class HypotheticalWinningFieldsCreator
 
    interface NeedX
    {
-      NeedPositionInBoard x(Integer x);
+      NeedPositionOnBoard x(Integer x);
    }
 
-   interface NeedPositionInBoard
+   interface NeedPositionOnBoard
    {
-      NeedBoardSize positionInBoard(Integer positionInBoard);
+      NeedBoardSize positionOnBoard(Integer positionOnBoard);
    }
 
    interface NeedBoardSize

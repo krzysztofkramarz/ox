@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import com.fonowizja.ox.automatic_machine_game.AutomaticMachineServiceImpl;
 import com.fonowizja.ox.game_elements.FieldIsNotEmptyException;
 import com.fonowizja.ox.game_elements.GameElementsService;
 import com.fonowizja.ox.game_elements.GameElementsServiceImpl;
@@ -22,9 +23,11 @@ import lombok.Setter;
 /**
  * @author krzysztof.kramarz
  */
-final class GamePanel extends JPanel
+@SuppressWarnings("ClassWithTooManyFields")
+public final class GamePanel extends JPanel
 {
 
+   private static final long serialVersionUID = -2348212344905788119L;
    static final int MAXIMUM_BOARD_LENGTH = 30;
    static final int MINIMUM_BOARD_LENGTH = 3;
    static final int DEFAULT_WINNING_SIZE = 3;
@@ -32,7 +35,7 @@ final class GamePanel extends JPanel
    static final int DEFAULT_BOARD_LENHTG = 3;
    static final int DEFAULT_BOARD_HEIGHT = 3;
    static final Sign DEFAULT_STARTING_SIGN = Sign.X;
-   ;
+
    private List<JButton> buttonsList;
    @Getter(AccessLevel.PACKAGE)
    private Integer boardLenght;
@@ -50,7 +53,7 @@ final class GamePanel extends JPanel
    private GameElementsService gameElementsService;
    //game elements
    private Sign whoHasATurn;
-   private Integer boardPosition;
+   private Integer positionOnBoard;
    private boolean isDraw;
    private boolean isWinningMove;
 
@@ -142,8 +145,9 @@ final class GamePanel extends JPanel
          {
             JButton buttonClicked = (JButton) e.getSource();
             String text = buttonClicked.getText();
-            boardPosition = buttonsList.indexOf(buttonClicked);
-            System.out.println("klikniety button: " + boardPosition);
+            //todo usunac
+            positionOnBoard = buttonsList.indexOf(buttonClicked);
+            System.out.println("klikniety button: " + positionOnBoard);
 
             if (Sign.X.getSign().equals(text) || Sign.O.getSign().equals(text))
             {
@@ -153,30 +157,19 @@ final class GamePanel extends JPanel
             {
                buttonClicked.setText(Sign.X.getSign());
 
-               makeMove(boardPosition);
+               makeMove(positionOnBoard);
             }
             else
             {
                buttonClicked.setText(Sign.O.getSign());
-               makeMove(boardPosition);
+               makeMove(positionOnBoard);
             }
          }
       }
 
    }
 
-   boolean startGame(Sign whoHasATurn, boolean canPlayersPlay)
-   {
-      this.whoHasATurn = whoHasATurn;
-      this.canPlayersPlay = canPlayersPlay;
-      isDraw = false;
-      gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
-      gameElementsService.cleanBoard();
-      resetButtons();
-      return true; //todo ustalic co ma warunek miec i jaki
-   }
-
-   boolean makeMove(Integer boardPosition)
+   private boolean makeMove(Integer boardPosition)
    {
       try
       {
@@ -206,5 +199,53 @@ final class GamePanel extends JPanel
 
       }
       return true; //todo ustalic co ma warunek miec i jaki
+   }
+
+   boolean startGame(Sign whoHasATurn, boolean canPlayersPlay)
+   {
+      resetButtons();
+      this.whoHasATurn = whoHasATurn;
+      this.canPlayersPlay = canPlayersPlay;
+      isDraw = false;
+      gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
+      gameElementsService.cleanBoard();
+      return true; //todo ustalic co ma warunek miec i jaki
+   }
+
+   void automaticTestMachineStart(Sign whoHasATurn, boolean canPlayersPlay)
+   {
+      this.whoHasATurn = whoHasATurn;
+      this.canPlayersPlay = canPlayersPlay;
+      isDraw = false;
+      gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
+      AutomaticMachineServiceImpl automaticMachineService = new AutomaticMachineServiceImpl();
+      automaticMachineService.createAutomaticMachine(gameElementsService, this);
+      automaticMachineService.automaticTestMachineStart();
+
+      // resetButtons();
+   }
+
+   /**
+    * Puts sign on choosen position on board
+    *
+    * @param sign
+    *       sign to put
+    * @param positionOnBoard
+    *       where put sign
+    * @return
+    */
+   public boolean putSignOnField(Sign sign, Integer positionOnBoard)
+   {
+      System.out.println(buttonsList.get(positionOnBoard).getText());
+      System.out.println(buttonsList.get(positionOnBoard));
+
+      buttonsList.get(positionOnBoard).setText(Sign.O.getSign());
+      validate();
+      return true;
+   }
+
+   public void validatePanel()
+   {
+      validate();
    }
 }

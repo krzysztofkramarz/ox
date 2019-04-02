@@ -24,9 +24,9 @@ final class UpperSettingsPanel extends JPanel
    private JTextField winningSizeResultTextField;
    private GamePanel gamePanel;
 
-   private ButtonGroup whoIsFirstBG;
-   private JRadioButton XisFirsJRB;
-   private JRadioButton OisFirstJRB;
+   private ButtonGroup whoIsFirstBtnGrp;
+   private JRadioButton XisFirsRadioBtn;
+   private JRadioButton OisFirstRadioBtn;
    private JPanel whoIsFistPanel;
    private JPanel boardLengthPanel;
    private JPanel winningSizePanel;
@@ -94,15 +94,15 @@ final class UpperSettingsPanel extends JPanel
 
       whoIsFistPanel = new JPanel(new FlowLayout());
 
-      whoIsFirstBG = new ButtonGroup();
-      XisFirsJRB = new JRadioButton("Pierwszy gra X", true);
-      OisFirstJRB = new JRadioButton("Pierwszy gra O", false);
-      XisFirsJRB.addActionListener(event -> whoIsFirst = Sign.X);
-      OisFirstJRB.addActionListener(event -> whoIsFirst = Sign.O);
-      whoIsFirstBG.add(XisFirsJRB);
-      whoIsFirstBG.add(OisFirstJRB);
-      whoIsFistPanel.add(XisFirsJRB);
-      whoIsFistPanel.add(OisFirstJRB);
+      whoIsFirstBtnGrp = new ButtonGroup();
+      XisFirsRadioBtn = new JRadioButton("Pierwszy gra X", true);
+      OisFirstRadioBtn = new JRadioButton("Pierwszy gra O", false);
+      XisFirsRadioBtn.addActionListener(event -> whoIsFirst = Sign.X);
+      OisFirstRadioBtn.addActionListener(event -> whoIsFirst = Sign.O);
+      whoIsFirstBtnGrp.add(XisFirsRadioBtn);
+      whoIsFirstBtnGrp.add(OisFirstRadioBtn);
+      whoIsFistPanel.add(XisFirsRadioBtn);
+      whoIsFistPanel.add(OisFirstRadioBtn);
 
       TitledBorder border = BorderFactory.createTitledBorder("Kto zaczyna");
       border.setTitleColor(Color.green);
@@ -134,8 +134,8 @@ final class UpperSettingsPanel extends JPanel
       boardLengthSliderResultTextField.setEnabled(isEnable);
       winningSizeResultTextField.setEnabled(isEnable);
 
-      XisFirsJRB.setEnabled(isEnable);
-      OisFirstJRB.setEnabled(isEnable);
+      XisFirsRadioBtn.setEnabled(isEnable);
+      OisFirstRadioBtn.setEnabled(isEnable);
    }
 
    private class boardLengthSliderListener implements ChangeListener

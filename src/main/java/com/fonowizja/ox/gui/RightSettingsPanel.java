@@ -25,7 +25,9 @@ final class RightSettingsPanel extends JPanel
    private JPanel boardHeightPanel;
    private JLabel boardHeightLabel;
 
-   private JButton gameStart;
+   private JButton gameStartBtn;
+   private JButton automaticTestMachineStartBtn;
+   private JButton gameWithAutomaticMachineStartBtn;
 
    RightSettingsPanel(GamePanel gamePanel, UpperSettingsPanel upperSettingsPanel)
    {
@@ -38,16 +40,57 @@ final class RightSettingsPanel extends JPanel
       createBoardHeightPanel();
 
       createGameStartButton();
+      createGameWithAutomaticMachineStartBtn();
+      createAutomaticTestMachineStartBtn();
 
+   }
+
+   private void createAutomaticTestMachineStartBtn()
+   {
+      automaticTestMachineStartBtn = new JButton();
+      automaticTestMachineStartBtn = new JButton("AUTOMATYCZNA ROZGRYWKA");
+      automaticTestMachineStartBtn.setBackground(Color.PINK);
+      automaticTestMachineStartBtn.setOpaque(true);
+      add(automaticTestMachineStartBtn);
+      automaticTestMachineStartBtn.addActionListener(new ActionListener()
+      {
+         @Override
+         public void actionPerformed(ActionEvent e)
+         {
+            upperSettingsPanel.changeElementsEnable(false);
+            changeElementsEnable(false);
+            Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
+            gamePanel.automaticTestMachineStart(whoIsFirst, false);
+         }
+
+      });
+   }
+
+   private void createGameWithAutomaticMachineStartBtn()
+   {
+      gameWithAutomaticMachineStartBtn = new JButton();
+      gameWithAutomaticMachineStartBtn = new JButton("GRAJ Z AUTOMATEM");
+      gameWithAutomaticMachineStartBtn.setBackground(Color.PINK);
+      gameWithAutomaticMachineStartBtn.setOpaque(true);
+      add(gameWithAutomaticMachineStartBtn);
+      gameWithAutomaticMachineStartBtn.addActionListener(new ActionListener()
+      {
+         @Override
+         public void actionPerformed(ActionEvent e)
+         {
+
+         }
+
+      });
    }
 
    private void createGameStartButton()
    {
-      gameStart = new JButton("START GRY");
-      gameStart.setBackground(Color.PINK);
-      gameStart.setOpaque(true);
-      add(gameStart);
-      gameStart.addActionListener(new ActionListener()
+      gameStartBtn = new JButton("START GRY");
+      gameStartBtn.setBackground(Color.PINK);
+      gameStartBtn.setOpaque(true);
+      add(gameStartBtn);
+      gameStartBtn.addActionListener(new ActionListener()
       {
          @Override
          public void actionPerformed(ActionEvent e)
@@ -65,7 +108,7 @@ final class RightSettingsPanel extends JPanel
    {
       boardHeightySlider.setEnabled(isEnable);
       boardHeightSliderTextField.setEnabled(isEnable);
-      gameStart.setEnabled(isEnable);
+      gameStartBtn.setEnabled(isEnable);
    }
 
    private void setBoardHeightSliderAttibutes()
@@ -81,14 +124,14 @@ final class RightSettingsPanel extends JPanel
    {
 
       boardHeightPanel = new JPanel();
-      boardHeightLabel = new JLabel("Ustaw ile znaczkow wygrywa");
+      boardHeightLabel = new JLabel("Ustaw wysokość tablicy");
       boardHeightSliderTextField = new JTextField(String.valueOf(GamePanel.DEFAULT_BOARD_HEIGHT), 2);
 
       boardHeightPanel.add(boardHeightLabel);
       boardHeightPanel.add(boardHeightySlider);
       boardHeightPanel.add(boardHeightSliderTextField);
 
-      TitledBorder border = BorderFactory.createTitledBorder("Ustaw ile znaczkow wygrywa");
+      TitledBorder border = BorderFactory.createTitledBorder("Ustaw wysokość tablicy");
       border.setTitleColor(Color.blue);
       border.setBorder(new LineBorder(Color.BLUE, 1));
       boardHeightPanel.setBorder(border);

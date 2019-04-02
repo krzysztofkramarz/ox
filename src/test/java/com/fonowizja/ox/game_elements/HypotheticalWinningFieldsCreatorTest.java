@@ -34,7 +34,7 @@ public class HypotheticalWinningFieldsCreatorTest
 
    {
       HypotheticalWinningFieldsCreator hypotheticalWinningFieldsCreator =
-            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionInBoard(positionInBoarrd)
+            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionOnBoard(positionInBoarrd)
                   .boardSize(boardSize).build();
       List<List<Integer>> result = hypotheticalWinningFieldsCreator.createVerticalWinnerFields();
 
@@ -62,7 +62,7 @@ public class HypotheticalWinningFieldsCreatorTest
 
    {
       HypotheticalWinningFieldsCreator hypotheticalWinningFieldsCreator =
-            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionInBoard(positionInBoarrd)
+            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionOnBoard(positionInBoarrd)
                   .boardSize(boardSize).build();
       List<List<Integer>> result = hypotheticalWinningFieldsCreator.createHorizontalWinnerFields();
 
@@ -94,7 +94,7 @@ public class HypotheticalWinningFieldsCreatorTest
 
    {
       HypotheticalWinningFieldsCreator hypotheticalWinningFieldsCreator =
-            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionInBoard(positionInBoarrd)
+            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionOnBoard(positionInBoarrd)
                   .boardSize(boardSize).build();
       List<List<Integer>> result = hypotheticalWinningFieldsCreator.createSlashWinnerFields();
 
@@ -125,7 +125,7 @@ public class HypotheticalWinningFieldsCreatorTest
 
    {
       HypotheticalWinningFieldsCreator hypotheticalWinningFieldsCreator =
-            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionInBoard(positionInBoarrd)
+            HypotheticalWinningFieldsCreator.builder().sign(sign).winningSize(winningSize).x(widthBoad).positionOnBoard(positionInBoarrd)
                   .boardSize(boardSize).build();
       List<List<Integer>> result = hypotheticalWinningFieldsCreator.createBackSlashWinnerFields();
 

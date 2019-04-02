@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 /**
  * @author krzysztof.kramarz
  */
-public class AllWinningFieldsCreatorTest
+public class AllEmptyWinningCombinationsCreatorTest
 {
 
    @DataProvider
@@ -40,9 +40,9 @@ public class AllWinningFieldsCreatorTest
       {
          expectWinningFields.put(all.toString(), all);
       }
-      AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(21, 7, 3);
+      AllEmptyWinningCombinationsCreator allEmptyWinningCombinationsCreator = new AllEmptyWinningCombinationsCreator(21, 7, 3);
 
-      Map<String, List<Integer>> resultWinningFields = allWinningFieldsCreator.createAllWinningFields();
+      Map<String, List<Integer>> resultWinningFields = allEmptyWinningCombinationsCreator.createAllEmptyWinningCombinationsThatCanBeUsed();
 
       assertThat(resultWinningFields).containsAllEntriesOf(expectWinningFields);
    }
@@ -67,9 +67,9 @@ public class AllWinningFieldsCreatorTest
       {
          expectWinningFields.put(all.toString(), all);
       }
-      AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(9, 3, 3);
+      AllEmptyWinningCombinationsCreator allEmptyWinningCombinationsCreator = new AllEmptyWinningCombinationsCreator(9, 3, 3);
 
-      Map<String, List<Integer>> resultWinningFields = allWinningFieldsCreator.createAllWinningFields();
+      Map<String, List<Integer>> resultWinningFields = allEmptyWinningCombinationsCreator.createAllEmptyWinningCombinationsThatCanBeUsed();
 
       assertThat(resultWinningFields).containsAllEntriesOf(expectWinningFields);
    }
