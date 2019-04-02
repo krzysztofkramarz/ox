@@ -3,6 +3,7 @@ package com.fonowizja.ox.game_elements;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -237,7 +238,6 @@ public class BoardTest
 
    }
 
-
    @DataProvider(name = "testWinningGameBackSlashSize9")
    public Object[][] testWinningGameBackSlashSize9()
    {
@@ -274,7 +274,6 @@ public class BoardTest
       assertThat(draw).isFalse();
 
    }
-
 
    @DataProvider(name = "testDraw")
    public Object[][] testDraw()
@@ -316,5 +315,93 @@ public class BoardTest
       assertThat(result).isFalse();
       assertThat(draw).isTrue();
 
+   }
+
+   @DataProvider(name = "testForAutomation")
+   public Object[][] testForAutomation()
+   {
+      return new Object[][] {
+            { Arrays.asList(
+                  Arrays.asList(Sign.X, 0),
+                  Arrays.asList(Sign.X, 1),
+                  Arrays.asList(Sign.X, 2),
+                  Arrays.asList(Sign.X, 3)
+            ), Arrays.asList(Arrays.asList(12, 13, 14, 15), Arrays.asList(4, 5, 6, 7), Arrays.asList(8, 9, 10, 11)) }
+
+      };
+   }
+
+   @Test(dataProvider = "testForAutomation")
+   public void testForAutomation(List<List<Object>> movesForWin, List<List<Integer>> expect) throws Exception
+   {
+      Board board = Board.builder().boardSize(16).boardLenght(4).winningSize(4).build();
+      board.cleanBoard();
+
+      for (List<Object> move : movesForWin)
+      {
+         board.isWinningMove((Sign) move.get(0), (Integer) move.get(1));
+      }
+
+      Map<String, List<Integer>> expectWinningFields = new HashMap<>();
+
+      for (List<Integer> all : expect)
+      {
+         expectWinningFields.put(all.toString(), all);
+      }
+
+      Map<String, List<Integer>> result = board.getAllEmptyWinningCombinationsThatCanBeUsed();
+      assertThat(result).containsAllEntriesOf(expectWinningFields);
+   }
+
+   @DataProvider(name = "testForAutomationLength3")
+   public Object[][] testForAutomationLength3()
+   {
+      return new Object[][] {
+            { Arrays.asList(
+                  Arrays.asList(Sign.X, 0),
+                  Arrays.asList(Sign.X, 1),
+                  Arrays.asList(Sign.X, 2)
+            ), Arrays.asList(
+                  Arrays.asList(4, 5, 6),
+                  Arrays.asList(5, 6, 7),
+                  Arrays.asList(8, 9, 10),
+                  Arrays.asList(9, 10, 11),
+                  Arrays.asList(12, 13, 14),
+                  Arrays.asList(13, 14, 15),
+                  Arrays.asList(3, 7, 11),
+                  Arrays.asList(4, 8, 12),
+                  Arrays.asList(5, 9, 13),
+                  Arrays.asList(6, 10, 14),
+                  Arrays.asList(7, 11, 15),
+                  Arrays.asList(4, 9, 14),
+                  Arrays.asList(5, 10, 15),
+                  Arrays.asList(3, 6, 9),
+                  Arrays.asList(6, 9, 12),
+                  Arrays.asList(7, 10, 13))
+            }
+
+      };
+   }
+
+   @Test(dataProvider = "testForAutomationLength3")
+   public void testForAutomationLength3(List<List<Object>> movesForWin, List<List<Integer>> expect) throws Exception
+   {
+      Board board = Board.builder().boardSize(16).boardLenght(4).winningSize(3).build();
+      board.cleanBoard();
+
+      for (List<Object> move : movesForWin)
+      {
+         board.isWinningMove((Sign) move.get(0), (Integer) move.get(1));
+      }
+
+      Map<String, List<Integer>> expectWinningFields = new HashMap<>();
+
+      for (List<Integer> all : expect)
+      {
+         expectWinningFields.put(all.toString(), all);
+      }
+
+      Map<String, List<Integer>> result = board.getAllEmptyWinningCombinationsThatCanBeUsed();
+      assertThat(result).containsAllEntriesOf(expectWinningFields);
    }
 }

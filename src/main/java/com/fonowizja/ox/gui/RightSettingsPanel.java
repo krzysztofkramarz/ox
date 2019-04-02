@@ -24,6 +24,7 @@ final class RightSettingsPanel extends JPanel
 
    private JPanel boardHeightPanel;
    private JLabel boardHeightLabel;
+   private JPanel buttonPanel;
 
    private JButton gameStartBtn;
    private JButton automaticTestMachineStartBtn;
@@ -42,6 +43,7 @@ final class RightSettingsPanel extends JPanel
       createGameStartButton();
       createGameWithAutomaticMachineStartBtn();
       createAutomaticTestMachineStartBtn();
+      createButtonPanel();
 
    }
 
@@ -60,7 +62,7 @@ final class RightSettingsPanel extends JPanel
             upperSettingsPanel.changeElementsEnable(false);
             changeElementsEnable(false);
             Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
-            gamePanel.automaticTestMachineStart(whoIsFirst, false);
+            gamePanel.automaticTestMachineStart(whoIsFirst);
          }
 
       });
@@ -102,6 +104,20 @@ final class RightSettingsPanel extends JPanel
          }
 
       });
+   }
+
+   private void createButtonPanel()
+   {
+      buttonPanel = new JPanel();
+      buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
+
+      buttonPanel.add(gameStartBtn);
+      buttonPanel.add(gameWithAutomaticMachineStartBtn);
+      buttonPanel.add(automaticTestMachineStartBtn);
+      gameStartBtn.setAlignmentX(CENTER_ALIGNMENT);
+      gameWithAutomaticMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
+      automaticTestMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
+      add(buttonPanel);
    }
 
    private void changeElementsEnable(boolean isEnable)

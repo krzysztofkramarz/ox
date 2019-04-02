@@ -109,8 +109,6 @@ final class Board
 
       createHypotheticalWinningFields(sign, boardPosition);
 
-      //todo
-      // boardObservator.notifyAboutWinner(sign);
 
       return isWinnerAtThisMove(sign);
 

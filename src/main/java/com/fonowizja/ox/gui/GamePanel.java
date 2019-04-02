@@ -212,15 +212,15 @@ public final class GamePanel extends JPanel
       return true; //todo ustalic co ma warunek miec i jaki
    }
 
-   void automaticTestMachineStart(Sign whoHasATurn, boolean canPlayersPlay)
+   void automaticTestMachineStart(Sign whoHasATurn)
    {
-      this.whoHasATurn = whoHasATurn;
-      this.canPlayersPlay = canPlayersPlay;
+      // this.whoHasATurn = whoHasATurn;
+      this.canPlayersPlay = false;
       isDraw = false;
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
       AutomaticMachineServiceImpl automaticMachineService = new AutomaticMachineServiceImpl();
       automaticMachineService.createAutomaticMachine(gameElementsService, this);
-      automaticMachineService.automaticTestMachineStart();
+      automaticMachineService.automaticTestMachineStart(whoHasATurn);
 
       // resetButtons();
    }
@@ -234,16 +234,15 @@ public final class GamePanel extends JPanel
     *       where put sign
     * @return
     */
-   public boolean putSignOnField(Sign sign, Integer positionOnBoard)
+   public void putSignOnField(Sign sign, Integer positionOnBoard)
    {
-      System.out.println(buttonsList.get(positionOnBoard).getText());
-      System.out.println(buttonsList.get(positionOnBoard));
-
-      buttonsList.get(positionOnBoard).setText(Sign.O.getSign());
+      buttonsList.get(positionOnBoard).setText(sign.getSign());
       validate();
-      return true;
    }
 
+   /**
+    * Validate all panel
+    */
    public void validatePanel()
    {
       validate();

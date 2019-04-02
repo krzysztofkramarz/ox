@@ -1,6 +1,7 @@
 package com.fonowizja.ox.automatic_machine_game;
 
 import com.fonowizja.ox.game_elements.GameElementsService;
+import com.fonowizja.ox.game_elements.Sign;
 import com.fonowizja.ox.gui.GamePanel;
 
 /**
@@ -11,5 +12,5 @@ public interface AutomaticMachineService
 
    AutomaticMachine createAutomaticMachine(GameElementsService gameElementsService, GamePanel gamePanel);
 
-   void automaticTestMachineStart();
+   void automaticTestMachineStart(Sign sign);
 }

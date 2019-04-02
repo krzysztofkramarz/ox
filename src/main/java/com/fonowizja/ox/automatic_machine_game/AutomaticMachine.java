@@ -1,12 +1,9 @@
 package com.fonowizja.ox.automatic_machine_game;
 
-import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.*;
 
 import com.fonowizja.ox.game_elements.GameElementsService;
 import com.fonowizja.ox.game_elements.Sign;
@@ -31,27 +28,25 @@ class AutomaticMachine
       allEmptyWinningCombinationsThatCanBeUsed = gameElementsService.getAllEmptyWinningCombinationsThatCanBeUsed();
    }
 
-   public void automaticTestMachineStart()
+   public void automaticTestMachineStart(Sign sign)
    {
-     Sign sign = Sign.X;
       combinationsCanBeUsedToPlay = allEmptyWinningCombinationsThatCanBeUsed.keySet();
       Iterator<String> iterator = combinationsCanBeUsedToPlay.iterator();
 
+      for (Iterator<String> it = iterator; it.hasNext(); )
+      {
+         String key = it.next();
+
+      }
       String next = iterator.next();
 
       List<Integer> integers = allEmptyWinningCombinationsThatCanBeUsed.get(next);
-      //
-      // Component[] components = gamePanel.getComponents();
-      //
-      // JButton btn = (JButton) components[8];
-      // btn.setText("DUPA");
-      // gamePanel.validate();
 
       for (Integer positionOnBoard : integers)
       {
          gamePanel.putSignOnField(sign, positionOnBoard);
       }
-      // gamePanel.validatePanel();
+      gamePanel.validatePanel();
 
    }
 }

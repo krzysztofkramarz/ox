@@ -1,6 +1,7 @@
 package com.fonowizja.ox.automatic_machine_game;
 
 import com.fonowizja.ox.game_elements.GameElementsService;
+import com.fonowizja.ox.game_elements.Sign;
 import com.fonowizja.ox.gui.GamePanel;
 
 /**
@@ -18,8 +19,8 @@ public class AutomaticMachineServiceImpl implements AutomaticMachineService
    }
 
    @Override
-   public void automaticTestMachineStart()
+   public void automaticTestMachineStart(Sign sign)
    {
-      automaticMachine.automaticTestMachineStart();
+      automaticMachine.automaticTestMachineStart(sign);
    }
 }
