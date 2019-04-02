@@ -43,7 +43,8 @@ final class UpperSettingsPanel extends JPanel
       setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
       setBorder(new LineBorder(new Color(40), 1));
       setPreferredSize(new Dimension(4000, 200));
-      whoIsFirst = Sign.X;
+      whoIsFirst = GamePanel.DEFAULT_STARTING_SIGN;
+
       setBoardLengthSliderAttibutes();
       setWinningSizeSliderAttibutes();
 

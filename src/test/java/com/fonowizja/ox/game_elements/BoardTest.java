@@ -238,6 +238,43 @@ public class BoardTest
    }
 
 
+   @DataProvider(name = "testWinningGameBackSlashSize9")
+   public Object[][] testWinningGameBackSlashSize9()
+   {
+      return new Object[][] {
+            { Arrays.asList(
+                  Arrays.asList(Sign.X, 0),
+                  Arrays.asList(Sign.O, 1),
+                  Arrays.asList(Sign.X, 4),
+                  Arrays.asList(Sign.O, 5),
+                  Arrays.asList(Sign.X, 7),
+                  Arrays.asList(Sign.O, 6),
+                  Arrays.asList(Sign.X, 3),
+                  Arrays.asList(Sign.O, 2)
+            ), Sign.X, 8 }
+
+      };
+   }
+
+   @Test(dataProvider = "testWinningGameBackSlashSize9")
+   public void testWinningGameBackSlashSize9(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
+   {
+      Board board = Board.builder().boardSize(9).boardLenght(3).winningSize(3).build();
+      board.cleanBoard();
+
+      for (List<Object> move : movesForWin)
+      {
+         board.isWinningMove((Sign) move.get(0), (Integer) move.get(1));
+      }
+
+      //final move
+      boolean result = board.isWinningMove(sign, boardPosition);
+      boolean draw = board.isDraw();
+      assertThat(result).isTrue();
+      assertThat(draw).isFalse();
+
+   }
+
 
    @DataProvider(name = "testDraw")
    public Object[][] testDraw()

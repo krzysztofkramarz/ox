@@ -131,7 +131,6 @@ final class Board
 
       if (board.get(boardPosition) == Sign.EMPTY)
       {
-         boolean dek = board.remove("DEK");
          board.remove(boardPosition.intValue());
          board.add(boardPosition, sign);
 
@@ -170,7 +169,7 @@ final class Board
             {
                List<Integer> fieldsToCheck = hypotheticalWinningFieldsForX.get(keysOfFieldsToCheck);
                fieldsToCheck.forEach(index -> {
-                  if (board.get(index) != sign)
+                  if (board.get(index) == sign)
                   {
                      howManySucces.getAndIncrement();
                   }
