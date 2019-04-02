@@ -45,7 +45,7 @@ final class Board
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsForO = new HashMap<>();
    @Getter(AccessLevel.PACKAGE)
-   private final Map<String, List<Integer>> allWinningFields;
+   private final Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
 
    //todo
    private HypotheticalWinningFieldsCreator createHorizontalWinnerFields;
@@ -56,7 +56,7 @@ final class Board
       this.boardLenght = boardLenght;
       this.winningSize = winningSize;
       AllWinningFieldsCreator allWinningFieldsCreator = new AllWinningFieldsCreator(boardSize, boardLenght, winningSize);
-      allWinningFields = allWinningFieldsCreator.createAllWinningFields();
+      allEmptyWinningCombinationsThatCanBeUsed = allWinningFieldsCreator.createAllWinningFields();
       cleanBoard();
 
    }
@@ -240,10 +240,10 @@ final class Board
             hypotheticalWinningFieldsForX.remove(key);
             return;
          }
-         if (allWinningFields.containsKey(key))
+         if (allEmptyWinningCombinationsThatCanBeUsed.containsKey(key))
          {
             hypotheticalWinningFieldsForO.put(key, value);
-            allWinningFields.remove(key);
+            allEmptyWinningCombinationsThatCanBeUsed.remove(key);
          }
          return;
       }
@@ -256,10 +256,10 @@ final class Board
             return;
          }
 
-         if (allWinningFields.containsKey(key))
+         if (allEmptyWinningCombinationsThatCanBeUsed.containsKey(key))
          {
             hypotheticalWinningFieldsForX.put(key, value);
-            allWinningFields.remove(key);
+            allEmptyWinningCombinationsThatCanBeUsed.remove(key);
          }
       }
 
@@ -268,7 +268,7 @@ final class Board
    //remis
    boolean isDraw()
    {
-      if (hypotheticalWinningFieldsForX.isEmpty() && hypotheticalWinningFieldsForO.isEmpty() && allWinningFields.isEmpty())
+      if (hypotheticalWinningFieldsForX.isEmpty() && hypotheticalWinningFieldsForO.isEmpty() && allEmptyWinningCombinationsThatCanBeUsed.isEmpty())
       {
          return true;
       }

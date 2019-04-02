@@ -1,5 +1,8 @@
 package com.fonowizja.ox.game_elements;
 
+import java.util.List;
+import java.util.Map;
+
 import com.fonowizja.ox.game.BoardObservator;
 
 /**
@@ -8,7 +11,7 @@ import com.fonowizja.ox.game.BoardObservator;
 public class GameElementsServiceImpl implements GameElementsService
 {
 
-   Board board;
+   private Board board;
 
    // todo javadoc i wyjasnic co jest co
    public GameElementsServiceImpl(Integer boardSize, Integer boardLenght, Integer winningSize)
@@ -47,6 +50,27 @@ public class GameElementsServiceImpl implements GameElementsService
    public boolean isDraw()
    {
       return board.isDraw();
+   }
+
+//todo czy potrzebna?? usunac jak coś
+   @Override
+   public Map<String, List<Integer>> getHypotheticalWinningFieldsForX()
+   {
+      return null;
+   }
+
+   //todo czy potrzebna?? usunac jak coś
+   @Override
+   public Map<String, List<Integer>> getHypotheticalWinningFieldsForO()
+   {
+      return null;
+   }
+
+   //todo czy potrzebna?? usunac jak coś
+   @Override
+   public Map<String, List<Integer>> getAllEmptyWinningCombinationsThatCanBeUsed()
+   {
+      return board.getAllEmptyWinningCombinationsThatCanBeUsed();
    }
 
 }

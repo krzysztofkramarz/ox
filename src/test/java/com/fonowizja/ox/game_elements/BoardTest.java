@@ -133,7 +133,7 @@ public class BoardTest
 
       assertThat(board.getHypotheticalWinningFieldsForO()).isEmpty();
       assertThat(board.getHypotheticalWinningFieldsForX()).isEmpty();
-      assertThat(board.getAllWinningFields()).doesNotContainKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
+      assertThat(board.getAllEmptyWinningCombinationsThatCanBeUsed()).doesNotContainKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
    }
 
    @Test
@@ -159,7 +159,7 @@ public class BoardTest
       Map<String, List<Integer>> hypotheticalWinningFieldsXXX = board.getHypotheticalWinningFieldsForX();
       assertThat(hypotheticalWinningFieldsOOO).containsOnlyKeys("[3, 8, 13]", "[5, 6, 7]");
       assertThat(hypotheticalWinningFieldsXXX).containsOnlyKeys("[12, 13, 14]", "[12, 16, 20]");
-      assertThat(board.getAllWinningFields()).doesNotContainKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
+      assertThat(board.getAllEmptyWinningCombinationsThatCanBeUsed()).doesNotContainKeys("[0, 5, 10]", "[4, 9, 14]", "[0, 4, 8]");
    }
 
    @DataProvider(name = "testWinningGame")
