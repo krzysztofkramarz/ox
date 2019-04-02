@@ -3,8 +3,6 @@ package com.fonowizja.ox.game_elements;
 import java.util.List;
 import java.util.Map;
 
-import com.fonowizja.ox.game.BoardObservator;
-
 /**
  * @author krzysztof.kramarz
  */
@@ -16,8 +14,6 @@ public interface GameElementsService
    boolean isWinningMove(Sign sign, Integer boardPosition) throws FieldIsNotEmptyException, IllegalSignException;
 
    void cleanBoard();
-
-   void setBoardObservator(BoardObservator boardObservator);
 
    boolean isDraw();
 

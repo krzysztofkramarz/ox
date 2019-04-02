@@ -3,8 +3,6 @@ package com.fonowizja.ox.game_elements;
 import java.util.List;
 import java.util.Map;
 
-import com.fonowizja.ox.game.BoardObservator;
-
 /**
  * @author krzysztof.kramarz
  */
@@ -40,19 +38,12 @@ public class GameElementsServiceImpl implements GameElementsService
    }
 
    @Override
-   public void setBoardObservator(BoardObservator boardObservator)
-   {
-      board.setBoardObservator(boardObservator);
-
-   }
-
-   @Override
    public boolean isDraw()
    {
       return board.isDraw();
    }
 
-//todo czy potrzebna?? usunac jak coś
+   //todo czy potrzebna?? usunac jak coś
    @Override
    public Map<String, List<Integer>> getHypotheticalWinningFieldsForX()
    {

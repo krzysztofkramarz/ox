@@ -12,7 +12,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.constraints.Min;
 
-import com.fonowizja.ox.game.BoardObservator;
 import lombok.AccessLevel;
 import lombok.Getter;
 
@@ -37,8 +36,7 @@ final class Board
    @Min(value = 3, message = EXCEPTION_WINNING_SIZE_MESSAGE)
    private final Integer winningSize;
 
-   //todo
-   private BoardObservator boardObservator;
+
 
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsForX = new HashMap<>();
@@ -70,11 +68,7 @@ final class Board
       }
    }
 
-   void setBoardObservator(BoardObservator boardObservator)
-   {
-      this.boardObservator = boardObservator;
 
-   }
 
    @Deprecated
    String getBoardAsString()
