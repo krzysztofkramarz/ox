@@ -9,7 +9,6 @@ class SliderHelper
 {
    static void setSliderAttibutes(JSlider jSlider)
    {
-
       jSlider.setMajorTickSpacing(6);
       jSlider.setMinorTickSpacing(1);
       jSlider.setPaintTicks(true);

@@ -10,7 +10,7 @@ public interface GameElementsService
    @Deprecated
    String getBoardAsString();
 
-   boolean isWinningMove(Sign sign, Integer boardPosition) throws Exception;
+   boolean isWinningMove(Sign sign, Integer boardPosition) throws  FieldIsNotEmptyException, IllegalSignException;
 
    void cleanBoard();
 

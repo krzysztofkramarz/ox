@@ -24,7 +24,7 @@ public class GameElementsServiceImpl implements GameElementsService
    }
 
    @Override
-   public boolean isWinningMove(Sign sign, Integer boardPosition) throws Exception
+   public boolean isWinningMove(Sign sign, Integer boardPosition) throws FieldIsNotEmptyException, IllegalSignException
    {
 
       return board.isWinningMove(sign, boardPosition);

@@ -4,6 +4,9 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import com.fonowizja.ox.game_elements.GameElementsService;
+import com.fonowizja.ox.game_elements.GameElementsServiceImpl;
+
 /**
  * Main panel for game
  *
@@ -22,7 +25,11 @@ final class MainPanel extends JPanel
       //tworzenie zewnętrzengo kontenera JFrame
       jFrame = new JFrame("Gra w OX");
       jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      jFrame.setBounds(10, 10, 4000, 4000);
+      //todo odkomentowac na produkcji to sa pełne wymiary
+      // jFrame.setBounds(10, 10, 4000, 4000);
+
+      //to sa wymiary testowe
+      jFrame.setBounds(10, 10, 1000, 1000);
       jFrame.setVisible(true);
       //todo jakby nie działało dodawanie, użyj tego
       // jFrame.getContentPane().add(this);

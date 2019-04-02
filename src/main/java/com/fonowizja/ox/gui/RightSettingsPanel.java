@@ -44,6 +44,8 @@ final class RightSettingsPanel extends JPanel
    private void createGameStartButton()
    {
       gameStart = new JButton("START GRY");
+      gameStart.setBackground(Color.PINK);
+      gameStart.setOpaque(true);
       add(gameStart);
       gameStart.addActionListener(new ActionListener()
       {
@@ -52,9 +54,8 @@ final class RightSettingsPanel extends JPanel
          {
             upperSettingsPanel.changeElementsEnable(false);
             changeElementsEnable(false);
-            gamePanel.setCanPlayesPlay(true);
             Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
-            gamePanel.setWhoHasATurn(whoIsFirst);
+            gamePanel.startGame(whoIsFirst, true);
          }
 
       });
@@ -69,8 +70,9 @@ final class RightSettingsPanel extends JPanel
 
    private void setBoardHeightSliderAttibutes()
    {
-      boardHeightySlider = new JSlider(JSlider.VERTICAL, 3, 30, 3);
-      boardHeightySlider.addChangeListener(new SliderListener());
+      boardHeightySlider
+            = new JSlider(JSlider.VERTICAL, GamePanel.DEFAULT_BOARD_LENHTG, GamePanel.MAXIMUM_BOARD_LENGTH, GamePanel.MINIMUM_BOARD_LENGTH);
+      boardHeightySlider.addChangeListener(new BoardHeightSliderListener());
 
       SliderHelper.setSliderAttibutes(boardHeightySlider);
    }
@@ -80,7 +82,7 @@ final class RightSettingsPanel extends JPanel
 
       boardHeightPanel = new JPanel();
       boardHeightLabel = new JLabel("Ustaw ile znaczkow wygrywa");
-      boardHeightSliderTextField = new JTextField("3", 2);
+      boardHeightSliderTextField = new JTextField(String.valueOf(GamePanel.DEFAULT_BOARD_HEIGHT), 2);
 
       boardHeightPanel.add(boardHeightLabel);
       boardHeightPanel.add(boardHeightySlider);
@@ -88,14 +90,14 @@ final class RightSettingsPanel extends JPanel
 
       TitledBorder border = BorderFactory.createTitledBorder("Ustaw ile znaczkow wygrywa");
       border.setTitleColor(Color.blue);
-      border.setBorder(new LineBorder(Color.RED, 1));
+      border.setBorder(new LineBorder(Color.BLUE, 1));
       boardHeightPanel.setBorder(border);
       boardHeightPanel.setVisible(true);
 
       add(boardHeightPanel);
    }
 
-   private class SliderListener implements ChangeListener
+   private class BoardHeightSliderListener implements ChangeListener
    {
       @Override
       public void stateChanged(ChangeEvent e)
@@ -104,7 +106,7 @@ final class RightSettingsPanel extends JPanel
          int y = source.getValue();
          boardHeightSliderTextField.setText(String.valueOf(y));
          gamePanel.resizeY(y);
-         upperSettingsPanel.setMaximumWinningSize(y);
+         upperSettingsPanel.recalculateWinningSizeSlider(y);
          validate();
 
       }
