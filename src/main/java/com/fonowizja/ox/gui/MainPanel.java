@@ -25,14 +25,9 @@ final class MainPanel extends JPanel
       //tworzenie zewnętrzengo kontenera JFrame
       jFrame = new JFrame("Gra w OX");
       jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      //todo odkomentowac na produkcji to sa pełne wymiary
-      // jFrame.setBounds(10, 10, 4000, 4000);
+      jFrame.setBounds(10, 10, 4000, 4000);
 
-      //to sa wymiary testowe
-      jFrame.setBounds(10, 10, 1000, 1000);
       jFrame.setVisible(true);
-      //todo jakby nie działało dodawanie, użyj tego
-      // jFrame.getContentPane().add(this);
 
       //dodajemy MainPanel i ustawiamy dla niego zarządcę
       jFrame.add(this);

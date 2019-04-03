@@ -16,6 +16,8 @@ import com.fonowizja.ox.game_elements.GameElementsService;
 import com.fonowizja.ox.game_elements.GameElementsServiceImpl;
 import com.fonowizja.ox.game_elements.IllegalSignException;
 import com.fonowizja.ox.game_elements.Sign;
+import com.fonowizja.ox.internationalization.MessageProvider;
+import com.fonowizja.ox.internationalization.MessagesKey;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,6 +59,11 @@ public final class GamePanel extends JPanel
    private boolean isDraw;
    private boolean isWinningMove;
 
+   private TitledBorder gamePanelBorder;
+   private String drawDialog;
+   private String winnerDialog;
+   private String automaticMessageDialog;
+
    GamePanel()
    {
       //X
@@ -68,16 +75,24 @@ public final class GamePanel extends JPanel
       winningSize = DEFAULT_WINNING_SIZE;
       canPlayersPlay = false;
       setLayout(new GridLayout(boardHeight, boardLenght, 1, 1));
-      TitledBorder border = BorderFactory.createTitledBorder("TUTAJ SIĘ GRA!");
-      border.setTitleColor(Color.BLUE);
-      border.setBorder(new LineBorder(Color.ORANGE, 1));
-      setBorder(border);
+      gamePanelBorder = BorderFactory.createTitledBorder("TUTAJ SIĘ GRA!");
+      gamePanelBorder.setTitleColor(Color.BLUE);
+      gamePanelBorder.setBorder(new LineBorder(Color.ORANGE, 1));
+      setBorder(gamePanelBorder);
 
       buttonsList = new ArrayList<>();
       createButtons(boardSize);
-
       validate();
+      translateAllMessages();
 
+   }
+
+   void translateAllMessages()
+   {
+      gamePanelBorder.setTitle(MessageProvider.getInstance().getMessage(MessagesKey.GAME_PANEL_TITTLE));
+      drawDialog = MessageProvider.getInstance().getMessage(MessagesKey.GAME_PANEL_DRAW_DIALOG);
+      winnerDialog = MessageProvider.getInstance().getMessage(MessagesKey.GAME_PANEL_WINNER_DIALOG);
+      automaticMessageDialog = MessageProvider.getInstance().getMessage(MessagesKey.GAME_PANEL_AUTOMATIC_WINNER_DIALOG);
    }
 
    private void createButtons(Integer boardSize)
@@ -145,9 +160,7 @@ public final class GamePanel extends JPanel
          {
             JButton buttonClicked = (JButton) e.getSource();
             String text = buttonClicked.getText();
-            //todo usunac
             positionOnBoard = buttonsList.indexOf(buttonClicked);
-            System.out.println("klikniety button: " + positionOnBoard);
 
             if (Sign.X.getSign().equals(text) || Sign.O.getSign().equals(text))
             {
@@ -169,7 +182,7 @@ public final class GamePanel extends JPanel
 
    }
 
-   private boolean makeMove(Integer positionOnBoard)
+   private void makeMove(Integer positionOnBoard)
    {
       try
       {
@@ -189,13 +202,13 @@ public final class GamePanel extends JPanel
       isDraw = gameElementsService.isDraw();
       if (isDraw)
       {
-         JOptionPane.showConfirmDialog(null, "Remis :) Próbujcie znowu");
+         JOptionPane.showMessageDialog(null, drawDialog);
          resetButtons();
       }
 
       if (isWinningMove)
       {
-         JOptionPane.showConfirmDialog(null, "Game Over!! Wygrał ." + whoHasATurn.getSign());
+         JOptionPane.showMessageDialog(null, winnerDialog + whoHasATurn.getSign());
          resetButtons();
       }
       else
@@ -203,7 +216,6 @@ public final class GamePanel extends JPanel
          whoHasATurn = whoHasATurn.getOppositePlayer();
 
       }
-      return true; //todo ustalic co ma warunek miec i jaki
    }
 
    /**
@@ -243,16 +255,10 @@ public final class GamePanel extends JPanel
       //    e.printStackTrace();
       // }
       isDraw = gameElementsService.isDraw();
-      if (isDraw)
-      {
-         JOptionPane pane = new JOptionPane("Your message", JOptionPane.INFORMATION_MESSAGE);
-         JDialog dialog = pane.createDialog(this, "Title");
-
-      }
 
       if (isWinningMove)
       {
-         JOptionPane.showMessageDialog(null, "Automatyczny Game Over!! Wygrał ." + whoHasATurn.getSign());
+         JOptionPane.showMessageDialog(null, automaticMessageDialog + whoHasATurn.getSign());
          resetButtons();
          return true;
       }
@@ -296,6 +302,5 @@ public final class GamePanel extends JPanel
    {
       validate();
    }
-
 
 }

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
@@ -13,6 +14,7 @@ import javax.swing.event.ChangeListener;
 import com.fonowizja.ox.game_elements.Sign;
 import com.fonowizja.ox.internationalization.LanguagesKey;
 import com.fonowizja.ox.internationalization.MessageProvider;
+import com.fonowizja.ox.internationalization.MessagesKey;
 
 /**
  * @author krzysztof.kramarz
@@ -25,7 +27,6 @@ final class RightSettingsPanel extends JPanel
    private UpperSettingsPanel upperSettingsPanel;
 
    private JPanel boardHeightPanel;
-   private JLabel boardHeightLabel;
    private JPanel buttonPanel;
    private JPanel languagesComboBoxPanel;
 
@@ -33,13 +34,16 @@ final class RightSettingsPanel extends JPanel
    private JButton automaticTestMachineStartBtn;
    private JButton gameWithAutomaticMachineStartBtn;
 
+   private TitledBorder boardHeightBorder;
+
    private JComboBox<LanguagesKey> languagesComboBox;
 
    RightSettingsPanel(GamePanel gamePanel, UpperSettingsPanel upperSettingsPanel)
    {
       this.gamePanel = gamePanel;
       this.upperSettingsPanel = upperSettingsPanel;
-      setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
+      setLayout(new BorderLayout(10,10));
+      // setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
       setBorder(new LineBorder(new Color(40), 1));
 
       setBoardHeightSliderAttibutes();
@@ -51,7 +55,16 @@ final class RightSettingsPanel extends JPanel
       createButtonPanel();
 
       createLanguagesComboBoxPanel();
+      translateAllMessages();
 
+   }
+
+   void translateAllMessages()
+   {
+      boardHeightBorder.setTitle(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_BOARD_HEIGHT_SLIDER));
+      gameStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_START_GAME_BUTON));
+      gameWithAutomaticMachineStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_GAME_WITH_AUTOMAT_BUTTON));
+      automaticTestMachineStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_AUTOMATIC_GAME_BUTTON));
    }
 
    private void createLanguagesComboBoxPanel()
@@ -73,26 +86,22 @@ final class RightSettingsPanel extends JPanel
             LanguagesKey language = (LanguagesKey) cb.getSelectedItem();
             MessageProvider.getInstance().changeLanguageBundle(language);
             translateAllMessages();
+            upperSettingsPanel.translateAllMessages();
+            gamePanel.translateAllMessages();
          }
       });
-
+      translateAllMessages();
       languagesComboBoxPanel.add(languagesComboBox);
       buttonPanel.add(languagesComboBoxPanel);
-
    }
 
-   private void translateAllMessages()
-   {
-      upperSettingsPanel.translateAllMessages();
-   }
 
    private void createAutomaticTestMachineStartBtn()
    {
       automaticTestMachineStartBtn = new JButton();
-      automaticTestMachineStartBtn = new JButton("AUTOMATYCZNA ROZGRYWKA");
+      automaticTestMachineStartBtn = new JButton("");
       automaticTestMachineStartBtn.setBackground(Color.PINK);
       automaticTestMachineStartBtn.setOpaque(true);
-      add(automaticTestMachineStartBtn);
       automaticTestMachineStartBtn.addActionListener(new ActionListener()
       {
          @Override
@@ -110,10 +119,9 @@ final class RightSettingsPanel extends JPanel
    private void createGameWithAutomaticMachineStartBtn()
    {
       gameWithAutomaticMachineStartBtn = new JButton();
-      gameWithAutomaticMachineStartBtn = new JButton("GRAJ Z AUTOMATEM");
+      gameWithAutomaticMachineStartBtn = new JButton("");
       gameWithAutomaticMachineStartBtn.setBackground(Color.PINK);
       gameWithAutomaticMachineStartBtn.setOpaque(true);
-      add(gameWithAutomaticMachineStartBtn);
       gameWithAutomaticMachineStartBtn.addActionListener(new ActionListener()
       {
          @Override
@@ -127,10 +135,9 @@ final class RightSettingsPanel extends JPanel
 
    private void createGameStartButton()
    {
-      gameStartBtn = new JButton("START GRY");
+      gameStartBtn = new JButton("");
       gameStartBtn.setBackground(Color.PINK);
       gameStartBtn.setOpaque(true);
-      add(gameStartBtn);
       gameStartBtn.addActionListener(new ActionListener()
       {
          @Override
@@ -155,8 +162,8 @@ final class RightSettingsPanel extends JPanel
       buttonPanel.add(automaticTestMachineStartBtn);
       gameStartBtn.setAlignmentX(CENTER_ALIGNMENT);
       gameWithAutomaticMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
-      automaticTestMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
-      add(buttonPanel);
+     automaticTestMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
+      add(buttonPanel, BorderLayout.CENTER);
    }
 
    private void changeElementsEnable(boolean isEnable)
@@ -179,20 +186,18 @@ final class RightSettingsPanel extends JPanel
    {
 
       boardHeightPanel = new JPanel();
-      boardHeightLabel = new JLabel("Ustaw wysokość tablicy");
       boardHeightSliderTextField = new JTextField(String.valueOf(GamePanel.DEFAULT_BOARD_HEIGHT), 2);
 
-      boardHeightPanel.add(boardHeightLabel);
       boardHeightPanel.add(boardHeightySlider);
       boardHeightPanel.add(boardHeightSliderTextField);
 
-      TitledBorder border = BorderFactory.createTitledBorder("Ustaw wysokość tablicy");
-      border.setTitleColor(Color.blue);
-      border.setBorder(new LineBorder(Color.BLUE, 1));
-      boardHeightPanel.setBorder(border);
+      boardHeightBorder = BorderFactory.createTitledBorder("");
+      boardHeightBorder.setTitleColor(Color.blue);
+      boardHeightBorder.setBorder(new LineBorder(Color.BLUE, 1));
+      boardHeightPanel.setBorder(boardHeightBorder);
       boardHeightPanel.setVisible(true);
 
-      add(boardHeightPanel);
+      add(boardHeightPanel, BorderLayout.NORTH);
    }
 
    private class BoardHeightSliderListener implements ChangeListener
