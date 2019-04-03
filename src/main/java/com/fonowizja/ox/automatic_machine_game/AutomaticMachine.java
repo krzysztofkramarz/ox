@@ -80,26 +80,26 @@ class AutomaticMachine
             }
             Integer positionOfO = allFieldsForEnemyIterator.next();
             System.out.println("O goes " + positionOfO);
-            try
-            {
-               Thread.sleep(100);
-            }
-            catch (InterruptedException e)
-            {
-               e.printStackTrace();
-            }
+            // try
+            // {
+            //    Thread.sleep(100);
+            // }
+            // catch (InterruptedException e)
+            // {
+            //    e.printStackTrace();
+            // }
             gamePanel.makeAutomaticTestMachineMove(enemySign, positionOfO);
          }
          gamePanel.validatePanel();
-         try
-         {
-            Thread.sleep(5000);
-            System.out.println("KOLEJNY MECZ!!");
-         }
-         catch (InterruptedException e)
-         {
-            e.printStackTrace();
-         }
+         // try
+         // {
+         //    Thread.sleep(5000);
+         //    System.out.println("KOLEJNY MECZ!!");
+         // }
+         // catch (InterruptedException e)
+         // {
+         //    e.printStackTrace();
+         // }
          gameElementsService.revertBoardToBeginningState();
 
       }

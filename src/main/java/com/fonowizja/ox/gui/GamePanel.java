@@ -255,7 +255,8 @@ public final class GamePanel extends JPanel
 
       if (isWinningMove)
       {
-         JOptionPane.showConfirmDialog(null, "Automatyczny Game Over!! Wygrał ." + whoHasATurn.getSign());
+         JOptionPane.showMessageDialog(null, "Automatyczny Game Over!! Wygrał ." + whoHasATurn.getSign());
+
          System.out.println("WYGRANA!!" + sign);
          resetButtons();
          return true;
@@ -301,21 +302,5 @@ public final class GamePanel extends JPanel
       validate();
    }
 
-   private void timerTimer()
-   {
 
-      Timer timer = new Timer(100, e -> JOptionPane.showConfirmDialog(null, "jestem z timera!"));
-
-      timer.setRepeats(false);
-      timer.start();
-
-      try
-      {
-         Thread.sleep(5000);
-      }
-      catch (InterruptedException e)
-      {
-         e.printStackTrace();
-      }
-   }
 }
