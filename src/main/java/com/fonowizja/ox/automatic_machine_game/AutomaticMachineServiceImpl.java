@@ -9,7 +9,7 @@ import com.fonowizja.ox.gui.GamePanel;
  */
 public class AutomaticMachineServiceImpl implements AutomaticMachineService
 {
-  private AutomaticMachine automaticMachine;
+   private AutomaticMachine automaticMachine;
 
    @Override
    public AutomaticMachine createAutomaticMachine(GameElementsService gameElementsService, GamePanel gamePanel)

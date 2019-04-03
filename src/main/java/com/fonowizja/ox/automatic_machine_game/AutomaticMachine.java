@@ -39,10 +39,6 @@ class AutomaticMachine
 
    public void automaticTestMachineStart(Sign sign, Integer winningSize)
    {
-
-      Thread thread = Thread.currentThread();
-      System.out.println("automaticTest " + thread);
-
       winningSign = sign;
       enemySign = sign.getOppositePlayer();
       fieldsForWinnerMapKeys = allPossibleWinningCombinationsForThisBoard.keySet(); //zestaw kluczy do mapy z wolnymi polami
@@ -54,8 +50,6 @@ class AutomaticMachine
          //make winner fields
          String keyForWinningFields = fieldsForWinnerMapKeysIterator.next(); //biore klucz do mapy
          fieldsForWinner = allPossibleWinningCombinationsForThisBoard.get(keyForWinningFields); //biore intigery spod klucza
-         System.out.println(fieldsForWinner);
-         // Iterator<Integer> fieldForWinnerIterator = fieldsForWinner.iterator();
 
          //make enemy fields
          Collection<List<Integer>> values = allPossibleWinningCombinationsForThisBoard.values();
@@ -73,33 +67,16 @@ class AutomaticMachine
          while (index < fieldsForWinner.size())
          {
             Integer positionInBoardForWinner = fieldsForWinner.get(index++);
-            System.out.println("x goes " + positionInBoardForWinner);
             if (gamePanel.makeAutomaticTestMachineMove(winningSign, positionInBoardForWinner))
             {
-               break; //wyjdz z iteracji
+               break;
             }
             Integer positionOfO = allFieldsForEnemyIterator.next();
-            System.out.println("O goes " + positionOfO);
-            // try
-            // {
-            //    Thread.sleep(100);
-            // }
-            // catch (InterruptedException e)
-            // {
-            //    e.printStackTrace();
-            // }
+
             gamePanel.makeAutomaticTestMachineMove(enemySign, positionOfO);
          }
          gamePanel.validatePanel();
-         // try
-         // {
-         //    Thread.sleep(5000);
-         //    System.out.println("KOLEJNY MECZ!!");
-         // }
-         // catch (InterruptedException e)
-         // {
-         //    e.printStackTrace();
-         // }
+
          gameElementsService.revertBoardToBeginningState();
 
       }
