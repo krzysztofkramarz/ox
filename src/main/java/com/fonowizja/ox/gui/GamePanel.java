@@ -222,9 +222,6 @@ public final class GamePanel extends JPanel
       buttonsList.get(positionOnBoard).setText(sign.getSign());
       validate();
 
-      Thread thread = Thread.currentThread();
-      System.out.println("swing " + thread);
-      System.out.println("drukuje znak" + sign.getSign());
       try
       {
          isWinningMove = gameElementsService.isWinningMove(sign, positionOnBoard);
@@ -256,8 +253,6 @@ public final class GamePanel extends JPanel
       if (isWinningMove)
       {
          JOptionPane.showMessageDialog(null, "Automatyczny Game Over!! Wygrał ." + whoHasATurn.getSign());
-
-         System.out.println("WYGRANA!!" + sign);
          resetButtons();
          return true;
       }

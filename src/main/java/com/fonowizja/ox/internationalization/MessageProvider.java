@@ -5,21 +5,21 @@ import java.util.ResourceBundle;
 /**
  * @author krzysztof.kramarz
  */
-class TextProvider
+public class MessageProvider
 {
 
-   private static TextProvider instance;
+   private static MessageProvider instance;
    private static ResourceBundle bundle;
 
-   private TextProvider()
+   private MessageProvider()
    {
    }
 
-   public static TextProvider getInstance()
+   public static MessageProvider getInstance()
    {
       if (instance == null)
       {
-         instance = new TextProvider();
+         instance = new MessageProvider();
          bundle = MessageLoader.setBundle(LanguagesKey.ENGLISH);
       }
       return instance;

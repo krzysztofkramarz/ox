@@ -11,6 +11,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.fonowizja.ox.game_elements.Sign;
+import com.fonowizja.ox.internationalization.LanguagesKey;
+import com.fonowizja.ox.internationalization.MessageProvider;
 
 /**
  * @author krzysztof.kramarz
@@ -25,10 +27,13 @@ final class RightSettingsPanel extends JPanel
    private JPanel boardHeightPanel;
    private JLabel boardHeightLabel;
    private JPanel buttonPanel;
+   private JPanel languagesComboBoxPanel;
 
    private JButton gameStartBtn;
    private JButton automaticTestMachineStartBtn;
    private JButton gameWithAutomaticMachineStartBtn;
+
+   private JComboBox<LanguagesKey> languagesComboBox;
 
    RightSettingsPanel(GamePanel gamePanel, UpperSettingsPanel upperSettingsPanel)
    {
@@ -45,6 +50,40 @@ final class RightSettingsPanel extends JPanel
       createAutomaticTestMachineStartBtn();
       createButtonPanel();
 
+      createLanguagesComboBoxPanel();
+
+   }
+
+   private void createLanguagesComboBoxPanel()
+   {
+      languagesComboBoxPanel = new JPanel();
+      languagesComboBox = new JComboBox<>();
+      languagesComboBox.setEditable(false);
+      languagesComboBox.setForeground(Color.pink);
+      languagesComboBox.addItem(LanguagesKey.ENGLISH);
+      languagesComboBox.addItem(LanguagesKey.POLISH);
+      languagesComboBox.setSelectedItem(LanguagesKey.ENGLISH);
+      languagesComboBox.addActionListener(new ActionListener()
+      {
+         @Override
+         public void actionPerformed(ActionEvent e)
+         {
+
+            JComboBox<String> cb = (JComboBox<String>) e.getSource();
+            LanguagesKey language = (LanguagesKey) cb.getSelectedItem();
+            MessageProvider.getInstance().changeLanguageBundle(language);
+            translateAllMessages();
+         }
+      });
+
+      languagesComboBoxPanel.add(languagesComboBox);
+      buttonPanel.add(languagesComboBoxPanel);
+
+   }
+
+   private void translateAllMessages()
+   {
+      upperSettingsPanel.translateAllMessages();
    }
 
    private void createAutomaticTestMachineStartBtn()
