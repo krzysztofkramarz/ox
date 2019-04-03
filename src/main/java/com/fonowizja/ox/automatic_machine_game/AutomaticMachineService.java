@@ -12,5 +12,5 @@ public interface AutomaticMachineService
 
    AutomaticMachine createAutomaticMachine(GameElementsService gameElementsService, GamePanel gamePanel);
 
-   void automaticTestMachineStart(Sign sign);
+   public void automaticTestMachineStart(Sign sign, Integer winningSize);
 }

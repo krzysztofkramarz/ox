@@ -32,9 +32,9 @@ public class GameElementsServiceImpl implements GameElementsService
    }
 
    @Override
-   public void cleanBoard()
+   public void revertBoardToBeginningState()
    {
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
    }
 
    @Override

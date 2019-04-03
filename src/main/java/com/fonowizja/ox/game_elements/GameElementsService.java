@@ -13,7 +13,7 @@ public interface GameElementsService
 
    boolean isWinningMove(Sign sign, Integer boardPosition) throws FieldIsNotEmptyException, IllegalSignException;
 
-   void cleanBoard();
+   void revertBoardToBeginningState();
 
    boolean isDraw();
 

@@ -169,11 +169,11 @@ public final class GamePanel extends JPanel
 
    }
 
-   private boolean makeMove(Integer boardPosition)
+   private boolean makeMove(Integer positionOnBoard)
    {
       try
       {
-         isWinningMove = gameElementsService.isWinningMove(whoHasATurn, boardPosition);
+         isWinningMove = gameElementsService.isWinningMove(whoHasATurn, positionOnBoard);
       }
       catch (FieldIsNotEmptyException e)
       {
@@ -187,6 +187,11 @@ public final class GamePanel extends JPanel
          e.printStackTrace();
       }
       isDraw = gameElementsService.isDraw();
+      if (isDraw)
+      {
+         JOptionPane.showConfirmDialog(null, "Remis :) Próbujcie znowu");
+         resetButtons();
+      }
 
       if (isWinningMove)
       {
@@ -201,32 +206,9 @@ public final class GamePanel extends JPanel
       return true; //todo ustalic co ma warunek miec i jaki
    }
 
-   boolean startGame(Sign whoHasATurn, boolean canPlayersPlay)
-   {
-      resetButtons();
-      this.whoHasATurn = whoHasATurn;
-      this.canPlayersPlay = canPlayersPlay;
-      isDraw = false;
-      gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
-      gameElementsService.cleanBoard();
-      return true; //todo ustalic co ma warunek miec i jaki
-   }
-
-   void automaticTestMachineStart(Sign whoHasATurn)
-   {
-      // this.whoHasATurn = whoHasATurn;
-      this.canPlayersPlay = false;
-      isDraw = false;
-      gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
-      AutomaticMachineServiceImpl automaticMachineService = new AutomaticMachineServiceImpl();
-      automaticMachineService.createAutomaticMachine(gameElementsService, this);
-      automaticMachineService.automaticTestMachineStart(whoHasATurn);
-
-      // resetButtons();
-   }
-
    /**
-    * Puts sign on choosen position on board
+    * Plays autoamtic test machine game
+    * and presents moves on the gui board
     *
     * @param sign
     *       sign to put
@@ -234,10 +216,81 @@ public final class GamePanel extends JPanel
     *       where put sign
     * @return
     */
-   public void putSignOnField(Sign sign, Integer positionOnBoard)
+   public boolean makeAutomaticTestMachineMove(Sign sign, Integer positionOnBoard)
    {
+
       buttonsList.get(positionOnBoard).setText(sign.getSign());
       validate();
+
+      Thread thread = Thread.currentThread();
+      System.out.println("swing " + thread);
+      System.out.println("drukuje znak" + sign.getSign());
+      try
+      {
+         isWinningMove = gameElementsService.isWinningMove(sign, positionOnBoard);
+         // Thread.sleep(1000);
+      }
+      catch (FieldIsNotEmptyException e)
+      {
+         //todo logger
+         e.printStackTrace();
+      }
+      catch (IllegalSignException e)
+      {
+
+         //todo loger
+         e.printStackTrace();
+      }
+      // catch (InterruptedException e)
+      // {
+      //    e.printStackTrace();
+      // }
+      isDraw = gameElementsService.isDraw();
+      if (isDraw)
+      {
+         JOptionPane pane = new JOptionPane("Your message", JOptionPane.INFORMATION_MESSAGE);
+         JDialog dialog = pane.createDialog(this, "Title");
+
+      }
+
+      if (isWinningMove)
+      {
+         JOptionPane.showConfirmDialog(null, "Automatyczny Game Over!! Wygrał ." + whoHasATurn.getSign());
+         System.out.println("WYGRANA!!" + sign);
+         resetButtons();
+         return true;
+      }
+      else
+      {
+         return false;
+
+      }
+
+   }
+
+   boolean startGame(Sign whoHasATurn, boolean canPlayersPlay)
+   {
+      resetButtons();
+      this.whoHasATurn = whoHasATurn;
+      this.canPlayersPlay = canPlayersPlay;
+      isDraw = false;
+      gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
+      gameElementsService.revertBoardToBeginningState();
+      return true; //todo ustalic co ma warunek miec i jaki
+   }
+
+   void automaticTestMachineStart(Sign whoHasATurn)
+   {
+      resetButtons();
+      this.whoHasATurn = whoHasATurn;
+      canPlayersPlay = false;
+      isDraw = false;
+      gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
+      AutomaticMachineServiceImpl automaticMachineService = new AutomaticMachineServiceImpl();
+      automaticMachineService.createAutomaticMachine(gameElementsService, this);
+      automaticMachineService.automaticTestMachineStart(whoHasATurn, winningSize);
+
+      // resetButtons();
    }
 
    /**
@@ -246,5 +299,23 @@ public final class GamePanel extends JPanel
    public void validatePanel()
    {
       validate();
+   }
+
+   private void timerTimer()
+   {
+
+      Timer timer = new Timer(100, e -> JOptionPane.showConfirmDialog(null, "jestem z timera!"));
+
+      timer.setRepeats(false);
+      timer.start();
+
+      try
+      {
+         Thread.sleep(5000);
+      }
+      catch (InterruptedException e)
+      {
+         e.printStackTrace();
+      }
    }
 }

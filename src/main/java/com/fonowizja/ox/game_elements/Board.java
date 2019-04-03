@@ -41,21 +41,19 @@ final class Board
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsForO = new HashMap<>();
    @Getter(AccessLevel.PACKAGE)
-   private final Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
+   private  Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
+   private final AllEmptyWinningCombinationsCreator allEmptyWinningCombinationsCreator;
 
    private Board(Integer boardSize, Integer boardLenght, Integer winningSize)
    {
       this.boardSize = boardSize;
       this.boardLenght = boardLenght;
       this.winningSize = winningSize;
-      AllEmptyWinningCombinationsCreator
-            allEmptyWinningCombinationsCreator = new AllEmptyWinningCombinationsCreator(boardSize, boardLenght, winningSize);
-      allEmptyWinningCombinationsThatCanBeUsed = allEmptyWinningCombinationsCreator.createAllEmptyWinningCombinationsThatCanBeUsed();
-      cleanBoard();
-
+      allEmptyWinningCombinationsCreator = new AllEmptyWinningCombinationsCreator(boardSize, boardLenght, winningSize);
+      revertBoardToBeginningState();
    }
 
-   void cleanBoard()
+   void revertBoardToBeginningState()
    {
       board.clear();
       for (int i = 0; i < boardSize; i++)
@@ -64,6 +62,7 @@ final class Board
       }
       hypotheticalWinningFieldsForO.clear();
       hypotheticalWinningFieldsForX.clear();
+      allEmptyWinningCombinationsThatCanBeUsed = allEmptyWinningCombinationsCreator.createAllEmptyWinningCombinationsThatCanBeUsed();
    }
 
    @Deprecated

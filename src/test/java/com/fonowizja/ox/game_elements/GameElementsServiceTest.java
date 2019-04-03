@@ -95,7 +95,7 @@ public class GameElementsServiceTest
 
       Board toTest = Board.builder().boardSize(16).boardLenght(4).winningSize(3).build();
       toTest.isWinningMove(Sign.X,0);
-      toTest.cleanBoard();
+      toTest.revertBoardToBeginningState();
       toTest.isWinningMove(Sign.X, 0);
    }
 

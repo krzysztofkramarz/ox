@@ -46,7 +46,7 @@ public class BoardTest
    public void testPutSignIntoBoard(Sign sign, Integer boardPosition)
    {
       Board board = Board.builder().boardSize(25).boardLenght(5).winningSize(3).build();
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
       boolean result = board.putSignIntoBoard(sign, boardPosition);
       assertThat(result).isTrue();
    }
@@ -70,7 +70,7 @@ public class BoardTest
    public void testPutSighnInNotAllowedSpaces(Sign sign, Integer boardPosition1, Integer boardPosition2)
    {
       Board board = Board.builder().boardSize(25).boardLenght(5).winningSize(3).build();
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
       board.putSignIntoBoard(sign, boardPosition1);
       boolean result = board.putSignIntoBoard(sign, boardPosition2);
       assertThat(result).isFalse();
@@ -97,7 +97,7 @@ public class BoardTest
    // {
    //    for (Object[] objs : args)
    //    {
-   //       board.cleanBoard();
+   //       board.revertBoardToBeginningState();
    //       board.putSignIntoBoard((Sign) objs[0], (Integer) objs[1]);
    //
    //       boolean result = board.putSignIntoBoard((Sign) objs[2], (Integer) objs[3]);
@@ -183,7 +183,7 @@ public class BoardTest
    public void testWinningGame(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
    {
       Board board = Board.builder().boardSize(9).boardLenght(3).winningSize(3).build();
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
 
       for (List<Object> move : movesForWin)
       {
@@ -223,7 +223,7 @@ public class BoardTest
    public void testWinningGame16(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
    {
       Board board = Board.builder().boardSize(16).boardLenght(4).winningSize(4).build();
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
 
       for (List<Object> move : movesForWin)
       {
@@ -260,7 +260,7 @@ public class BoardTest
    public void testWinningGameBackSlashSize9(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
    {
       Board board = Board.builder().boardSize(9).boardLenght(3).winningSize(3).build();
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
 
       for (List<Object> move : movesForWin)
       {
@@ -302,7 +302,7 @@ public class BoardTest
    public void testDraw(List<List<Object>> movesForWin, Sign sign, Integer boardPosition) throws Exception
    {
       Board board = Board.builder().boardSize(16).boardLenght(4).winningSize(4).build();
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
 
       for (List<Object> move : movesForWin)
       {
@@ -335,7 +335,7 @@ public class BoardTest
    public void testForAutomation(List<List<Object>> movesForWin, List<List<Integer>> expect) throws Exception
    {
       Board board = Board.builder().boardSize(16).boardLenght(4).winningSize(4).build();
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
 
       for (List<Object> move : movesForWin)
       {
@@ -387,7 +387,7 @@ public class BoardTest
    public void testForAutomationLength3(List<List<Object>> movesForWin, List<List<Integer>> expect) throws Exception
    {
       Board board = Board.builder().boardSize(16).boardLenght(4).winningSize(3).build();
-      board.cleanBoard();
+      board.revertBoardToBeginningState();
 
       for (List<Object> move : movesForWin)
       {
