@@ -80,7 +80,6 @@ final class RightSettingsPanel extends JPanel
          @Override
          public void actionPerformed(ActionEvent e)
          {
-
             JComboBox<String> cb = (JComboBox<String>) e.getSource();
             LanguagesKey language = (LanguagesKey) cb.getSelectedItem();
             MessageProvider.getInstance().changeLanguageBundle(language);
@@ -109,7 +108,6 @@ final class RightSettingsPanel extends JPanel
             Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
             gamePanel.automaticTestMachineStart(whoIsFirst);
          }
-
       });
    }
 
@@ -126,7 +124,25 @@ final class RightSettingsPanel extends JPanel
          {
             changeAllElementsEnable(false);
             Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
-            gamePanel.startSemiAutomaticGame(whoIsFirst, true);
+//todo podac z resource bundle
+//             String s = JOptionPane.showInputDialog(null, winnerDialog + whoHasATurn.getSign());
+
+
+            //todo ponizej podac z resource bundla
+            //Custom button text
+            Object[] options = {"Chcesz byc X?",
+                  "Chcesz byc X?"};
+            int n = JOptionPane.showOptionDialog(null,
+                  "to jest jakis message",
+                  "to jest jakis tytul",
+                  JOptionPane.YES_NO_OPTION,
+                  JOptionPane.QUESTION_MESSAGE,
+                  null,
+                  options,
+                  options[2]);
+            System.out.println("Liczba z JPane: " + n);
+            boolean humanCanMakeMove = true;//todo usunac
+            gamePanel.startSemiAutomaticGame(whoIsFirst, true, humanCanMakeMove);
          }
 
       });

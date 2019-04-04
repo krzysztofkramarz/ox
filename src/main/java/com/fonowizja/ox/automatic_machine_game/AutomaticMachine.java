@@ -1,14 +1,16 @@
 package com.fonowizja.ox.automatic_machine_game;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.swing.*;
 
 import com.fonowizja.ox.game_elements.GameElementsService;
 import com.fonowizja.ox.game_elements.Sign;
@@ -19,29 +21,126 @@ import com.fonowizja.ox.gui.GamePanel;
  */
 class AutomaticMachine
 {
-   private final Map<String, List<Integer>> allEmptyWinningNotAlreadyUsedInGame;
-   private final Map<String, List<Integer>> allPossibleWinningCombinationsForThisBoard = new HashMap<>();
+
+   private final Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
+   //todo to jest kopia powyzszego po prostu, czy potrzebna?
+   private final Map<String, List<Integer>> allPossibleWinningCombinationsForThisBoardCopyOf = new HashMap<>();
    private final GameElementsService gameElementsService;
    private GamePanel gamePanel;
    private Set<String> fieldsForWinnerMapKeys;
-   private Set<Integer> indexesForEnemyList = new HashSet<>();
    private List<Integer> fieldsForWinner;
    private Sign winningSign;
    private Sign enemySign;
+   private List<JButton> buttonsList;
+   private Integer positionOnBoard;
+   private Sign semiGameMachinePlayer;
+   private boolean tryToWinOnChoosenCombination;
+   private Integer indexFromChoosenCombinationToWin;
+   private Set<String> kluczeWszystkichpotencjalnych;
+   private List<Integer> choosenCombinationToWin;
+   private Map<String, List<Integer>> hypotheticalWinningFieldsForO;
+   private Map<String, List<Integer>> hypotheticalWinningFieldsForX;
+   private Integer winningSize;
 
    AutomaticMachine(GameElementsService gameElementsService, GamePanel gamePanel)
    {
       this.gameElementsService = gameElementsService;
       this.gamePanel = gamePanel;
-      allEmptyWinningNotAlreadyUsedInGame = gameElementsService.getAllEmptyWinningCombinationsThatCanBeUsed();
-      allPossibleWinningCombinationsForThisBoard.putAll(allEmptyWinningNotAlreadyUsedInGame);
+      //todo czy na peo mozna usunac te ponizse
+      allEmptyWinningCombinationsThatCanBeUsed = gameElementsService.getAllEmptyWinningCombinationsThatCanBeUsed();
+      // allPossibleWinningCombinationsForThisBoardCopyOf.putAll(allEmptyWinningNotAlreadyUsedInGame);
+
+      hypotheticalWinningFieldsForO = gameElementsService.getHypotheticalWinningFieldsForO();
+      hypotheticalWinningFieldsForX = gameElementsService.getHypotheticalWinningFieldsForX();
    }
 
-   public void automaticTestMachineStart(Sign sign, Integer winningSize)
+   void semiAutomaticGameStart(List<JButton> buttonsList, Sign semiGameMachinePlayer, Integer winningSize)
+   {
+      this.buttonsList = buttonsList;
+      this.semiGameMachinePlayer = semiGameMachinePlayer;
+      this.winningSize = winningSize;
+      tryToWinOnChoosenCombination = true;
+      indexFromChoosenCombinationToWin = 0;
+      setCombinationToWin(allEmptyWinningCombinationsThatCanBeUsed.keySet());
+   }
+
+   private void setCombinationToWin(Set<String> keys)
+   {
+      choosenCombinationToWin.clear();
+      if (!keys.isEmpty())
+      {
+         List<String> kluczeLista = new ArrayList<>(keys);
+         Collections.shuffle(kluczeLista);
+         choosenCombinationToWin = allEmptyWinningCombinationsThatCanBeUsed.get(kluczeLista.get(0));
+      }
+   }
+
+   private void refreshWinningMaps()
+   {
+      //todo czy na pewno czyscic jest potrzeba
+      allPossibleWinningCombinationsForThisBoardCopyOf.clear();
+      //todo czy nie prosciej dodac sama referencje
+      // allPossibleWinningCombinationsForThisBoardCopyOf.putAll(allEmptyWinningCombinationsThatCanBeUsed);
+
+      allPossibleWinningCombinationsForThisBoardCopyOf.putAll(gameElementsService.getAllEmptyWinningCombinationsThatCanBeUsed());
+   }
+
+   void makeSemiAutomaticMove()
+   {
+      refreshWinningMaps();
+
+      if (allPossibleWinningCombinationsForThisBoardCopyOf.containsKey(choosenCombinationToWin))
+      {
+         if (indexFromChoosenCombinationToWin < winningSize)
+         {
+            positionOnBoard = choosenCombinationToWin.get(indexFromChoosenCombinationToWin);
+            gamePanel.playLikeHuman(positionOnBoard);
+            indexFromChoosenCombinationToWin++;
+            return;
+         }
+      }
+      else
+      {
+         indexFromChoosenCombinationToWin = 0;
+         setCombinationToWin(allEmptyWinningCombinationsThatCanBeUsed.keySet());
+      }
+
+      switch (semiGameMachinePlayer)
+      {
+         case O:
+            setCombinationToWin(hypotheticalWinningFieldsForX.keySet());
+
+            for (Integer positionOnBoard : choosenCombinationToWin)
+            {
+               if (buttonsList.get(positionOnBoard).getText() == Sign.EMPTY.getSign())
+               {
+                  gamePanel.playLikeHuman(positionOnBoard);
+               }
+            }
+            break;
+
+         case X:
+            setCombinationToWin(hypotheticalWinningFieldsForX.keySet());
+
+            for (Integer positionOnBoard : choosenCombinationToWin)
+            {
+               if (buttonsList.get(positionOnBoard).getText() == Sign.EMPTY.getSign())
+               {
+                  gamePanel.playLikeHuman(positionOnBoard);
+               }
+            }
+            break;
+      }
+      return;
+
+   }
+
+   void automaticTestMachineStart(Sign sign, Integer winningSize)
    {
       winningSign = sign;
       enemySign = sign.getOppositePlayer();
-      fieldsForWinnerMapKeys = allPossibleWinningCombinationsForThisBoard.keySet(); //zestaw kluczy do mapy z wolnymi polami
+      refreshWinningMaps();
+      fieldsForWinnerMapKeys = allPossibleWinningCombinationsForThisBoardCopyOf.keySet(); //zestaw kluczy do mapy z wolnymi polami
 
       Iterator<String> fieldsForWinnerMapKeysIterator = fieldsForWinnerMapKeys.iterator();
 
@@ -49,10 +148,10 @@ class AutomaticMachine
       {
          //make winner fields
          String keyForWinningFields = fieldsForWinnerMapKeysIterator.next(); //biore klucz do mapy
-         fieldsForWinner = allPossibleWinningCombinationsForThisBoard.get(keyForWinningFields); //biore intigery spod klucza
+         fieldsForWinner = allPossibleWinningCombinationsForThisBoardCopyOf.get(keyForWinningFields); //biore intigery spod klucza
 
          //make enemy fields
-         Collection<List<Integer>> values = allPossibleWinningCombinationsForThisBoard.values();
+         Collection<List<Integer>> values = allPossibleWinningCombinationsForThisBoardCopyOf.values();
          List<Integer> allFieldsForEnemy = values.stream().flatMap(Collection::stream).distinct().collect(Collectors.toList());
          //usuniecie pol przeznaczonych do wyrania
          for (Integer field : fieldsForWinner)
@@ -61,7 +160,6 @@ class AutomaticMachine
          }
          Collections.shuffle(allFieldsForEnemy);
 
-         // indexesForEnemyList = new Random().ints(winningSize, 0, allFieldsForEnemy.size()).boxed().collect(Collectors.toSet());
          Iterator<Integer> allFieldsForEnemyIterator = allFieldsForEnemy.iterator();
          int index = 0;
          while (index < fieldsForWinner.size())

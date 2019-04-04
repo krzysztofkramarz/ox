@@ -65,6 +65,11 @@ public final class GamePanel extends JPanel
    private String automaticMessageDialog;
    @Setter(AccessLevel.PACKAGE)
    private RightSettingsPanel rightSettingsPanel;
+   private boolean semiAutomaticGame;
+   private boolean humanCanMakeMove;
+   private AutomaticMachineServiceImpl automaticMachineService;
+   private Sign semiGameMachinePlayer;
+   private Sign semiGameHumanPlayer;
 
    GamePanel()
    {
@@ -87,6 +92,8 @@ public final class GamePanel extends JPanel
       validate();
       translateAllMessages();
 
+      automaticMachineService = new AutomaticMachineServiceImpl();
+
    }
 
    void translateAllMessages()
@@ -104,7 +111,7 @@ public final class GamePanel extends JPanel
       {
          JButton button = new JButton();
          button.setText(Sign.EMPTY.getSign());
-         button.addActionListener(new GamePanel.buttonListener());
+         button.addActionListener(new gameButtonsListener());
          add(button);
          buttonsList.add(button);
       }
@@ -152,21 +159,20 @@ public final class GamePanel extends JPanel
       }
    }
 
-
-
-   private class buttonListener implements ActionListener
+   private class gameButtonsListener implements ActionListener
    {
 
       @Override
       public void actionPerformed(ActionEvent e)
       {
-         if (canPlayersPlay)
+         JButton buttonClicked = (JButton) e.getSource();
+         String buttonText = buttonClicked.getText();
+         positionOnBoard = buttonsList.indexOf(buttonClicked);
+         //todo refactor na switche,moze uzyć enumów na EnumTypePlayers HUMAN, MACHINE
+         if (canPlayersPlay && !semiAutomaticGame)
          {
-            JButton buttonClicked = (JButton) e.getSource();
-            String text = buttonClicked.getText();
-            positionOnBoard = buttonsList.indexOf(buttonClicked);
 
-            if (Sign.X.getSign().equals(text) || Sign.O.getSign().equals(text))
+            if (Sign.X.getSign().equals(buttonText) || Sign.O.getSign().equals(buttonText))
             {
                return;
             }
@@ -182,8 +188,59 @@ public final class GamePanel extends JPanel
                makeMove(positionOnBoard);
             }
          }
+         else if (canPlayersPlay && semiAutomaticGame)
+         {
+
+            if (humanCanMakeMove)
+            {
+
+               if (Sign.X.getSign().equals(buttonText) || Sign.O.getSign().equals(buttonText))
+               {
+                  return;
+               }
+               if (semiGameHumanPlayer == Sign.X)
+               {
+                  buttonClicked.setText(Sign.X.getSign());
+                  makeMove(positionOnBoard);
+                  humanCanMakeMove = false;
+
+                  automaticMachineService.makeSemiAutomaticMove();
+
+               }
+               else if (semiGameHumanPlayer == Sign.O)
+               {
+                  buttonClicked.setText(Sign.O.getSign());
+                  makeMove(positionOnBoard);
+                  humanCanMakeMove = false;
+                  automaticMachineService.makeSemiAutomaticMove();
+               }
+            }
+
+         }
       }
 
+   }
+
+   /**
+    * Make possible to act like click on button board
+    * i.e. mark button by sign and check if it is winning move
+    *
+    * @param positionOnBoard
+    *       where to play
+    */
+   public void playLikeHuman(Integer positionOnBoard)
+   {
+      try
+      {
+         Thread.sleep(500);
+      }
+      catch (InterruptedException e1)
+      {
+         e1.printStackTrace();
+      }
+      buttonsList.get(positionOnBoard).setText(semiGameMachinePlayer.getSign());
+      makeMove(positionOnBoard);
+      humanCanMakeMove = true;
    }
 
    private void makeMove(Integer positionOnBoard)
@@ -208,6 +265,7 @@ public final class GamePanel extends JPanel
       {
          JOptionPane.showMessageDialog(null, drawDialog);
          resetButtons();
+         rightSettingsPanel.changeAllElementsEnable(true);
       }
 
       if (isWinningMove)
@@ -265,6 +323,7 @@ public final class GamePanel extends JPanel
       {
          JOptionPane.showMessageDialog(null, automaticMessageDialog + whoHasATurn.getSign());
          resetButtons();
+         rightSettingsPanel.changeAllElementsEnable(true);
          return true;
       }
       else
@@ -278,29 +337,52 @@ public final class GamePanel extends JPanel
    void startGame(Sign whoHasATurn, boolean canPlayersPlay)
    {
       resetButtons();
+      semiAutomaticGame = false;
       this.whoHasATurn = whoHasATurn;
       this.canPlayersPlay = canPlayersPlay;
       isDraw = false;
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
    }
 
-   public void startSemiAutomaticGame(Sign whoHasATurn, boolean canPlayersPlay)
+   void startSemiAutomaticGame(Sign whoHasATurn, boolean canPlayersPlay, boolean humanCanMakeMove)
    {
       resetButtons();
+      this.humanCanMakeMove = humanCanMakeMove;
+      semiAutomaticGame = true;
       this.whoHasATurn = whoHasATurn;
       this.canPlayersPlay = canPlayersPlay;
+      //todo po co mi te ponizsze zmienne?
+      if (whoHasATurn == Sign.O && humanCanMakeMove)
+      {
+         semiGameHumanPlayer = Sign.O;
+         semiGameMachinePlayer = Sign.X;
+      }
+      else if (whoHasATurn == Sign.X && !humanCanMakeMove)
+      {
+         semiGameHumanPlayer = Sign.O;
+         semiGameMachinePlayer = Sign.X;
+      }
+      else
+      {
+         semiGameHumanPlayer = Sign.X;
+         semiGameMachinePlayer = Sign.O;
+      }
+
       isDraw = false;
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
+      automaticMachineService.createAutomaticMachine(gameElementsService, this);
+      automaticMachineService.semiAutomaticGameStart(buttonsList, semiGameMachinePlayer, winningSize);
 
    }
+
    void automaticTestMachineStart(Sign whoHasATurn)
    {
       resetButtons();
+      semiAutomaticGame = false;
       this.whoHasATurn = whoHasATurn;
       canPlayersPlay = false;
       isDraw = false;
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
-      AutomaticMachineServiceImpl automaticMachineService = new AutomaticMachineServiceImpl();
       automaticMachineService.createAutomaticMachine(gameElementsService, this);
       automaticMachineService.automaticTestMachineStart(whoHasATurn, winningSize);
 
