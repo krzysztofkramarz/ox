@@ -44,6 +44,7 @@ final class MainPanel extends JPanel
       //tworzymy GamePanel, dodajemy do MainPanelu i ustawiamy położenie
       rightSettingsPanel = new RightSettingsPanel(gamePanel, upperSettingsPanel);
 
+      gamePanel.setRightSettingsPanel(rightSettingsPanel);
       add(rightSettingsPanel, BorderLayout.EAST);
       validate();
 

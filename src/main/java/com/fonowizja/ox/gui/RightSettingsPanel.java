@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
@@ -42,7 +41,7 @@ final class RightSettingsPanel extends JPanel
    {
       this.gamePanel = gamePanel;
       this.upperSettingsPanel = upperSettingsPanel;
-      setLayout(new BorderLayout(10,10));
+      setLayout(new BorderLayout(10, 10));
       // setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
       setBorder(new LineBorder(new Color(40), 1));
 
@@ -95,7 +94,6 @@ final class RightSettingsPanel extends JPanel
       buttonPanel.add(languagesComboBoxPanel);
    }
 
-
    private void createAutomaticTestMachineStartBtn()
    {
       automaticTestMachineStartBtn = new JButton();
@@ -107,8 +105,7 @@ final class RightSettingsPanel extends JPanel
          @Override
          public void actionPerformed(ActionEvent e)
          {
-            upperSettingsPanel.changeElementsEnable(false);
-            changeElementsEnable(false);
+            changeAllElementsEnable(false);
             Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
             gamePanel.automaticTestMachineStart(whoIsFirst);
          }
@@ -127,7 +124,9 @@ final class RightSettingsPanel extends JPanel
          @Override
          public void actionPerformed(ActionEvent e)
          {
-
+            changeAllElementsEnable(false);
+            Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
+            gamePanel.startSemiAutomaticGame(whoIsFirst, true);
          }
 
       });
@@ -143,8 +142,8 @@ final class RightSettingsPanel extends JPanel
          @Override
          public void actionPerformed(ActionEvent e)
          {
-            upperSettingsPanel.changeElementsEnable(false);
-            changeElementsEnable(false);
+
+            changeAllElementsEnable(false);
             Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
             gamePanel.startGame(whoIsFirst, true);
          }
@@ -162,15 +161,19 @@ final class RightSettingsPanel extends JPanel
       buttonPanel.add(automaticTestMachineStartBtn);
       gameStartBtn.setAlignmentX(CENTER_ALIGNMENT);
       gameWithAutomaticMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
-     automaticTestMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
+      automaticTestMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
       add(buttonPanel, BorderLayout.CENTER);
    }
 
-   private void changeElementsEnable(boolean isEnable)
+   void changeAllElementsEnable(boolean isEnable)
    {
+      upperSettingsPanel.changeElementsEnable(isEnable);
+
       boardHeightySlider.setEnabled(isEnable);
       boardHeightSliderTextField.setEnabled(isEnable);
       gameStartBtn.setEnabled(isEnable);
+      gameWithAutomaticMachineStartBtn.setEnabled(isEnable);
+      automaticTestMachineStartBtn.setEnabled(isEnable);
    }
 
    private void setBoardHeightSliderAttibutes()

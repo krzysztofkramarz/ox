@@ -63,6 +63,8 @@ public final class GamePanel extends JPanel
    private String drawDialog;
    private String winnerDialog;
    private String automaticMessageDialog;
+   @Setter(AccessLevel.PACKAGE)
+   private RightSettingsPanel rightSettingsPanel;
 
    GamePanel()
    {
@@ -150,6 +152,8 @@ public final class GamePanel extends JPanel
       }
    }
 
+
+
    private class buttonListener implements ActionListener
    {
 
@@ -210,6 +214,7 @@ public final class GamePanel extends JPanel
       {
          JOptionPane.showMessageDialog(null, winnerDialog + whoHasATurn.getSign());
          resetButtons();
+         rightSettingsPanel.changeAllElementsEnable(true);
       }
       else
       {
@@ -270,17 +275,24 @@ public final class GamePanel extends JPanel
 
    }
 
-   boolean startGame(Sign whoHasATurn, boolean canPlayersPlay)
+   void startGame(Sign whoHasATurn, boolean canPlayersPlay)
    {
       resetButtons();
       this.whoHasATurn = whoHasATurn;
       this.canPlayersPlay = canPlayersPlay;
       isDraw = false;
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
-      gameElementsService.revertBoardToBeginningState();
-      return true; //todo ustalic co ma warunek miec i jaki
    }
 
+   public void startSemiAutomaticGame(Sign whoHasATurn, boolean canPlayersPlay)
+   {
+      resetButtons();
+      this.whoHasATurn = whoHasATurn;
+      this.canPlayersPlay = canPlayersPlay;
+      isDraw = false;
+      gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
+
+   }
    void automaticTestMachineStart(Sign whoHasATurn)
    {
       resetButtons();
