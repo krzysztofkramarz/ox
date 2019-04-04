@@ -26,7 +26,7 @@ class AutomaticMachine
    //todo to jest kopia powyzszego po prostu, czy potrzebna?
    private final Map<String, List<Integer>> allPossibleWinningCombinationsForThisBoardCopyOf = new HashMap<>();
    private final GameElementsService gameElementsService;
-   private GamePanel gamePanel;
+   private final GamePanel gamePanel;
    private Set<String> fieldsForWinnerMapKeys;
    private List<Integer> fieldsForWinner;
    private Sign winningSign;
@@ -37,10 +37,12 @@ class AutomaticMachine
    private boolean tryToWinOnChoosenCombination;
    private Integer indexFromChoosenCombinationToWin;
    private Set<String> kluczeWszystkichpotencjalnych;
-   private List<Integer> choosenCombinationToWin = new ArrayList<>();
-   private Map<String, List<Integer>> hypotheticalWinningFieldsForO;
-   private Map<String, List<Integer>> hypotheticalWinningFieldsForX;
+   private List<Integer> choosenCombinationToPlay = new ArrayList<>();
+   private final Map<String, List<Integer>> hypotheticalWinningFieldsForO;
+   private final Map<String, List<Integer>> hypotheticalWinningFieldsForX;
    private Integer winningSize;
+   private boolean defense;
+   private boolean stillCanWin;
 
    AutomaticMachine(GameElementsService gameElementsService, GamePanel gamePanel)
    {
@@ -59,22 +61,44 @@ class AutomaticMachine
       this.buttonsList = buttonsList;
       this.semiGameMachinePlayer = semiGameMachinePlayer;
       this.winningSize = winningSize;
+      defense = false;
+      stillCanWin = true;
       tryToWinOnChoosenCombination = true;
       indexFromChoosenCombinationToWin = 0;
-      setCombinationToWin(allEmptyWinningCombinationsThatCanBeUsed.keySet());
+      setCombinationToWin(allEmptyWinningCombinationsThatCanBeUsed.keySet(), defense);
    }
 
-   private void setCombinationToWin(Set<String> keys)
+   private void setCombinationToWin(Set<String> keys, boolean defense)
    {
-      choosenCombinationToWin.clear();
+      choosenCombinationToPlay.clear();
       if (!keys.isEmpty())
       {
          List<String> kluczeLista = new ArrayList<>(keys);
          Collections.shuffle(kluczeLista);
-         choosenCombinationToWin = allEmptyWinningCombinationsThatCanBeUsed.get(kluczeLista.get(0));
+         if (defense)
+         {
+            switch (semiGameMachinePlayer)
+            {
+               case O:
+                  choosenCombinationToPlay = hypotheticalWinningFieldsForX.get(kluczeLista.get(0));
+                  System.out.println("XXX: " + hypotheticalWinningFieldsForX);
+                  break;
+               case X:
+                  choosenCombinationToPlay = hypotheticalWinningFieldsForO.get(kluczeLista.get(0));
+                  System.out.println("OOO: " + hypotheticalWinningFieldsForO);
+                  break;
+            }
+         }
+         else
+         {
+            System.out.println("ALL: " + allEmptyWinningCombinationsThatCanBeUsed);
+            choosenCombinationToPlay = allEmptyWinningCombinationsThatCanBeUsed.get(kluczeLista.get(0));
+         }
       }
    }
 
+   //todo po co ta kopia mapy, lepiej na referencji działać
+   //todo kopia mapy potrzebna tylko do pełni autommatyczne rozgrywo
    private void refreshWinningMaps()
    {
       //todo czy na pewno czyscic jest potrzeba
@@ -86,53 +110,63 @@ class AutomaticMachine
    }
 
    void makeSemiAutomaticMove()
-   {
+   {//todo zaorać i jeszcze raz napisać czytelniej
       refreshWinningMaps();
 
-      if (allPossibleWinningCombinationsForThisBoardCopyOf.containsKey(choosenCombinationToWin))
+      if (allPossibleWinningCombinationsForThisBoardCopyOf.isEmpty())
       {
-         if (indexFromChoosenCombinationToWin < winningSize)
+         System.out.println(("DEENSE: " + defense));
+         defense = true;
+      }
+      //ciśnij wygraną na wybranej kombinacji, dopóki nie zablokuje przeciwnik
+
+      if (!defense && !stillCanWin)
+      {
+         setCombinationToWin(allPossibleWinningCombinationsForThisBoardCopyOf.keySet(), defense);
+      }
+      for (Integer positionOnBoard : choosenCombinationToPlay)
+      {
+
+         if (buttonsList.get(positionOnBoard).getText().equals(Sign.EMPTY.getSign()))
          {
-            positionOnBoard = choosenCombinationToWin.get(indexFromChoosenCombinationToWin);
             gamePanel.playLikeHuman(positionOnBoard);
-            indexFromChoosenCombinationToWin++;
             return;
          }
+         stillCanWin = false;
       }
-      else
+
+      if (defense)
       {
-         indexFromChoosenCombinationToWin = 0;
-         setCombinationToWin(allEmptyWinningCombinationsThatCanBeUsed.keySet());
-      }
 
-      switch (semiGameMachinePlayer)
-      {
-         case O:
-            setCombinationToWin(hypotheticalWinningFieldsForX.keySet());
+         switch (semiGameMachinePlayer)
+         {
+            case O:
+               setCombinationToWin(hypotheticalWinningFieldsForX.keySet(), defense);
 
-            for (Integer positionOnBoard : choosenCombinationToWin)
-            {
-               if (buttonsList.get(positionOnBoard).getText() == Sign.EMPTY.getSign())
+               for (Integer positionOnBoard : choosenCombinationToPlay)
                {
-                  gamePanel.playLikeHuman(positionOnBoard);
+                  if (buttonsList.get(positionOnBoard).getText().equals(Sign.EMPTY.getSign()))
+                  {
+                     gamePanel.playLikeHuman(positionOnBoard);
+                     return;
+                  }
                }
-            }
-            break;
+               break;
 
-         case X:
-            setCombinationToWin(hypotheticalWinningFieldsForX.keySet());
+            case X:
+               setCombinationToWin(hypotheticalWinningFieldsForO.keySet(), defense);
 
-            for (Integer positionOnBoard : choosenCombinationToWin)
-            {
-               if (buttonsList.get(positionOnBoard).getText() == Sign.EMPTY.getSign())
+               for (Integer positionOnBoard : choosenCombinationToPlay)
                {
-                  gamePanel.playLikeHuman(positionOnBoard);
+                  if (buttonsList.get(positionOnBoard).getText().equals(Sign.EMPTY.getSign()))
+                  {
+                     gamePanel.playLikeHuman(positionOnBoard);
+                     return;
+                  }
                }
-            }
-            break;
+               break;
+         }
       }
-      return;
-
    }
 
    void automaticTestMachineStart(Sign sign)

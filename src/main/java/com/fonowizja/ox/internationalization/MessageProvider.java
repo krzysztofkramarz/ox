@@ -20,7 +20,7 @@ public class MessageProvider
       if (instance == null)
       {
          instance = new MessageProvider();
-         bundle = MessageLoader.setBundle(LanguagesKey.ENGLISH);
+         bundle = MessageLoader.setBundle(LanguagesKey.POLISH);
       }
       return instance;
    }

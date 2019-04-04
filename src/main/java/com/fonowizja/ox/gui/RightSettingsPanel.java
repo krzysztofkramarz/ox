@@ -87,7 +87,7 @@ final class RightSettingsPanel extends JPanel
       languagesComboBox.setForeground(Color.pink);
       languagesComboBox.addItem(LanguagesKey.ENGLISH);
       languagesComboBox.addItem(LanguagesKey.POLISH);
-      languagesComboBox.setSelectedItem(LanguagesKey.ENGLISH);
+      languagesComboBox.setSelectedItem(LanguagesKey.POLISH);
       languagesComboBox.addActionListener(new ActionListener()
       {
          @Override

@@ -343,7 +343,6 @@ public final class GamePanel extends JPanel
       semiAutomaticGame = true;
       this.whoHasATurn = whoHasATurn;
       this.canPlayersPlay = canPlayersPlay;
-      //todo po co mi te ponizsze zmienne?
       if (whoHasATurn == Sign.O && humanCanMakeMove)
       {
          semiGameHumanPlayer = Sign.O;
@@ -364,6 +363,12 @@ public final class GamePanel extends JPanel
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
       automaticMachineService.createAutomaticMachine(gameElementsService, this);
       automaticMachineService.semiAutomaticGameStart(buttonsList, semiGameMachinePlayer, winningSize);
+
+      if(!humanCanMakeMove){
+         automaticMachineService.makeSemiAutomaticMove();
+         //noinspection UnusedAssignment
+         humanCanMakeMove = true;
+      }
 
    }
 
