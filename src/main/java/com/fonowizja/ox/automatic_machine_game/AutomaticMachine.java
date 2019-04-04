@@ -37,7 +37,7 @@ class AutomaticMachine
    private boolean tryToWinOnChoosenCombination;
    private Integer indexFromChoosenCombinationToWin;
    private Set<String> kluczeWszystkichpotencjalnych;
-   private List<Integer> choosenCombinationToWin;
+   private List<Integer> choosenCombinationToWin = new ArrayList<>();
    private Map<String, List<Integer>> hypotheticalWinningFieldsForO;
    private Map<String, List<Integer>> hypotheticalWinningFieldsForX;
    private Integer winningSize;
@@ -135,7 +135,7 @@ class AutomaticMachine
 
    }
 
-   void automaticTestMachineStart(Sign sign, Integer winningSize)
+   void automaticTestMachineStart(Sign sign)
    {
       winningSign = sign;
       enemySign = sign.getOppositePlayer();
@@ -178,5 +178,6 @@ class AutomaticMachine
          gameElementsService.revertBoardToBeginningState();
 
       }
+      gamePanel.changeAllElementsEnable(true);
    }
 }

@@ -28,9 +28,9 @@ public class AutomaticMachineServiceImpl implements AutomaticMachineService
    }
 
    @Override
-   public void automaticTestMachineStart(Sign sign, Integer winningSize)
+   public void automaticTestMachineStart(Sign sign)
    {
-      automaticMachine.automaticTestMachineStart(sign, winningSize);
+      automaticMachine.automaticTestMachineStart(sign);
    }
 
    @Override

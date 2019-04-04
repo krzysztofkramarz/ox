@@ -24,7 +24,7 @@ public interface AutomaticMachineService
 
    public void semiAutomaticGameStart(List<JButton> buttonsList, Sign  semiGameMachinePlayer, Integer winningSize);
 
-   void automaticTestMachineStart(Sign sign, Integer winningSize);
+   void automaticTestMachineStart(Sign sign);
 
    void makeSemiAutomaticMove();
 }

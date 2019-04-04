@@ -265,14 +265,14 @@ public final class GamePanel extends JPanel
       {
          JOptionPane.showMessageDialog(null, drawDialog);
          resetButtons();
-         rightSettingsPanel.changeAllElementsEnable(true);
+         changeAllElementsEnable(true);
       }
 
       if (isWinningMove)
       {
          JOptionPane.showMessageDialog(null, winnerDialog + whoHasATurn.getSign());
          resetButtons();
-         rightSettingsPanel.changeAllElementsEnable(true);
+         changeAllElementsEnable(true);
       }
       else
       {
@@ -300,7 +300,6 @@ public final class GamePanel extends JPanel
       try
       {
          isWinningMove = gameElementsService.isWinningMove(sign, positionOnBoard);
-         // Thread.sleep(1000);
       }
       catch (FieldIsNotEmptyException e)
       {
@@ -313,23 +312,16 @@ public final class GamePanel extends JPanel
          //todo loger
          e.printStackTrace();
       }
-      // catch (InterruptedException e)
-      // {
-      //    e.printStackTrace();
-      // }
-      isDraw = gameElementsService.isDraw();
 
       if (isWinningMove)
       {
          JOptionPane.showMessageDialog(null, automaticMessageDialog + whoHasATurn.getSign());
          resetButtons();
-         rightSettingsPanel.changeAllElementsEnable(true);
          return true;
       }
       else
       {
          return false;
-
       }
 
    }
@@ -384,7 +376,7 @@ public final class GamePanel extends JPanel
       isDraw = false;
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
       automaticMachineService.createAutomaticMachine(gameElementsService, this);
-      automaticMachineService.automaticTestMachineStart(whoHasATurn, winningSize);
+      automaticMachineService.automaticTestMachineStart(whoHasATurn);
 
       // resetButtons();
    }
@@ -395,6 +387,17 @@ public final class GamePanel extends JPanel
    public void validatePanel()
    {
       validate();
+   }
+
+   /**
+    * Change if all adjustable elements are enabled
+    *
+    * @param isEnabled is enabled
+    */
+   public void changeAllElementsEnable(boolean isEnabled)
+   {
+      rightSettingsPanel.changeAllElementsEnable(isEnabled);
+
    }
 
 }

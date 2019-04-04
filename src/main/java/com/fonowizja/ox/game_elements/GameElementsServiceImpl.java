@@ -43,18 +43,16 @@ public class GameElementsServiceImpl implements GameElementsService
       return board.isDraw();
    }
 
-   //todo czy potrzebna?? usunac jak coś
    @Override
    public Map<String, List<Integer>> getHypotheticalWinningFieldsForX()
    {
-      return null;
+      return board.getHypotheticalWinningFieldsForX();
    }
 
-   //todo czy potrzebna?? usunac jak coś
    @Override
    public Map<String, List<Integer>> getHypotheticalWinningFieldsForO()
    {
-      return null;
+      return board.getHypotheticalWinningFieldsForO();
    }
 
    //todo czy potrzebna?? usunac jak coś

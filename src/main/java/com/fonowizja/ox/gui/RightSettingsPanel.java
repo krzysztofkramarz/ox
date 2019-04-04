@@ -31,11 +31,16 @@ final class RightSettingsPanel extends JPanel
 
    private JButton gameStartBtn;
    private JButton automaticTestMachineStartBtn;
-   private JButton gameWithAutomaticMachineStartBtn;
+   private JButton semiAutomatMachineGameStartBtn;
 
    private TitledBorder boardHeightBorder;
 
    private JComboBox<LanguagesKey> languagesComboBox;
+
+   private String rightPanelSemiAutomatGameButtonQuestion0;
+   private String rightPanelSemiAutomatGameButtonQuestion1;
+   private String rightPanelSemiAutomatGameButtonText;
+   private String rightPanelSemiAutomatGameButtonTitle;
 
    RightSettingsPanel(GamePanel gamePanel, UpperSettingsPanel upperSettingsPanel)
    {
@@ -49,7 +54,7 @@ final class RightSettingsPanel extends JPanel
       createBoardHeightPanel();
 
       createGameStartButton();
-      createGameWithAutomaticMachineStartBtn();
+      createSemiAutomatMachineStartBtn();
       createAutomaticTestMachineStartBtn();
       createButtonPanel();
 
@@ -60,10 +65,18 @@ final class RightSettingsPanel extends JPanel
 
    void translateAllMessages()
    {
+      //todo refactor raz odwolaj sie do getinstance
       boardHeightBorder.setTitle(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_BOARD_HEIGHT_SLIDER));
       gameStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_START_GAME_BUTON));
-      gameWithAutomaticMachineStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_GAME_WITH_AUTOMAT_BUTTON));
+      semiAutomatMachineGameStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_GAME_WITH_AUTOMAT_BUTTON));
       automaticTestMachineStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_AUTOMATIC_GAME_BUTTON));
+
+      rightPanelSemiAutomatGameButtonQuestion0 =
+            MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_SEMI_AUTOMAT_GAME_BUTTON_QUESTION_0);
+      rightPanelSemiAutomatGameButtonQuestion1 =
+            MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_SEMI_AUTOMAT_GAME_BUTTON_QUESTION_1);
+      rightPanelSemiAutomatGameButtonText = MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_SEMI_AUTOMAT_GAME_BUTTON_TEXT);
+      rightPanelSemiAutomatGameButtonTitle = MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_SEMI_AUTOMAT_GAME_BUTTON_TITLE);
    }
 
    private void createLanguagesComboBoxPanel()
@@ -111,40 +124,36 @@ final class RightSettingsPanel extends JPanel
       });
    }
 
-   private void createGameWithAutomaticMachineStartBtn()
+   private void createSemiAutomatMachineStartBtn()
    {
-      gameWithAutomaticMachineStartBtn = new JButton();
-      gameWithAutomaticMachineStartBtn = new JButton("");
-      gameWithAutomaticMachineStartBtn.setBackground(Color.PINK);
-      gameWithAutomaticMachineStartBtn.setOpaque(true);
-      gameWithAutomaticMachineStartBtn.addActionListener(new ActionListener()
+      semiAutomatMachineGameStartBtn = new JButton();
+      semiAutomatMachineGameStartBtn = new JButton("");
+      semiAutomatMachineGameStartBtn.setBackground(Color.PINK);
+      semiAutomatMachineGameStartBtn.setOpaque(true);
+      semiAutomatMachineGameStartBtn.addActionListener(new ActionListener()
       {
          @Override
          public void actionPerformed(ActionEvent e)
          {
             changeAllElementsEnable(false);
             Sign whoIsFirst = upperSettingsPanel.getWhoIsFirst();
-//todo podac z resource bundle
-//             String s = JOptionPane.showInputDialog(null, winnerDialog + whoHasATurn.getSign());
+            boolean humanCanMakeMove;
 
-
-            //todo ponizej podac z resource bundla
-            //Custom button text
-            Object[] options = {"Chcesz byc X?",
-                  "Chcesz byc X?"};
+            Object[] options = { rightPanelSemiAutomatGameButtonQuestion0,
+                  rightPanelSemiAutomatGameButtonQuestion1
+            };
             int n = JOptionPane.showOptionDialog(null,
-                  "to jest jakis message",
-                  "to jest jakis tytul",
+                  rightPanelSemiAutomatGameButtonText,
+                  rightPanelSemiAutomatGameButtonTitle,
                   JOptionPane.YES_NO_OPTION,
                   JOptionPane.QUESTION_MESSAGE,
                   null,
                   options,
-                  options[2]);
-            System.out.println("Liczba z JPane: " + n);
-            boolean humanCanMakeMove = true;//todo usunac
+                  options[1]);
+            // humanCanMakeMove = n == 0 ? true : false;
+            humanCanMakeMove = n == 0;
             gamePanel.startSemiAutomaticGame(whoIsFirst, true, humanCanMakeMove);
          }
-
       });
    }
 
@@ -173,10 +182,10 @@ final class RightSettingsPanel extends JPanel
       buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 
       buttonPanel.add(gameStartBtn);
-      buttonPanel.add(gameWithAutomaticMachineStartBtn);
+      buttonPanel.add(semiAutomatMachineGameStartBtn);
       buttonPanel.add(automaticTestMachineStartBtn);
       gameStartBtn.setAlignmentX(CENTER_ALIGNMENT);
-      gameWithAutomaticMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
+      semiAutomatMachineGameStartBtn.setAlignmentX(CENTER_ALIGNMENT);
       automaticTestMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
       add(buttonPanel, BorderLayout.CENTER);
    }
@@ -188,7 +197,7 @@ final class RightSettingsPanel extends JPanel
       boardHeightySlider.setEnabled(isEnable);
       boardHeightSliderTextField.setEnabled(isEnable);
       gameStartBtn.setEnabled(isEnable);
-      gameWithAutomaticMachineStartBtn.setEnabled(isEnable);
+      semiAutomatMachineGameStartBtn.setEnabled(isEnable);
       automaticTestMachineStartBtn.setEnabled(isEnable);
    }
 
