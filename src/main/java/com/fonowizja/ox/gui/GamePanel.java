@@ -70,6 +70,7 @@ public final class GamePanel extends JPanel
    private AutomaticMachineServiceImpl automaticMachineService;
    private Sign semiGameMachinePlayer;
    private Sign semiGameHumanPlayer;
+   private boolean semiGameFinished;
 
    GamePanel()
    {
@@ -203,8 +204,10 @@ public final class GamePanel extends JPanel
                   buttonClicked.setText(Sign.X.getSign());
                   makeMove(positionOnBoard);
                   humanCanMakeMove = false;
-
-                  automaticMachineService.makeSemiAutomaticMove();
+                  if (!semiGameFinished)
+                  {
+                     automaticMachineService.makeSemiAutomaticMove();
+                  }
 
                }
                else if (semiGameHumanPlayer == Sign.O)
@@ -212,7 +215,10 @@ public final class GamePanel extends JPanel
                   buttonClicked.setText(Sign.O.getSign());
                   makeMove(positionOnBoard);
                   humanCanMakeMove = false;
-                  automaticMachineService.makeSemiAutomaticMove();
+                  if (!semiGameFinished)
+                  {
+                     automaticMachineService.makeSemiAutomaticMove();
+                  }
                }
             }
 
@@ -273,6 +279,7 @@ public final class GamePanel extends JPanel
          JOptionPane.showMessageDialog(null, winnerDialog + whoHasATurn.getSign());
          resetButtons();
          changeAllElementsEnable(true);
+         semiGameFinished = true;
       }
       else
       {
@@ -338,6 +345,7 @@ public final class GamePanel extends JPanel
 
    void startSemiAutomaticGame(Sign whoHasATurn, boolean canPlayersPlay, boolean humanCanMakeMove)
    {
+      semiGameFinished = false;
       resetButtons();
       this.humanCanMakeMove = humanCanMakeMove;
       semiAutomaticGame = true;
@@ -364,7 +372,8 @@ public final class GamePanel extends JPanel
       automaticMachineService.createAutomaticMachine(gameElementsService, this);
       automaticMachineService.semiAutomaticGameStart(buttonsList, semiGameMachinePlayer, winningSize);
 
-      if(!humanCanMakeMove){
+      if (!humanCanMakeMove)
+      {
          automaticMachineService.makeSemiAutomaticMove();
          //noinspection UnusedAssignment
          humanCanMakeMove = true;
@@ -397,7 +406,8 @@ public final class GamePanel extends JPanel
    /**
     * Change if all adjustable elements are enabled
     *
-    * @param isEnabled is enabled
+    * @param isEnabled
+    *       is enabled
     */
    public void changeAllElementsEnable(boolean isEnabled)
    {
