@@ -43,6 +43,7 @@ class AutomaticMachine
    private Integer winningSize;
    private boolean defense;
    private boolean stillCanWin;
+   private List<String> someHopeToWin = new ArrayList<>();
 
    AutomaticMachine(GameElementsService gameElementsService, GamePanel gamePanel)
    {
@@ -91,8 +92,25 @@ class AutomaticMachine
          }
          else
          {
-            System.out.println("ALL: " + allEmptyWinningCombinationsThatCanBeUsed);
+            // if (!someHopeToWin.isEmpty())
+            // {
+            //    List<String> collect = new ArrayList<>();
+            //    for (String someHopeOnePosition : someHopeToWin)
+            //    {
+            //       collect =
+            //             kluczeLista.stream().filter((it) -> it.contains(someHopeOnePosition)).collect(Collectors.toList());
+            //    }
+            //    choosenCombinationToPlay = allEmptyWinningCombinationsThatCanBeUsed.get(collect.get(0));
+            //    someHopeToWin.clear();
+            //
+            // }
+            // else
+            // {
+            //    choosenCombinationToPlay = allEmptyWinningCombinationsThatCanBeUsed.get(kluczeLista.get(0));
+            //
+            // }
             choosenCombinationToPlay = allEmptyWinningCombinationsThatCanBeUsed.get(kluczeLista.get(0));
+            System.out.println("ALL: " + allEmptyWinningCombinationsThatCanBeUsed);
          }
       }
    }
@@ -120,19 +138,29 @@ class AutomaticMachine
       }
       //ciśnij wygraną na wybranej kombinacji, dopóki nie zablokuje przeciwnik
 
+      for (Integer positionOnBoard : choosenCombinationToPlay)
+      {
+
+         if (buttonsList.get(positionOnBoard).getText().equals(semiGameMachinePlayer.getOppositePlayer().getSign()))
+         {
+            stillCanWin = false;
+         }
+      }
+
       if (!defense && !stillCanWin)
       {
          setCombinationToWin(allPossibleWinningCombinationsForThisBoardCopyOf.keySet(), defense);
+         stillCanWin=true;
       }
       for (Integer positionOnBoard : choosenCombinationToPlay)
       {
 
          if (buttonsList.get(positionOnBoard).getText().equals(Sign.EMPTY.getSign()))
          {
+            someHopeToWin.add(String.valueOf(positionOnBoard));
             gamePanel.playLikeHuman(positionOnBoard);
             return;
          }
-         stillCanWin = false;
       }
 
       if (defense)
