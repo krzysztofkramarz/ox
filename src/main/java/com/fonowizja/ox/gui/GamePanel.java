@@ -28,7 +28,8 @@ import org.apache.logging.log4j.Logger;
  * @author krzysztof.kramarz
  */
 @SuppressWarnings("ClassWithTooManyFields")
-public final class GamePanel extends JPanel
+//todo powinna być final , ale nie pzejdzie wtedy Mokito
+public  class GamePanel extends JPanel
 {
    private static Logger logger = LogManager.getLogger();
 

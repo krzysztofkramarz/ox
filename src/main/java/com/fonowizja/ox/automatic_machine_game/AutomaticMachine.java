@@ -21,7 +21,7 @@ import com.fonowizja.ox.gui.GamePanel;
  */
 class AutomaticMachine
 {
-
+//todo zefaktoyzować na mniejsze klasy i otestować
    private final Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
    //todo to jest kopia powyzszego po prostu, czy potrzebna?
    private final Map<String, List<Integer>> allPossibleWinningCombinationsForThisBoardCopyOf = new HashMap<>();
