@@ -14,6 +14,8 @@ import javax.validation.constraints.Min;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Place for acting single play
@@ -23,7 +25,7 @@ import lombok.Getter;
 final class Board
 {
    //TODO uproscic pola, kilka niepotrzebnych lub redundantnych
-
+   private static Logger logger = LogManager.getLogger();
    static final String EXCEPTION_MESSAGE = "boardSize to small";
    static final String EXCEPTION_WINNING_SIZE_MESSAGE = "winning size to small";
    private static final String FIELD_IS_NOT_EMPTY_EXCEPTION = "Field is not empty!";
@@ -41,7 +43,7 @@ final class Board
    @Getter(AccessLevel.PACKAGE)
    private final Map<String, List<Integer>> hypotheticalWinningFieldsForO = new HashMap<>();
    @Getter(AccessLevel.PACKAGE)
-   private  Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
+   private Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
    private final AllEmptyWinningCombinationsCreator allEmptyWinningCombinationsCreator;
 
    private Board(Integer boardSize, Integer boardLenght, Integer winningSize)
@@ -100,6 +102,7 @@ final class Board
 
    boolean isWinningMove(Sign sign, Integer boardPosition) throws FieldIsNotEmptyException, IllegalSignException
    {
+      logger.info("Loguję postawiony znak" + sign);
 
       if (!putSignIntoBoard(sign, boardPosition))
       {
@@ -107,7 +110,6 @@ final class Board
       }
 
       createHypotheticalWinningFields(sign, boardPosition);
-
 
       return isWinnerAtThisMove(sign);
 
@@ -315,6 +317,14 @@ final class Board
 
          Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
          Set<ConstraintViolation<BoardBuilder>> validate = validator.validate(this);
+         if (!validate.isEmpty())
+         {
+            for (ConstraintViolation<BoardBuilder> constraints : validate)
+            {
+               logger.error(constraints);
+            }
+
+         }
          return toBuild;
       }
 

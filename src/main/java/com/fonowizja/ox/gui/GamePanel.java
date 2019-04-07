@@ -21,6 +21,8 @@ import com.fonowizja.ox.internationalization.MessagesKey;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author krzysztof.kramarz
@@ -28,6 +30,7 @@ import lombok.Setter;
 @SuppressWarnings("ClassWithTooManyFields")
 public final class GamePanel extends JPanel
 {
+   private static Logger logger = LogManager.getLogger();
 
    private static final long serialVersionUID = -2348212344905788119L;
    static final int MAXIMUM_BOARD_LENGTH = 30;
@@ -242,7 +245,7 @@ public final class GamePanel extends JPanel
       }
       catch (InterruptedException e1)
       {
-         e1.printStackTrace();
+         logger.error(e1);
       }
       buttonsList.get(positionOnBoard).setText(semiGameMachinePlayer.getSign());
       makeMove(positionOnBoard);
@@ -255,16 +258,13 @@ public final class GamePanel extends JPanel
       {
          isWinningMove = gameElementsService.isWinningMove(whoHasATurn, positionOnBoard);
       }
-      catch (FieldIsNotEmptyException e)
+      catch (FieldIsNotEmptyException e2)
       {
-         //todo logger
-         e.printStackTrace();
+         logger.error(e2);
       }
       catch (IllegalSignException e)
       {
-
-         //todo loger
-         e.printStackTrace();
+         logger.error(e);
       }
       isDraw = gameElementsService.isDraw();
       if (isDraw)
@@ -310,14 +310,11 @@ public final class GamePanel extends JPanel
       }
       catch (FieldIsNotEmptyException e)
       {
-         //todo logger
-         e.printStackTrace();
+         logger.error(e);
       }
       catch (IllegalSignException e)
       {
-
-         //todo loger
-         e.printStackTrace();
+         logger.error(e);
       }
 
       if (isWinningMove)
