@@ -31,7 +31,7 @@ import org.apache.logging.log4j.Logger;
 //todo powinna być final , ale nie pzejdzie wtedy Mokito
 public  class GamePanel extends JPanel
 {
-   private static Logger logger = LogManager.getLogger();
+   private static Logger logger = LogManager.getLogger(GamePanel.class);
 
    private static final long serialVersionUID = -2348212344905788119L;
    static final int MAXIMUM_BOARD_LENGTH = 30;

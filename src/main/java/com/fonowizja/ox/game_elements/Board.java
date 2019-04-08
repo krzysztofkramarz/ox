@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
 final class Board
 {
    //TODO uproscic pola, kilka niepotrzebnych lub redundantnych
-   private static Logger logger = LogManager.getLogger();
+   private static Logger logger = LogManager.getLogger(Board.class);
    static final String EXCEPTION_MESSAGE = "boardSize to small";
    static final String EXCEPTION_WINNING_SIZE_MESSAGE = "winning size to small";
    private static final String FIELD_IS_NOT_EMPTY_EXCEPTION = "Field is not empty!";

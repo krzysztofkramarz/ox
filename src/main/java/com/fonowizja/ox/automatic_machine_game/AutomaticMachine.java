@@ -15,12 +15,16 @@ import javax.swing.*;
 import com.fonowizja.ox.game_elements.GameElementsService;
 import com.fonowizja.ox.game_elements.Sign;
 import com.fonowizja.ox.gui.GamePanel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author krzysztof.kramarz
  */
+@SuppressWarnings("ClassWithTooManyFields")
 class AutomaticMachine
 {
+
 //todo zefaktoyzować na mniejsze klasy i otestować
    private final Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
    //todo to jest kopia powyzszego po prostu, czy potrzebna?
@@ -82,35 +86,15 @@ class AutomaticMachine
             {
                case O:
                   choosenCombinationToPlay = hypotheticalWinningFieldsForX.get(kluczeLista.get(0));
-                  System.out.println("XXX: " + hypotheticalWinningFieldsForX);
                   break;
                case X:
                   choosenCombinationToPlay = hypotheticalWinningFieldsForO.get(kluczeLista.get(0));
-                  System.out.println("OOO: " + hypotheticalWinningFieldsForO);
                   break;
             }
          }
          else
          {
-            // if (!someHopeToWin.isEmpty())
-            // {
-            //    List<String> collect = new ArrayList<>();
-            //    for (String someHopeOnePosition : someHopeToWin)
-            //    {
-            //       collect =
-            //             kluczeLista.stream().filter((it) -> it.contains(someHopeOnePosition)).collect(Collectors.toList());
-            //    }
-            //    choosenCombinationToPlay = allEmptyWinningCombinationsThatCanBeUsed.get(collect.get(0));
-            //    someHopeToWin.clear();
-            //
-            // }
-            // else
-            // {
-            //    choosenCombinationToPlay = allEmptyWinningCombinationsThatCanBeUsed.get(kluczeLista.get(0));
-            //
-            // }
             choosenCombinationToPlay = allEmptyWinningCombinationsThatCanBeUsed.get(kluczeLista.get(0));
-            System.out.println("ALL: " + allEmptyWinningCombinationsThatCanBeUsed);
          }
       }
    }
@@ -208,6 +192,7 @@ class AutomaticMachine
 
       while (fieldsForWinnerMapKeysIterator.hasNext())
       {
+
          //make winner fields
          String keyForWinningFields = fieldsForWinnerMapKeysIterator.next(); //biore klucz do mapy
          fieldsForWinner = allPossibleWinningCombinationsForThisBoardCopyOf.get(keyForWinningFields); //biore intigery spod klucza
@@ -226,6 +211,7 @@ class AutomaticMachine
          int index = 0;
          while (index < fieldsForWinner.size())
          {
+
             Integer positionInBoardForWinner = fieldsForWinner.get(index++);
             if (gamePanel.makeAutomaticTestMachineMove(winningSign, positionInBoardForWinner))
             {
