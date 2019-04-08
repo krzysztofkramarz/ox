@@ -32,6 +32,7 @@ final class RightSettingsPanel extends JPanel
    private JButton gameStartBtn;
    private JButton automaticTestMachineStartBtn;
    private JButton semiAutomatMachineGameStartBtn;
+   private JButton programExitBtn;
 
    private TitledBorder boardHeightBorder;
 
@@ -56,6 +57,7 @@ final class RightSettingsPanel extends JPanel
       createGameStartButton();
       createSemiAutomatMachineStartBtn();
       createAutomaticTestMachineStartBtn();
+      createProgramExitBtn();
       createButtonPanel();
 
       createLanguagesComboBoxPanel();
@@ -70,6 +72,7 @@ final class RightSettingsPanel extends JPanel
       gameStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_START_GAME_BUTON));
       semiAutomatMachineGameStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_GAME_WITH_AUTOMAT_BUTTON));
       automaticTestMachineStartBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_AUTOMATIC_GAME_BUTTON));
+      programExitBtn.setText(MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_PROGRAM_EXIT_BUTTON));
 
       rightPanelSemiAutomatGameButtonQuestion0 =
             MessageProvider.getInstance().getMessage(MessagesKey.RIGHT_PANEL_SEMI_AUTOMAT_GAME_BUTTON_QUESTION_0);
@@ -176,6 +179,24 @@ final class RightSettingsPanel extends JPanel
       });
    }
 
+   private void createProgramExitBtn()
+   {
+      programExitBtn = new JButton("");
+      programExitBtn.setBackground(Color.PINK);
+      programExitBtn.setOpaque(true);
+      programExitBtn.addActionListener(new ActionListener()
+      {
+         @Override
+         public void actionPerformed(ActionEvent e)
+         {
+
+            System.exit(0);
+         }
+
+      });
+   }
+
+
    private void createButtonPanel()
    {
       buttonPanel = new JPanel();
@@ -184,9 +205,11 @@ final class RightSettingsPanel extends JPanel
       buttonPanel.add(gameStartBtn);
       buttonPanel.add(semiAutomatMachineGameStartBtn);
       buttonPanel.add(automaticTestMachineStartBtn);
+      buttonPanel.add(programExitBtn);
       gameStartBtn.setAlignmentX(CENTER_ALIGNMENT);
       semiAutomatMachineGameStartBtn.setAlignmentX(CENTER_ALIGNMENT);
       automaticTestMachineStartBtn.setAlignmentX(CENTER_ALIGNMENT);
+      programExitBtn.setAlignmentX(CENTER_ALIGNMENT);
       add(buttonPanel, BorderLayout.CENTER);
    }
 
