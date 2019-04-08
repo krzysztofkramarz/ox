@@ -31,9 +31,6 @@ import org.apache.logging.log4j.Logger;
 //todo powinna być final , ale nie pzejdzie wtedy Mokito
 public class GamePanel extends JPanel
 {
-   private static final Logger logger = LogManager.getLogger(GamePanel.class);
-
-   private static final long serialVersionUID = -2348212344905788119L;
    static final int MAXIMUM_BOARD_LENGTH = 30;
    static final int MINIMUM_BOARD_LENGTH = 3;
    static final int DEFAULT_WINNING_SIZE = 3;
@@ -41,7 +38,8 @@ public class GamePanel extends JPanel
    static final int DEFAULT_BOARD_LENHTG = 3;
    static final int DEFAULT_BOARD_HEIGHT = 3;
    static final Sign DEFAULT_STARTING_SIGN = Sign.X;
-
+   private static final Logger logger = LogManager.getLogger(GamePanel.class);
+   private static final long serialVersionUID = -2348212344905788119L;
    private List<JButton> buttonsList;
    @Getter(AccessLevel.PACKAGE)
    private Integer boardLenght;
@@ -164,73 +162,6 @@ public class GamePanel extends JPanel
       }
    }
 
-   private class gameButtonsListener implements ActionListener
-   {
-
-      @Override
-      public void actionPerformed(ActionEvent e)
-      {
-         JButton buttonClicked = (JButton) e.getSource();
-         String buttonText = buttonClicked.getText();
-         positionOnBoard = buttonsList.indexOf(buttonClicked);
-         //todo refactor na switche,moze uzyć enumów na EnumTypePlayers HUMAN, MACHINE
-         if (humansCanPlay && !semiAutomaticGame)
-         {
-
-            if (Sign.X.getSign().equals(buttonText) || Sign.O.getSign().equals(buttonText))
-            {
-               return;
-            }
-            if (whoHasATurn == Sign.X)
-            {
-               buttonClicked.setText(Sign.X.getSign());
-
-               makeMove(positionOnBoard);
-            }
-            else
-            {
-               buttonClicked.setText(Sign.O.getSign());
-               makeMove(positionOnBoard);
-            }
-         }
-         else if (humansCanPlay && semiAutomaticGame)
-         {
-
-            if (humanCanMakeMove)
-            {
-
-               if (Sign.X.getSign().equals(buttonText) || Sign.O.getSign().equals(buttonText))
-               {
-                  return;
-               }
-               if (semiGameHumanPlayer == Sign.X)
-               {
-                  buttonClicked.setText(Sign.X.getSign());
-                  makeMove(positionOnBoard);
-                  humanCanMakeMove = false;
-                  if (!semiGameFinished)
-                  {
-                     automaticMachineService.makeSemiAutomaticMove();
-                  }
-
-               }
-               else if (semiGameHumanPlayer == Sign.O)
-               {
-                  buttonClicked.setText(Sign.O.getSign());
-                  makeMove(positionOnBoard);
-                  humanCanMakeMove = false;
-                  if (!semiGameFinished)
-                  {
-                     automaticMachineService.makeSemiAutomaticMove();
-                  }
-               }
-            }
-
-         }
-      }
-
-   }
-
    /**
     * Make possible to act like click on button board
     * i.e. mark button by sign and check if it is winning move
@@ -349,14 +280,14 @@ public class GamePanel extends JPanel
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
    }
 
-   void startSemiAutomaticGame(Sign whoHasATurn, boolean canPlayersPlay, boolean humanCanMakeMove)
+   void startSemiAutomaticGame(Sign whoHasATurn, boolean humansCanPlay, boolean humanCanMakeMove)
    {
-      semiGameFinished = false;
       resetButtons();
+      semiGameFinished = false;
       this.humanCanMakeMove = humanCanMakeMove;
       semiAutomaticGame = true;
       this.whoHasATurn = whoHasATurn;
-      this.humansCanPlay = canPlayersPlay;
+      this.humansCanPlay = humansCanPlay;
       if (whoHasATurn == Sign.O && humanCanMakeMove)
       {
          semiGameHumanPlayer = Sign.O;
@@ -418,6 +349,73 @@ public class GamePanel extends JPanel
    public void changeAllElementsEnable(boolean isEnabled)
    {
       rightSettingsPanel.changeAllElementsEnable(isEnabled);
+
+   }
+
+   private class gameButtonsListener implements ActionListener
+   {
+
+      @Override
+      public void actionPerformed(ActionEvent e)
+      {
+         JButton buttonClicked = (JButton) e.getSource();
+         String buttonText = buttonClicked.getText();
+         positionOnBoard = buttonsList.indexOf(buttonClicked);
+         //todo refactor na switche,moze uzyć enumów na EnumTypePlayers HUMAN, MACHINE
+         if (humansCanPlay && !semiAutomaticGame)
+         {
+
+            if (Sign.X.getSign().equals(buttonText) || Sign.O.getSign().equals(buttonText))
+            {
+               return;
+            }
+            if (whoHasATurn == Sign.X)
+            {
+               buttonClicked.setText(Sign.X.getSign());
+
+               makeMove(positionOnBoard);
+            }
+            else
+            {
+               buttonClicked.setText(Sign.O.getSign());
+               makeMove(positionOnBoard);
+            }
+         }
+         else if (humansCanPlay && semiAutomaticGame)
+         {
+
+            if (humanCanMakeMove)
+            {
+
+               if (Sign.X.getSign().equals(buttonText) || Sign.O.getSign().equals(buttonText))
+               {
+                  return;
+               }
+               if (semiGameHumanPlayer == Sign.X)
+               {
+                  buttonClicked.setText(Sign.X.getSign());
+                  makeMove(positionOnBoard);
+                  humanCanMakeMove = false;
+                  if (!semiGameFinished)
+                  {
+                     automaticMachineService.makeSemiAutomaticMove();
+                  }
+
+               }
+               else if (semiGameHumanPlayer == Sign.O)
+               {
+                  buttonClicked.setText(Sign.O.getSign());
+                  makeMove(positionOnBoard);
+                  humanCanMakeMove = false;
+                  if (!semiGameFinished)
+                  {
+                     automaticMachineService.makeSemiAutomaticMove();
+                  }
+               }
+            }
+
+         }
+      }
 
    }
 

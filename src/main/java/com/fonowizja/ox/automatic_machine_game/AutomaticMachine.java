@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
@@ -15,8 +17,6 @@ import javax.swing.*;
 import com.fonowizja.ox.game_elements.GameElementsService;
 import com.fonowizja.ox.game_elements.Sign;
 import com.fonowizja.ox.gui.GamePanel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author krzysztof.kramarz
@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
 class AutomaticMachine
 {
 
-//todo zefaktoyzować na mniejsze klasy i otestować
+   //todo zefaktoyzować na mniejsze klasy i otestować
    private final Map<String, List<Integer>> allEmptyWinningCombinationsThatCanBeUsed;
    //todo to jest kopia powyzszego po prostu, czy potrzebna?
    private final Map<String, List<Integer>> allPossibleWinningCombinationsForThisBoardCopyOf = new HashMap<>();
@@ -65,6 +65,7 @@ class AutomaticMachine
    {
       this.buttonsList = buttonsList;
       this.semiGameMachinePlayer = semiGameMachinePlayer;
+      enemySign = semiGameMachinePlayer.getOppositePlayer();
       this.winningSize = winningSize;
       defense = false;
       stillCanWin = true;
@@ -112,12 +113,17 @@ class AutomaticMachine
    }
 
    void makeSemiAutomaticMove()
-   {//todo zaorać i jeszcze raz napisać czytelniej
+   {
+      //todo zaorać i jeszcze raz napisać czytelniej
       refreshWinningMaps();
-
+      Set<List<Integer>> priorityFieldsToDefense = checkIfSomewhereIsHopingSequence();
+      if (priorityFieldsToDefense.size() > 0)
+      {
+         makeMoveOnThisField(priorityFieldsToDefense.iterator().next());
+      }
       if (allPossibleWinningCombinationsForThisBoardCopyOf.isEmpty())
       {
-         System.out.println(("DEENSE: " + defense));
+         System.out.println(("DEENSE: " + defense));//TODO skasowac
          defense = true;
       }
       //ciśnij wygraną na wybranej kombinacji, dopóki nie zablokuje przeciwnik
@@ -127,26 +133,17 @@ class AutomaticMachine
 
          if (buttonsList.get(positionOnBoard).getText().equals(semiGameMachinePlayer.getOppositePlayer().getSign()))
          {
-            stillCanWin = false;
+            stillCanWin = false;//TODO zmienic nazwe na stillCanWinOnChoosenFieldSet
          }
       }
 
       if (!defense && !stillCanWin)
       {
          setCombinationToWin(allPossibleWinningCombinationsForThisBoardCopyOf.keySet(), defense);
-         stillCanWin=true;
-      }
-      for (Integer positionOnBoard : choosenCombinationToPlay)
-      {
-
-         if (buttonsList.get(positionOnBoard).getText().equals(Sign.EMPTY.getSign()))
-         {
-            someHopeToWin.add(String.valueOf(positionOnBoard));
-            gamePanel.playLikeHuman(positionOnBoard);
-            return;
-         }
+         stillCanWin = true;
       }
 
+      makeMoveOnThisField(choosenCombinationToPlay);
       if (defense)
       {
 
@@ -221,11 +218,52 @@ class AutomaticMachine
 
             gamePanel.makeAutomaticTestMachineMove(enemySign, positionOfO);
          }
-         // gamePanel.validatePanel();
 
          gameElementsService.revertBoardToBeginningState();
 
       }
       gamePanel.changeAllElementsEnable(true);
+   }
+
+   private Set<List<Integer>> checkIfSomewhereIsHopingSequence()
+   {
+      Set<List<Integer>> priorityFieldsToDefense = new TreeSet<>();
+      AtomicInteger priority = new AtomicInteger(0);
+      allPossibleWinningCombinationsForThisBoardCopyOf
+            .entrySet()
+            .stream()
+            .map(Map.Entry::getValue)
+            .forEach(listOfIntegers -> {
+               System.out.println("moj integer" + listOfIntegers);
+               for (Integer integer : listOfIntegers)
+               {
+                  if (buttonsList.get(integer).equals(enemySign))
+
+                  {
+                     priority.getAndIncrement();
+                  }
+                  if (priority.get() > (winningSize - 2))
+                  {
+                     priorityFieldsToDefense.add(listOfIntegers);
+                  }
+                  priority.set(0);
+               }
+
+            });
+      return priorityFieldsToDefense;
+   }
+
+   private void makeMoveOnThisField(List<Integer> choosenCombinationToPlay)
+   {
+      for (Integer positionOnBoard : choosenCombinationToPlay)
+      {
+
+         if (buttonsList.get(positionOnBoard).getText().equals(Sign.EMPTY.getSign()))
+         {
+            someHopeToWin.add(String.valueOf(positionOnBoard));
+            gamePanel.playLikeHuman(positionOnBoard);
+            return;
+         }
+      }
    }
 }
