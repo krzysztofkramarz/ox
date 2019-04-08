@@ -221,7 +221,7 @@ class AutomaticMachine
 
             gamePanel.makeAutomaticTestMachineMove(enemySign, positionOfO);
          }
-         gamePanel.validatePanel();
+         // gamePanel.validatePanel();
 
          gameElementsService.revertBoardToBeginningState();
 

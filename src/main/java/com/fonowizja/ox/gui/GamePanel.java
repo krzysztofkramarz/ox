@@ -29,9 +29,9 @@ import org.apache.logging.log4j.Logger;
  */
 @SuppressWarnings("ClassWithTooManyFields")
 //todo powinna być final , ale nie pzejdzie wtedy Mokito
-public  class GamePanel extends JPanel
+public class GamePanel extends JPanel
 {
-   private static Logger logger = LogManager.getLogger(GamePanel.class);
+   private static final Logger logger = LogManager.getLogger(GamePanel.class);
 
    private static final long serialVersionUID = -2348212344905788119L;
    static final int MAXIMUM_BOARD_LENGTH = 30;
@@ -55,7 +55,7 @@ public  class GamePanel extends JPanel
    private Integer winningSize;
    @Getter(AccessLevel.PACKAGE)
    private Integer maxWinningSize;
-   private boolean canPlayersPlay;
+   private boolean humansCanPlay;
    private GameElementsService gameElementsService;
    //game elements
    private Sign whoHasATurn;
@@ -85,7 +85,7 @@ public  class GamePanel extends JPanel
       boardSize = boardLenght * boardHeight;
       maxWinningSize = DEFAULT_MAXIMUM_WINNING_SIZE;
       winningSize = DEFAULT_WINNING_SIZE;
-      canPlayersPlay = false;
+      humansCanPlay = false;
       setLayout(new GridLayout(boardHeight, boardLenght, 1, 1));
       gamePanelBorder = BorderFactory.createTitledBorder("TUTAJ SIĘ GRA!");
       gamePanelBorder.setTitleColor(Color.BLUE);
@@ -174,7 +174,7 @@ public  class GamePanel extends JPanel
          String buttonText = buttonClicked.getText();
          positionOnBoard = buttonsList.indexOf(buttonClicked);
          //todo refactor na switche,moze uzyć enumów na EnumTypePlayers HUMAN, MACHINE
-         if (canPlayersPlay && !semiAutomaticGame)
+         if (humansCanPlay && !semiAutomaticGame)
          {
 
             if (Sign.X.getSign().equals(buttonText) || Sign.O.getSign().equals(buttonText))
@@ -193,7 +193,7 @@ public  class GamePanel extends JPanel
                makeMove(positionOnBoard);
             }
          }
-         else if (canPlayersPlay && semiAutomaticGame)
+         else if (humansCanPlay && semiAutomaticGame)
          {
 
             if (humanCanMakeMove)
@@ -305,6 +305,14 @@ public  class GamePanel extends JPanel
       buttonsList.get(positionOnBoard).setText(sign.getSign());
       validate();
 
+      // try
+      // {
+      //    Thread.sleep(500);
+      // }
+      // catch (InterruptedException e)
+      // {
+      //    logger.error(e);
+      // }
       try
       {
          isWinningMove = gameElementsService.isWinningMove(sign, positionOnBoard);
@@ -336,7 +344,7 @@ public  class GamePanel extends JPanel
       resetButtons();
       semiAutomaticGame = false;
       this.whoHasATurn = whoHasATurn;
-      this.canPlayersPlay = canPlayersPlay;
+      this.humansCanPlay = canPlayersPlay;
       isDraw = false;
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
    }
@@ -348,7 +356,7 @@ public  class GamePanel extends JPanel
       this.humanCanMakeMove = humanCanMakeMove;
       semiAutomaticGame = true;
       this.whoHasATurn = whoHasATurn;
-      this.canPlayersPlay = canPlayersPlay;
+      this.humansCanPlay = canPlayersPlay;
       if (whoHasATurn == Sign.O && humanCanMakeMove)
       {
          semiGameHumanPlayer = Sign.O;
@@ -384,7 +392,7 @@ public  class GamePanel extends JPanel
       resetButtons();
       semiAutomaticGame = false;
       this.whoHasATurn = whoHasATurn;
-      canPlayersPlay = false;
+      humansCanPlay = false;
       isDraw = false;
       gameElementsService = new GameElementsServiceImpl(boardSize, boardLenght, winningSize);
       automaticMachineService.createAutomaticMachine(gameElementsService, this);
