@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.constraints.Min;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,11 +25,8 @@ final class Board
    private static final String FIELD_IS_NOT_EMPTY_EXCEPTION = "Field is not empty!";
    private static final String ILLEGAL_SIGN_EXCEPTION_MESSAGE = "This is neither X nor O";
    private final List<Sign> board = new ArrayList<>();
-   @Min(value = 9, message = EXCEPTION_MESSAGE)
    private final Integer boardSize;
-   @Min(value = 3, message = EXCEPTION_MESSAGE)
    private final Integer boardLenght;
-   @Min(value = 3, message = EXCEPTION_WINNING_SIZE_MESSAGE)
    private final Integer winningSize;
 
    @Getter(AccessLevel.PACKAGE)
@@ -269,11 +260,8 @@ final class Board
    @SuppressWarnings("NewMethodNamingConvention")
    static final class BoardBuilder implements NeedBoardSize, NeedBoardLenght, NeedWinningSize, CanBeBuild
    {
-      @Min(value = 9, message = EXCEPTION_MESSAGE)
       private Integer boardSize;
-      @Min(value = 3, message = EXCEPTION_MESSAGE)
       private Integer boardLenght;
-      @Min(value = 3, message = EXCEPTION_WINNING_SIZE_MESSAGE)
       private Integer winningSize;
 
       @Override
@@ -315,16 +303,6 @@ final class Board
 
          Board toBuild = new Board(boardSize, boardLenght, winningSize);
 
-         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-         Set<ConstraintViolation<BoardBuilder>> validate = validator.validate(this);
-         if (!validate.isEmpty())
-         {
-            for (ConstraintViolation<BoardBuilder> constraints : validate)
-            {
-               logger.error(constraints);
-            }
-
-         }
          return toBuild;
       }
 

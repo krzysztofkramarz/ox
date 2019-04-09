@@ -5,11 +5,6 @@ import static com.fonowizja.ox.game_elements.IntegerRangeHelper.generateRangeOfS
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 /**
  * @author krzysztof.kramarz
  */
@@ -18,21 +13,14 @@ class HypotheticalWinningFieldsCreator
 {
    //TODO mniejszyć i zrefaktorować ilość pól, zrefaktorować logikę obliczeń
    //TODO redundantne dane
-   @NotNull
    private Sign sign;
 
-   @NotNull
-   @Min(3)
    private Integer winningSize;
 
-   @NotNull
-   @Min(3)
    private Integer x;
 
-   @NotNull
    private Integer positionOnBoard;
 
-   @NotNull
    private Integer boardSize;
 
    List<List<Integer>> createHorizontalWinnerFields()
@@ -161,8 +149,6 @@ class HypotheticalWinningFieldsCreator
          toBuild.positionOnBoard = this.positionOnBoard;
          toBuild.boardSize = this.boardSize;
 
-         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-         validator.validate(toBuild);
          return toBuild;
       }
 
